@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import RangeSlider from './components/RangeSlider';
+
+let su;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <RangeSlider
+        min={0}
+        max={100}
+        decimals={0}
+        step={1}
+        width="800"
+        primaryColor="hsl(196, 100%, 48%)"
+        primaryColor50="hsla(196, 100%, 48%, 0.5)"
+        labelRotate={14}
+      />
     </div>
   );
 }
