@@ -10,7 +10,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-function calcSpace(max, min, height){
+function calcSpace(max, min, height) {
   const diff = min - max;
   const ticks = height / 50;
   return diff / ticks;
@@ -21,17 +21,19 @@ const RangeSlider = ({
   max = 100,
   decimals = 0,
   step = 0,
-  width = "250",
-  primaryColor = "black",
-  primaryColor50,
+  ticks = false,
+  label = false,
   labelRotate = 45,
+  primaryColorLight,
+  primaryColor = "black",
+  width = "250",
 }) => {
   const rangeEl = useRef(null);
   const [value, setValue] = useState((min + max) / 2);
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   focusColor = primaryColor;
-  blurColor = primaryColor50;
+  blurColor = primaryColorLight;
   newValue = Number(((value - min) * 100) / (max - min));
   const newPosition = 10 - newValue * 0.2;
 
@@ -47,15 +49,34 @@ const RangeSlider = ({
   let markers = [];
   const space = calcSpace(min, max, width);
 
-  for (let i = min; i <= max; i += space) {
-    const labelLength = i.toString().length;
-    markers.push(
-      <Tick
-        key={i}
-        length={labelLength}
-        labelRotate={parseInt(labelRotate, 10)}
-      ><span><div>{numberWithCommas(i)}</div></span></Tick>
-    );
+  if (step === "space-evenly") {
+    for (let i = min; i <= max; i += space) {
+      const labelLength = i.toString().length;
+      markers.push(
+        <Tick
+          key={i}
+          length={labelLength}
+          label={label}
+          labelRotate={parseInt(labelRotate, 10)}
+        >
+          {label && <div>{numberWithCommas(i)}</div>}
+        </Tick>
+      );
+    }
+  } else {
+    for (let i = min; i <= max; i += parseInt(step, 10)) {
+      const labelLength = i.toString().length;
+      markers.push(
+        <Tick
+          key={i}
+          length={labelLength}
+          label={label}
+          labelRotate={parseInt(labelRotate, 10)}
+        >
+          {label && <div>{numberWithCommas(i)}</div>}
+        </Tick>
+      );
+    }
   }
   const marks = markers.map(marker => marker);
 
@@ -138,9 +159,9 @@ const RangeSlider = ({
         onBlur={() => setIsFocused(false)}
         focused={isFocused}
       />
-      <Ticks>
+      {ticks && <Ticks>
         {marks}
-      </Ticks>
+      </Ticks>}
       <Progress
         onClick={e => console.log(e)}
         focused={isFocused}
@@ -257,16 +278,15 @@ const Ticks = styled.div`
 `;
 const Tick = styled.div`
   position: relative;
-  width: 1px;
+  width: ${p => p.label ? "1px" : "2px"};
+  height: ${p => p.label ? "5px" : "8px"};
   background: ${blackColor};
-  height: 5px;
   margin-top: 1rem;
   margin-bottom: ${p => (p.length + 2) + "ch"};
-  
     div{
       transform-origin: top center;
       margin-top: 0.5rem;
-      margin-left: ${p => p.labelRotate  < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
+      margin-left: ${p => p.labelRotate < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
       transform: ${p => `rotate(${p.labelRotate}deg)`};
     }
 `;

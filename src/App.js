@@ -9,11 +9,13 @@ function App() {
         min={0}
         max={100}
         decimals={0}
-        step={1}
-        width="800"
-        primaryColor="hsl(196, 100%, 48%)"
-        primaryColor50="hsla(196, 100%, 48%, 0.5)"
+        step="1"
+        ticks={true}
+        label={false}
         labelRotate={14}
+        primaryColor="hsl(196, 100%, 50%)"
+        primaryColorLight="hsl(196, 100%, 70%)"
+        width="800"
       />
     </div>
   );
