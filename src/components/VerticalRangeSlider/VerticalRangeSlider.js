@@ -92,6 +92,7 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
   return (
     <RangeWrapWrap
       ref={wrapEl}
+      ticks
       tickWidth={tickWidth}
       outputWidth={outputWidth}
     >
@@ -108,7 +109,7 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
           <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
-          heightVal={height}
+          heightVal={300}
           list="tickmamrks"
           ref={rangeEl}
           min={min}
@@ -147,7 +148,10 @@ const whiteColor = 'white';
 const blackColor = "#999";
 
 const RangeWrapWrap = styled.div`
-  width: ${p => p.outputWidth + p.tickWidth + 55 + "px"};
+  width: ${p => p.ticks ?
+    p.outputWidth + p.tickWidth + 65 + "px" :
+    p.outputWidth + 60 + "px"
+  };
   border: 1px dotted red;
 `;
 

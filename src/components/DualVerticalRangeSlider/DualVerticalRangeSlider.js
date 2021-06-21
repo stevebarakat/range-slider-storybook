@@ -191,18 +191,18 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrapWrap = styled.div`
-  width: ${(p) => p.ticks ?
-    p.outputWidth + p.tickWidth + 75 + "px" :
+  width: ${p => p.ticks ?
+    p.outputWidth + p.tickWidth + 65 + "px" :
     p.outputWidth + 60 + "px"
   };
   border: 1px dotted red;
 `;
 const RangeWrap = styled.div`
-  width: ${(p) => p.heightVal};
+  width: ${(p) => p.heightVal + "px"};
   margin-left: ${(p) => (p.ticks && p.tickWidth + "px")};
   transform: rotate(270deg);
   transform-origin: top left;
-  margin-top: ${(p) => p.heightVal};
+  margin-top: ${(p) => p.heightVal + "px"};
   left: 0;
   top: 0;
   font-family: sans-serif;
@@ -308,9 +308,8 @@ const Progress = styled.div`
   position: absolute;
   box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
     inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-  /* transition: all 0.15s ease-out; */
-  margin: 20px 0 0 0;
-`;
+    margin: 20px 0 0 0;
+  `;
 
 const Ticks = styled.div`
   display: flex;

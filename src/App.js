@@ -9,7 +9,7 @@ function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
-        <Container>
+        {/* <Container>
           <RangeSlider
             min={0}
             max={100}
@@ -36,12 +36,12 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
           />
-        </Container>
+        </Container> */}
       </div>
       <div style={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
         alignItems: "center",
         gap: "30px",
         width: "100%"
@@ -63,6 +63,20 @@ function App() {
         <Container>
           <DualVerticalRangeSlider
             min={0}
+            max={10000}
+            decimals={0}
+            step={1000}
+            ticks={true}
+            tickLabel={true}
+            labelRotate={14}
+            primaryColor="hsl(196, 100%, 50%)"
+            primaryColorLight="hsl(196, 100%, 70%)"
+            height="800"
+          />
+        </Container>
+        {/* <Container>
+          <DualVerticalRangeSlider
+            min={0}
             max={10}
             decimals={0}
             step={1}
@@ -73,7 +87,7 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             height="800px"
           />
-        </Container>
+        </Container> */}
 
       </div>
     </div>
