@@ -205,8 +205,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: 2.15rem;
-    height: 2.15rem;
+    width: 38px;
+    height: 38px;
     border: 1px solid ${blackColor};
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -220,8 +220,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     cursor: grab;
     pointer-events: all;
     position: relative;
-    height: 2.15rem;
-    width: 2.15rem;
+    height: 38px;
+    width: 38px;
     border: 1px solid ${blackColor};
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
