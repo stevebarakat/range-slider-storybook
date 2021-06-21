@@ -119,61 +119,58 @@ const DualRangeSlider = ({
   return (
     <Container>
       <RangeWrap style={{ width: width }}>
-        <div className="multi-range">
 
+        <RangeOutput
+          primaryColor={primaryColor}
+          focused={lowerFocused}
+          style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
+          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+        </RangeOutput>
 
-          <RangeOutput
-            primaryColor={primaryColor}
-            focused={lowerFocused}
-            style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
-            <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-          </RangeOutput>
-
-          <StyledRangeSlider
-            tabIndex="2"
-            ref={lowerRange}
-            type="range"
-            min={min}
-            max={max}
-            value={lowerVal}
-            step={step}
-            onKeyDown={handleKeyPress}
-            onFocus={() => setLowerFocused(true)}
-            onBlur={() => setLowerFocused(false)}
-            onInput={e => {
-              setLowerVal(e.target.valueAsNumber);
-            }}
-            focused={lowerFocused}
-            style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-          />
-          <Progress
-            focused={lowerFocused || upperFocused}
-            id="range-color"
-            className="range-color"
-          ></Progress>
-          <RangeOutput
-            primaryColor={primaryColor}
-            focused={upperFocused}
-            style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-            <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
-          </RangeOutput>
-          <StyledRangeSlider
-            tabIndex="1"
-            ref={upperRange}
-            type="range"
-            min={min}
-            max={max}
-            value={upperVal}
-            step={step}
-            onFocus={() => setUpperFocused(true)}
-            onBlur={() => setUpperFocused(false)}
-            onInput={e => {
-              setUpperVal(parseFloat(e.target.value));
-            }}
-            focused={upperFocused}
-            style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-          />
-        </div>
+        <StyledRangeSlider
+          tabIndex="2"
+          ref={lowerRange}
+          type="range"
+          min={min}
+          max={max}
+          value={lowerVal}
+          step={step}
+          onKeyDown={handleKeyPress}
+          onFocus={() => setLowerFocused(true)}
+          onBlur={() => setLowerFocused(false)}
+          onInput={e => {
+            setLowerVal(e.target.valueAsNumber);
+          }}
+          focused={lowerFocused}
+          style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
+        />
+        <Progress
+          focused={lowerFocused || upperFocused}
+          id="range-color"
+          className="range-color"
+        ></Progress>
+        <RangeOutput
+          primaryColor={primaryColor}
+          focused={upperFocused}
+          style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
+          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+        </RangeOutput>
+        <StyledRangeSlider
+          tabIndex="1"
+          ref={upperRange}
+          type="range"
+          min={min}
+          max={max}
+          value={upperVal}
+          step={step}
+          onFocus={() => setUpperFocused(true)}
+          onBlur={() => setUpperFocused(false)}
+          onInput={e => {
+            setUpperVal(parseFloat(e.target.value));
+          }}
+          focused={upperFocused}
+          style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
+        />
         {ticks && <Ticks>
           {marks}
         </Ticks>}
@@ -190,7 +187,7 @@ const whiteColor = "white";
 const RangeWrap = styled.div`
   position: relative;
   height: 2.2rem;
-  margin-top: 4rem;
+  padding: 4rem 0;
   font-family: sans-serif;
   max-width: 100%;
   border: 1px dotted red;
@@ -198,7 +195,7 @@ const RangeWrap = styled.div`
 `;
 
 const RangeOutput = styled.div`
-  margin-top: -3.5rem;
+  margin-top: -3.75rem;
   width: 0;
   position: absolute;
   display: flex;
@@ -298,6 +295,7 @@ const Progress = styled.div`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
+  padding-top: 1rem; 
   margin-right: ${newValue1 - 100 / 2 * -0.02 + "rem"};
   margin-left: ${newValue2 - 100 / 2 * -0.02 + "rem"};
 `;
