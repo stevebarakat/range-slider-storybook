@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import styled from 'styled-components';
-import Container from '../Container/Container';
 
 let newValue1 = "";
 let newValue2 = "";
@@ -117,65 +116,63 @@ const DualRangeSlider = ({
   }
 
   return (
-    <Container>
-      <RangeWrap style={{ width: width }}>
+    <RangeWrap style={{ width: width }}>
 
-        <RangeOutput
-          primaryColor={primaryColor}
-          focused={lowerFocused}
-          style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
-          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-        </RangeOutput>
+      <RangeOutput
+        focused={lowerFocused}
+        style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
+        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+      </RangeOutput>
 
-        <StyledRangeSlider
-          tabIndex="2"
-          ref={lowerRange}
-          type="range"
-          min={min}
-          max={max}
-          value={lowerVal}
-          step={step}
-          onKeyDown={handleKeyPress}
-          onFocus={() => setLowerFocused(true)}
-          onBlur={() => setLowerFocused(false)}
-          onInput={e => {
-            setLowerVal(e.target.valueAsNumber);
-          }}
-          focused={lowerFocused}
-          style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-        />
-        <Progress
-          focused={lowerFocused || upperFocused}
-          id="range-color"
-          className="range-color"
-        ></Progress>
-        <RangeOutput
-          primaryColor={primaryColor}
-          focused={upperFocused}
-          style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex="1"
-          ref={upperRange}
-          type="range"
-          min={min}
-          max={max}
-          value={upperVal}
-          step={step}
-          onFocus={() => setUpperFocused(true)}
-          onBlur={() => setUpperFocused(false)}
-          onInput={e => {
-            setUpperVal(parseFloat(e.target.value));
-          }}
-          focused={upperFocused}
-          style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-        />
-        {ticks && <Ticks>
-          {marks}
-        </Ticks>}
-      </RangeWrap>
-    </Container>
+      <StyledRangeSlider
+        tabIndex="2"
+        ref={lowerRange}
+        type="range"
+        min={min}
+        max={max}
+        value={lowerVal}
+        step={step}
+        onKeyDown={handleKeyPress}
+        onFocus={() => setLowerFocused(true)}
+        onBlur={() => setLowerFocused(false)}
+        onInput={e => {
+          setLowerVal(e.target.valueAsNumber);
+        }}
+        focused={lowerFocused}
+      />
+      <Progress
+        style={{
+          background: lowerFocused || upperFocused ?
+            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
+          (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
+            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
+          (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
+        }}
+      />
+      <RangeOutput
+        focused={upperFocused}
+        style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
+        <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+      </RangeOutput>
+      <StyledRangeSlider
+        tabIndex="1"
+        ref={upperRange}
+        type="range"
+        min={min}
+        max={max}
+        value={upperVal}
+        step={step}
+        onFocus={() => setUpperFocused(true)}
+        onBlur={() => setUpperFocused(false)}
+        onInput={e => {
+          setUpperVal(parseFloat(e.target.value));
+        }}
+        focused={upperFocused}
+      />
+      {ticks && <Ticks>
+        {marks}
+      </Ticks>}
+    </RangeWrap>
   );
 };
 
@@ -185,16 +182,16 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrap = styled.div`
+  border: 1px dotted red;
   position: relative;
-  height: 2.2rem;
-  padding: 4rem 0;
+  height: 7.5rem;
+  padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
-  border: 1px dotted red;
   user-select: none;
 `;
 
-const RangeOutput = styled.div`
+const RangeOutput = styled.output`
   margin-top: -3.75rem;
   width: 0;
   position: absolute;
@@ -203,7 +200,7 @@ const RangeOutput = styled.div`
   text-align: center;
   font-size: 1rem;
   span{
-    border: ${p => p.focused ? `1px solid ${p.primaryColor}` : `1px solid ${blackColor}`};
+    border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
     color: ${p => p.focused ? whiteColor : blackColor};
     background: ${p => p.focused ? focusColor : whiteColor};
@@ -214,7 +211,7 @@ const RangeOutput = styled.div`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${p.primaryColor}` : `0px`};
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `0px`};
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       top: 100%;
@@ -226,27 +223,30 @@ const RangeOutput = styled.div`
 `;
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
+  cursor: pointer;
+  margin: 0;
+  pointer-events: none;
   position: absolute;
   width: 100%;
   height: 15px;
   border-radius: 15px;
   background: transparent;
-  margin: 0;
-      &:focus {
-    outline: none;
-  }
+  z-index: 2;
+    &:focus {
+      outline: none;
+    }
 
   &::-webkit-slider-thumb {
     pointer-events: all;
     position: relative;
     height: 2.15rem;
     width: 2.15rem;
+    border: 1px solid ${blackColor};
     border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25); 
     cursor: pointer;
     -webkit-appearance: none;
     z-index: 999;
-    background-color: white;
     background: ${p => !p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`};
   }
@@ -262,10 +262,12 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     position: relative;
     height: 2.15rem;
     width: 2.15rem;
+    border: 1px solid ${blackColor};
     border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     cursor: pointer;
     z-index: 999;
+    appearance: none;
     background: ${p => !p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`}};
 
@@ -279,12 +281,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 const Progress = styled.div`
   z-index: 0;
   position: absolute;
-  background: ${p => p.focused ?
-    `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
-  (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
-    `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
-    (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
-  };
   box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
   border-radius: 15px;
   width: 100%;
@@ -314,3 +310,5 @@ const Tick = styled.div`
     transform: ${p => `rotate(${p.labelRotate}deg)`};
   }
 `;
+
+

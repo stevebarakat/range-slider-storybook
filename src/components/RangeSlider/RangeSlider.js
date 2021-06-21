@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from 'styled-components';
-import Container from '../Container/Container';
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -115,49 +114,43 @@ const RangeSlider = ({
   }
 
   return (
-    <Container>
-      <RangeWrap style={{ width: width + "px" }}>
-        <RangeOutput
-          primaryColor={primaryColor}
-          focused={isFocused}
-          style={{ left: `calc(${newValue}% + (${newPosition / 9.5}rem))` }}>
-          <span>{numberWithCommas(value.toFixed(decimals))}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex="0"
-          list="tickmamrks"
-          ref={rangeEl}
-          min={min}
-          max={max}
-          step={step}
-          value={value > max ? max : value.toFixed(decimals)}
-          onInput={(e) => {
-            rangeEl.current.focus();
-            setValue(e.target.valueAsNumber);
+    <RangeWrap style={{ width: width + "px" }}>
+      <RangeOutput
+        focused={isFocused}
+        style={{ left: `calc(${newValue}% + (${newPosition / 9.5}rem))` }}>
+        <span>{numberWithCommas(value.toFixed(decimals))}</span>
+      </RangeOutput>
+      <StyledRangeSlider
+        tabIndex="0"
+        list="tickmamrks"
+        ref={rangeEl}
+        min={min}
+        max={max}
+        step={step}
+        value={value > max ? max : value.toFixed(decimals)}
+        onInput={(e) => {
+          rangeEl.current.focus();
+          setValue(e.target.valueAsNumber);
+        }}
+        onKeyDown={handleKeyPress}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+        focused={isFocused}
+      />
+      {ticks && <Ticks>{marks}</Ticks>}
+      <Progress
+        focused={isFocused}
+        style={isFocused ?
+          {
+            background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + 
+          (${newPosition / 10}rem)), ${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)), ${whiteColor} 100%)`
+          } :
+          {
+            background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + 
+          (${newPosition / 10}rem)), ${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)), ${whiteColor} 100%)`
           }}
-          onKeyDown={handleKeyPress}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          focused={isFocused}
-        />
-        {ticks && <Ticks>
-          {marks}
-        </Ticks>}
-        <Progress
-          onClick={e => console.log(e)}
-          focused={isFocused}
-          style={isFocused ?
-            {
-              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + 
-          (${newPosition / 10}rem)), ${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)), ${whiteColor} 100%)`
-            } :
-            {
-              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + 
-          (${newPosition / 10}rem)), ${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)), ${whiteColor} 100%)`
-            }}
-        />
-      </RangeWrap>
-    </Container>
+      />
+    </RangeWrap>
   );
 };
 
@@ -167,14 +160,16 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const RangeWrap = styled.div`
-  font-family: sans-serif;
+  border: 1px dotted red;
   position: relative;
-  margin-top: 3rem;
+  height: 7.5rem;
+  padding-top: 2.5rem;
+  font-family: sans-serif;
   max-width: 100%;
-  /* user-select: none; */
+  user-select: none;
 `;
 
-const RangeOutput = styled.div`
+const RangeOutput = styled.output`
   margin-top: -2.5rem;
   width: 0%;
   position: absolute;
@@ -183,7 +178,7 @@ const RangeOutput = styled.div`
   text-align: center;
   font-size: 1rem;
   span{
-    border: ${p => p.focused ? `1px solid ${p.primaryColor}` : `1px solid ${blackColor}`};
+    border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
     color: ${p => p.focused ? whiteColor : blackColor};
     background: ${p => p.focused ? focusColor : whiteColor};
@@ -194,7 +189,7 @@ const RangeOutput = styled.div`
       position: absolute;
       width: 0;
       height: 0;
-      border-top: ${p => p.focused ? `12px solid ${p.primaryColor}` : `0px`};
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `0px`};
       border-left: 7px solid transparent;
       border-right: 7px solid transparent;
       top: 100%;
@@ -207,16 +202,16 @@ const RangeOutput = styled.div`
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
+  cursor: pointer;
+  pointer-events: none;
   margin: 20px 0 0 0;
   width: 100%;
   height: 15px;
   border-radius: 15px;
   border: 0;
   position: relative;
-  z-index: 1;
+  z-index: 2;
   background: transparent;
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
-    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
   &:focus {
     outline: none;
   }
@@ -225,11 +220,13 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 2.15rem;
       width: 2.15rem;
+      border: 1px solid ${blackColor};
       border-radius: 50%;
-      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
-      cursor: pointer;
+      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+      cursor: grab;
+      pointer-events: all;
       -webkit-appearance: none;
-      z-index: 999;
+      z-index: 50;
       background: ${p => !p.focused ?
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
@@ -239,12 +236,14 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 2.15rem;
       width: 2.15rem;
+      border: 1px solid ${blackColor};
       border-radius: 50%;
-      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
-      cursor: pointer;
-      -webkit-appearance: none;
+      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+      cursor: grab;
+      pointer-events: all;
+      appearance: none;
       margin-top: -10px;
-      z-index: 999;
+      z-index: 50;
       background: ${p => !p.focused ?
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
@@ -255,13 +254,15 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 const Progress = styled.div`
   position: absolute;
   background: ${p => p.focused ? focusColor : blurColor};
-  border: solid 1px ${blackColor};
+  /* border: solid 1px ${blackColor}; */
   border-radius: 15px;
+  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
+    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
   height: 15px;
   width: 100%;
-  top: 20px;
+  margin-top: -84px;
   cursor: pointer;
-  transition: width 0.15s;
+  /* transition: width 0.15s; */
   z-index: 0;
 `;
 const Ticks = styled.div`
