@@ -41,10 +41,10 @@ const DualRangeSlider = ({
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
-  newValue1 = Number(((lowerVal - min) * 100) / (max - min));
+  newValue1 = Number(((upperVal - min) * 100) / (max - min));
   newPosition1 = 10 - newValue1 * 0.2;
 
-  newValue2 = Number(((upperVal - min) * 100) / (max - min));
+  newValue2 = Number(((lowerVal - min) * 100) / (max - min));
   newPosition2 = 10 - newValue2 * 0.2;
 
   let markers = [];
@@ -92,53 +92,52 @@ const DualRangeSlider = ({
       default:
         return;
     }
-  }
+  };
 
   //If the upper value slider is LESS THAN the lower value slider.
-  if (upperVal > lowerVal) {
-    //The lower slider value is set to equal the upper value slider.
+  if (upperVal < lowerVal) {
+    //Set lower slider value to equal the upper value slider.
     setLowerVal(parseFloat(upperVal));
     //If the lower value slider equals its set minimum.
     if (lowerVal === 0) {
       //Set the upper slider value to equal min.
       setUpperVal(min);
     }
-  }
+  };
   //If the lower value slider is GREATER THAN the upper value slider minus one.
-  if (lowerVal < upperVal - 1) {
-    //The upper slider value is set to equal the lower value slider plus one.
+  if (lowerVal > upperVal - 1) {
+    //Set the upper slider value equal to the lower value slider.
     setUpperVal(parseFloat(lowerVal));
     //If the upper value slider equals its set maximum.
     if (upperVal === max) {
-      //Set the lower slider value to equal the upper value slider's maximum value minus one.
+      //Set the lower slider value to equal the upper max.
       setLowerVal(parseFloat(max));
     }
-  }
+  };
 
   return (
     <RangeWrap style={{ width: width }}>
 
       <RangeOutput
-        focused={lowerFocused}
+        focused={upperFocused}
         style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
-        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+        <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
       </RangeOutput>
 
       <StyledRangeSlider
         tabIndex="2"
-        ref={lowerRange}
-        type="range"
+        ref={upperRange}
         min={min}
         max={max}
-        value={lowerVal}
+        value={upperVal}
         step={step}
         onKeyDown={handleKeyPress}
-        onFocus={() => setLowerFocused(true)}
-        onBlur={() => setLowerFocused(false)}
+        onFocus={() => setUpperFocused(true)}
+        onBlur={() => setUpperFocused(false)}
         onInput={e => {
-          setLowerVal(e.target.valueAsNumber);
+          setUpperVal(e.target.valueAsNumber);
         }}
-        focused={lowerFocused}
+        focused={upperFocused}
       />
       <Progress
         style={{
@@ -150,24 +149,23 @@ const DualRangeSlider = ({
         }}
       />
       <RangeOutput
-        focused={upperFocused}
+        focused={lowerFocused}
         style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-        <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
       </RangeOutput>
       <StyledRangeSlider
         tabIndex="1"
-        ref={upperRange}
-        type="range"
+        ref={lowerRange}
         min={min}
         max={max}
-        value={upperVal}
+        value={lowerVal}
         step={step}
-        onFocus={() => setUpperFocused(true)}
-        onBlur={() => setUpperFocused(false)}
+        onFocus={() => setLowerFocused(true)}
+        onBlur={() => setLowerFocused(false)}
         onInput={e => {
-          setUpperVal(parseFloat(e.target.value));
+          setLowerVal(parseFloat(e.target.value));
         }}
-        focused={upperFocused}
+        focused={lowerFocused}
       />
       {ticks && <Ticks>
         {marks}

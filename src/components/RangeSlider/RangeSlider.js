@@ -203,7 +203,6 @@ const RangeOutput = styled.output`
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
   cursor: pointer;
-  pointer-events: none;
   margin: 20px 0 0 0;
   width: 100%;
   height: 15px;

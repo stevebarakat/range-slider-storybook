@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 
 let newValue1 = "";
@@ -92,7 +92,7 @@ const DualVerticalRangeSlider = ({
       //Set the upper slider value to equal min.
       setUpperVal(min);
     }
-  }
+  };
   //If the lower value slider is GREATER THAN the upper value slider minus one.
   if (lowerVal > upperVal - 1) {
     //Set the upper slider value equal to the lower value slider.
@@ -102,8 +102,7 @@ const DualVerticalRangeSlider = ({
       //Set the lower slider value to equal the upper max.
       setLowerVal(parseFloat(max));
     }
-  }
-
+  };
 
   return (
     <RangeWrapWrap
