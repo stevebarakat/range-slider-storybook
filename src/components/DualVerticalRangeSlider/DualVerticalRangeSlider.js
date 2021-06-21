@@ -217,9 +217,10 @@ const RangeOutput = styled.output`
   text-align: center;
   font-size: 1rem;
   transition: all 0.15s ease-out;
+  user-select: none;
   span{
     writing-mode: vertical-lr;
-    border: ${p => p.focused ? "none" : `1px solid ${blackColor}`};
+    border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
     color: ${p => p.focused ? whiteColor : blackColor};
     background: ${p => p.focused ? focusColor : whiteColor};
@@ -228,6 +229,23 @@ const RangeOutput = styled.output`
     white-space: nowrap;
   }
 `;
+
+const Progress = styled.div`
+  z-index: 0;
+  background: ${(p) => p.focused
+    ? `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
+    (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
+    : `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
+    (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`};
+  border-radius: 15px;
+  width: 100%;
+  display: block;
+  height: 15px;
+  position: absolute;
+  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
+    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
+    margin: 20px 0 0 0;
+  `;
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   cursor: pointer;
@@ -248,8 +266,9 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     position: relative;
     height: 2.15rem;
     width: 2.15rem;
+    border: 1px solid ${blackColor};
     border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     -webkit-appearance: none;
     z-index: 50;
     background: ${(p) =>
@@ -264,8 +283,9 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     position: relative;
     height: 2.15rem;
     width: 2.15rem;
+    border: 1px solid ${blackColor};
     border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     appearance: none;
     z-index: 50;
     background: ${(p) =>
@@ -293,29 +313,13 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   }
 `;
 
-const Progress = styled.div`
-  z-index: 0;
-  background: ${(p) => p.focused
-    ? `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
-    (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
-    : `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
-    (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`};
-  border: solid 1px #000;
-  border-radius: 50px;
-  width: 100%;
-  display: block;
-  height: 15px;
-  position: absolute;
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
-    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-    margin: 20px 0 0 0;
-  `;
-
 const Ticks = styled.div`
+  cursor: default;
   display: flex;
   justify-content: space-between;
   margin-right: 1rem;
   margin-left: 1rem;
+  color: ${blackColor};
 `;
 
 const Tick = styled.div`
@@ -327,7 +331,6 @@ const Tick = styled.div`
   background: ${blackColor};
   height: 5px;
   div {
-    cursor: text;
     writing-mode: vertical-rl;
     margin-left: 0.4rem;
     margin-bottom: 0.5rem;

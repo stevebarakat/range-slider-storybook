@@ -143,11 +143,11 @@ const RangeSlider = ({
         style={isFocused ?
           {
             background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + 
-          (${newPosition / 10}rem)), ${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)), ${whiteColor} 100%)`
+          (${newPosition / 100}px)), ${whiteColor} calc(${newValue}% + (${newPosition / 100}px)), ${whiteColor} 100%)`
           } :
           {
             background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + 
-          (${newPosition / 10}rem)), ${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)), ${whiteColor} 100%)`
+          (${newPosition / 100}px)), ${whiteColor} calc(${newValue}% + (${newPosition / 100}px)), ${whiteColor} 100%)`
           }}
       />
     </RangeWrap>

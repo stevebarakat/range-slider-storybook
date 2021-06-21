@@ -9,7 +9,7 @@ function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
-        {/* <Container>
+        <Container>
           <RangeSlider
             min={0}
             max={100}
@@ -36,7 +36,7 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
           />
-        </Container> */}
+        </Container>
       </div>
       <div style={{
         display: "flex",

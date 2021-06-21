@@ -104,11 +104,12 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
           ref={outputEl}
           focused={isFocused}
           className="disable-select"
-          style={{ left: `calc(${newValue}% + (${newPosition / 9.5}rem))` }}
+          style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}
         >
           <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
+          tabIndex={0}
           heightVal={300}
           list="tickmamrks"
           ref={rangeEl}
@@ -204,13 +205,13 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     cursor: grab;
     pointer-events: all;
     position: relative;
-    height: 2.15rem;
     width: 2.15rem;
-    border: none;
+    height: 2.15rem;
+    border: 1px solid ${blackColor};
     border-radius: 50%;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     -webkit-appearance: none;
     z-index: 50;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
     background: ${p => !p.focused ?
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
@@ -221,11 +222,11 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     position: relative;
     height: 2.15rem;
     width: 2.15rem;
-    border: none;
+    border: 1px solid ${blackColor};
     border-radius: 50%;
-    -webkit-appearance: none;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    appearance: none;
     z-index: 50;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
     background: ${p => !p.focused ?
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
@@ -249,6 +250,7 @@ const Ticks = styled.div`
   justify-content: space-between;
   margin-right: 1rem;
   margin-left: 1rem;
+  color: ${blackColor};
 `;
 
 const Tick = styled.div`

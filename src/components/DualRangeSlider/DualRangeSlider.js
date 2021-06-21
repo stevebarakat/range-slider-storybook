@@ -111,7 +111,7 @@ const DualRangeSlider = ({
     //If the upper value slider equals its set maximum.
     if (upperVal === max) {
       //Set the lower slider value to equal the upper max.
-      setLowerVal(parseFloat(max));
+      setLowerVal(max);
     }
   };
 
@@ -125,7 +125,7 @@ const DualRangeSlider = ({
       </RangeOutput>
 
       <StyledRangeSlider
-        tabIndex="2"
+        tabIndex="0"
         ref={upperRange}
         min={min}
         max={max}
@@ -151,10 +151,10 @@ const DualRangeSlider = ({
       <RangeOutput
         focused={lowerFocused}
         style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+        <span>{lowerVal ? upperVal.toFixed(decimals) : 0}</span>
       </RangeOutput>
       <StyledRangeSlider
-        tabIndex="1"
+        tabIndex="0"
         ref={lowerRange}
         min={min}
         max={max}
