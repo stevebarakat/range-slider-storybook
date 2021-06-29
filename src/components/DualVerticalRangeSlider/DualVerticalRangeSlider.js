@@ -31,15 +31,13 @@ const DualVerticalRangeSlider = ({
   suffix = "",
   primaryColor = "black",
   primaryColorLight,
-  initialLowerVal = parseInt(max / 3, 10),
-  initiaUpperVal = parseInt(max / 1.5, 10),
 }) => {
   const lowerRange = useRef(null);
   const upperRange = useRef(null);
   const outputEl = useRef(null);
   const tickEl = useRef(null);
-  const [upperVal, setUpperVal] = useState(initialLowerVal);
-  const [lowerVal, setLowerVal] = useState(initiaUpperVal);
+  const [upperVal, setUpperVal] = useState(parseInt(max / 1.5, 10));
+  const [lowerVal, setLowerVal] = useState(parseInt(max / 3, 10));
   const [upperFocused, setUpperFocused] = useState(true);
   const [lowerFocused, setLowerFocused] = useState(true);
   const [progressFocused, setProgressFocused] = useState(false);
