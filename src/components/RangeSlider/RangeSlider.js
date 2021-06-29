@@ -23,6 +23,8 @@ const RangeSlider = ({
   step = 0,
   ticks = false,
   tickLabel = false,
+  prefix="",
+  suffix="",
   labelRotate = 45,
   primaryColorLight,
   primaryColor = "black",
@@ -53,13 +55,13 @@ const RangeSlider = ({
     for (let i = min; i <= max; i += space) {
       const labelLength = i.toString().length;
       markers.push(
-        <Tick
+        Tick && <Tick
           key={i}
           length={labelLength}
           tickLabel={tickLabel}
           labelRotate={parseInt(labelRotate, 10)}
         >
-          {tickLabel && <div>{numberWithCommas(i.toFixed(2))}</div>}
+          {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
         </Tick>
       );
     }
@@ -67,13 +69,13 @@ const RangeSlider = ({
     for (let i = min; i <= max; i += parseInt(step, 10)) {
       const labelLength = i.toString().length;
       markers.push(
-        <Tick
+        Tick && <Tick
           key={i}
           length={labelLength}
           tickLabel={tickLabel}
           labelRotate={parseInt(labelRotate, 10)}
         >
-          {tickLabel && <div>{numberWithCommas(i)}</div>}
+          {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
         </Tick>
       );
     }
@@ -117,7 +119,7 @@ const RangeSlider = ({
     <RangeWrap style={{ width: width + "px" }}>
       <RangeOutput
         focused={isFocused}
-        style={{ left: `calc(${newValue}% + (${newPosition / 9.5}rem))` }}>
+        style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
         <span>{numberWithCommas(value.toFixed(decimals))}</span>
       </RangeOutput>
       <StyledRangeSlider
@@ -137,7 +139,6 @@ const RangeSlider = ({
         onBlur={() => setIsFocused(false)}
         focused={isFocused}
       />
-      {ticks && <Ticks>{marks}</Ticks>}
       <Progress
         focused={isFocused}
         style={isFocused ?
@@ -150,6 +151,7 @@ const RangeSlider = ({
           (${newPosition / 100}px)), ${whiteColor} calc(${newValue}% + (${newPosition / 100}px)), ${whiteColor} 100%)`
           }}
       />
+      {ticks && <Ticks>{marks}</Ticks>}
     </RangeWrap>
   );
 };
@@ -203,7 +205,7 @@ const RangeOutput = styled.output`
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
   cursor: pointer;
-  margin: 20px 0 0 0;
+  margin: 0;
   width: 100%;
   height: 15px;
   border-radius: 15px;
@@ -219,6 +221,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 38px;
       width: 38px;
+      top: 19px;
       border: 1px solid ${blackColor};
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -235,6 +238,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 38px;
       width: 38px;
+      top: 19px;
       border: 1px solid ${blackColor};
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -259,9 +263,7 @@ const Progress = styled.div`
     inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
   height: 15px;
   width: 100%;
-  margin-top: -84px;
   cursor: pointer;
-  /* transition: width 0.15s; */
   z-index: 0;
 `;
 const Ticks = styled.div`

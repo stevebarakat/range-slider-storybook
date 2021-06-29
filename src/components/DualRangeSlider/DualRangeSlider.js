@@ -118,6 +118,39 @@ const DualRangeSlider = ({
   return (
     <RangeWrap style={{ width: width }}>
 
+      {/* LOWER RANGE */}
+      <RangeOutput
+        focused={lowerFocused}
+        style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
+        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+      </RangeOutput>
+
+      <StyledRangeSlider
+        tabIndex="0"
+        ref={lowerRange}
+        min={min}
+        max={max}
+        value={lowerVal}
+        step={step}
+        onFocus={() => setLowerFocused(true)}
+        onBlur={() => setLowerFocused(false)}
+        onInput={e => {
+          setLowerVal(parseFloat(e.target.value));
+        }}
+        focused={lowerFocused}
+      />
+
+      <Progress
+        style={{
+          background: lowerFocused || upperFocused ?
+            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
+          (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
+            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
+          (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
+        }}
+      />
+
+      {/* UPPER RANGE */}
       <RangeOutput
         focused={upperFocused}
         style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
@@ -138,34 +171,6 @@ const DualRangeSlider = ({
           setUpperVal(e.target.valueAsNumber);
         }}
         focused={upperFocused}
-      />
-      <Progress
-        style={{
-          background: lowerFocused || upperFocused ?
-            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
-          (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
-            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
-          (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
-        }}
-      />
-      <RangeOutput
-        focused={lowerFocused}
-        style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-      </RangeOutput>
-      <StyledRangeSlider
-        tabIndex="0"
-        ref={lowerRange}
-        min={min}
-        max={max}
-        value={lowerVal}
-        step={step}
-        onFocus={() => setLowerFocused(true)}
-        onBlur={() => setLowerFocused(false)}
-        onInput={e => {
-          setLowerVal(parseFloat(e.target.value));
-        }}
-        focused={lowerFocused}
       />
       {ticks && <Ticks>
         {marks}

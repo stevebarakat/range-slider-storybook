@@ -21,8 +21,8 @@ const DualVerticalRangeSlider = ({
   suffix = "",
   primaryColor = "black",
   primaryColorLight,
-  initialLowerVal = max / 3,
-  initiaUpperVal = max / 1.5
+  initialLowerVal = parseInt(max / 3, 10),
+  initiaUpperVal = parseInt(max / 1.5, 10),
 }) => {
   const lowerRange = useRef(null);
   const upperRange = useRef(null);
@@ -54,8 +54,8 @@ const DualVerticalRangeSlider = ({
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
+  let markers = [];
   if (ticks) {
-    let markers = [];
     for (let i = min; i <= max; i += step) {
       const labelLength = i.toString().length;
       markers.push(
@@ -64,13 +64,13 @@ const DualVerticalRangeSlider = ({
           key={i}
         >
           <div ref={tickEl} >
-            {tickLabel && prefix + numberWithCommas(i.toFixed(decimals)) + " " + suffix}
+            {tickLabel && prefix + numberWithCommas(parseInt(i, 10).toFixed(decimals)) + " " + suffix}
           </div>
         </Tick>
       );
     }
-    marks = markers.map((marker) => marker);
   }
+  marks = markers.map((marker) => marker);
 
   function handleKeyPress(e) {
     switch (e.keyCode) {

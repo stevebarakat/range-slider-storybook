@@ -15,7 +15,7 @@ Default.args = {
   decimals: 0,
   step: "space-evenly",
   ticks: true,
-  label: false,
+  tickLabel: false,
   labelRotate: "35",
   primaryColor: "hsl(196, 100%, 48%)",
   primaryColorLight: "hsl(196, 100%, 70%)",

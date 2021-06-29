@@ -1,11 +1,11 @@
-import RangeSlider from './RangeSlider';
+import DualVerticalRangeSlider from './DualVerticalRangeSlider';
 
 export default {
-  component: RangeSlider,
-  title: 'RangeSlider',
+  component: DualVerticalRangeSlider,
+  title: 'DualVerticalRangeSlider',
 };
 
-const Template = args => <RangeSlider {...args} />;
+const Template = args => <DualVerticalRangeSlider {...args} />;
 
 export const Default = Template.bind({});
 
@@ -16,10 +16,7 @@ Default.args = {
   step: "space-evenly",
   ticks: true,
   tickLabel: false,
-  prefix: "",
-  suffix: "",
-  labelRotate: "35",
   primaryColor: "hsl(196, 100%, 48%)",
   primaryColorLight: "hsl(196, 100%, 70%)",
-  width: 1200,
+  height: 800,
 };
