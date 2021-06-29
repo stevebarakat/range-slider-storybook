@@ -151,7 +151,7 @@ const DualRangeSlider = ({
       <RangeOutput
         focused={lowerFocused}
         style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-        <span>{lowerVal ? upperVal.toFixed(decimals) : 0}</span>
+        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
       </RangeOutput>
       <StyledRangeSlider
         tabIndex="0"
