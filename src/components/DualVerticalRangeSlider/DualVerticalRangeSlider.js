@@ -7,7 +7,17 @@ let newPosition1 = "";
 let newPosition2 = "";
 let focusColor = "";
 let blurColor = "";
-let marks = [];
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+function calcSpace(max, min, height) {
+  const diff = min - max;
+  const ticks = height / 50;
+  return diff / ticks;
+};
+;
 
 const DualVerticalRangeSlider = ({
   min = 0,
@@ -50,13 +60,11 @@ const DualVerticalRangeSlider = ({
     setOutputWidth(outputEl.current.clientHeight);
   }, [ticks]);
 
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  const space = calcSpace(min, max, height);
 
   let markers = [];
   if (ticks) {
-    for (let i = min; i <= max; i += step) {
+    for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
       const labelLength = i.toString().length;
       markers.push(
         <Tick
@@ -70,7 +78,7 @@ const DualVerticalRangeSlider = ({
       );
     }
   }
-  marks = markers.map((marker) => marker);
+  const marks = markers.map((marker) => marker);
 
   function handleKeyPress(e) {
     switch (e.keyCode) {

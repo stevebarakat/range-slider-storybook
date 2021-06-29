@@ -13,7 +13,7 @@ Default.args = {
   min: 1,
   max: 11,
   decimals: 0,
-  step: 1,
+  step: "space-evenly",
   ticks: true,
   tickLabel: false,
   prefix: "",

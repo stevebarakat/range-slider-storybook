@@ -44,7 +44,7 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
 
   if (ticks) {
     let markers = [];
-    for (let i = min; i <= max; i += step) {
+    for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
       const labelLength = i.toString().length;
       markers.push(
         <Tick
