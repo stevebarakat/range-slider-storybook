@@ -51,8 +51,7 @@ const RangeSlider = ({
   }, [value, max]);
 
 
-  if (step === "space-evenly") {
-    for (let i = min; i <= max; i += space) {
+    for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
       const labelLength = i.toString().length;
       markers.push(
         Tick && <Tick
@@ -65,21 +64,7 @@ const RangeSlider = ({
         </Tick>
       );
     }
-  } else {
-    for (let i = min; i <= max; i += parseInt(step, 10)) {
-      const labelLength = i.toString().length;
-      markers.push(
-        Tick && <Tick
-          key={i}
-          length={labelLength}
-          tickLabel={tickLabel}
-          labelRotate={parseInt(labelRotate, 10)}
-        >
-          {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
-        </Tick>
-      );
-    }
-  }
+
   const marks = markers.map(marker => marker);
 
   function handleKeyPress(e) {
@@ -271,6 +256,7 @@ const Ticks = styled.div`
   justify-content: space-between;
   margin-right: ${newValue - 100 / 2 * -0.02 + "rem"};
   margin-left: ${newValue - 100 / 2 * -0.02 + "rem"};
+  margin-top: 1rem;
 `;
 const Tick = styled.div`
   position: relative;
@@ -285,5 +271,6 @@ const Tick = styled.div`
       margin-top: 0.5rem;
       margin-left: ${p => p.labelRotate < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
       transform: ${p => `rotate(${p.labelRotate}deg)`};
+      white-space: nowrap;
     }
 `;

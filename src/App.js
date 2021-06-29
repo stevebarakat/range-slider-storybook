@@ -33,6 +33,8 @@ function App() {
             step={10}
             ticks={true}
             tickLabel={true}
+            prefix="$"
+            suffix="lbs"
             labelRotate={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"

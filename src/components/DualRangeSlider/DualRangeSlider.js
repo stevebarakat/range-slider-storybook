@@ -25,6 +25,8 @@ const DualRangeSlider = ({
   step = 0,
   ticks = false,
   tickLabel = false,
+  prefix = "",
+  suffix = "",
   labelRotate = 45,
   primaryColor = "black",
   primaryColorLight,
@@ -49,35 +51,20 @@ const DualRangeSlider = ({
 
   let markers = [];
 
-  if (step === "space-evenly") {
-    for (let i = min; i <= max; i += space) {
-      const labelLength = i.toString().length;
-      markers.push(
-        <Tick
-          key={i}
-          length={labelLength}
-          tickLabel={tickLabel}
-          labelRotate={parseInt(labelRotate, 10)}
-        >
-          {tickLabel && <div>{numberWithCommas(i.toFixed(2))}</div>}
-        </Tick>
-      );
-    }
-  } else {
-    for (let i = min; i <= max; i += parseInt(step, 10)) {
-      const labelLength = i.toString().length;
-      markers.push(
-        <Tick
-          key={i}
-          length={labelLength}
-          tickLabel={tickLabel}
-          labelRotate={parseInt(labelRotate, 10)}
-        >
-          {tickLabel && <div>{numberWithCommas(i)}</div>}
-        </Tick>
-      );
-    }
+  for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
+    const labelLength = i.toString().length;
+    markers.push(
+      <Tick
+        key={i}
+        length={labelLength}
+        tickLabel={tickLabel}
+        labelRotate={parseInt(labelRotate, 10)}
+      >
+        {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
+      </Tick>
+    );
   }
+
   const marks = markers.map(marker => marker);
 
   function handleKeyPress(e) {
@@ -131,7 +118,7 @@ const DualRangeSlider = ({
         min={min}
         max={max}
         value={lowerVal}
-        step={step}
+        // step={step}
         onFocus={() => setLowerFocused(true)}
         onBlur={() => setLowerFocused(false)}
         onInput={e => {
@@ -163,7 +150,7 @@ const DualRangeSlider = ({
         min={min}
         max={max}
         value={upperVal}
-        step={step}
+        // step={step}
         onKeyDown={handleKeyPress}
         onFocus={() => setUpperFocused(true)}
         onBlur={() => setUpperFocused(false)}
@@ -311,6 +298,7 @@ const Tick = styled.div`
     margin-top: 0.5rem;
     margin-left: ${p => p.labelRotate < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
     transform: ${p => `rotate(${p.labelRotate}deg)`};
+    white-space: nowrap;
   }
 `;
 

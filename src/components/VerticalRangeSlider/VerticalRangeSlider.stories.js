@@ -16,8 +16,10 @@ Default.args = {
   step: 1,
   ticks: true,
   tickLabel: false,
+  prefix: "",
+  suffix: "",
   labelRotate: "35",
   primaryColor: "hsl(196, 100%, 48%)",
   primaryColorLight: "hsl(196, 100%, 70%)",
-  width: "1500px",
+  height: "500",
 }
