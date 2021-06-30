@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -12,50 +12,60 @@ function numberWithCommas(x) {
 };
 
 const DualRangeSlider = ({
-  min = 0,
-  max = 100,
-  decimals = 0,
-  step = 0,
-  ticks = false,
-  tickLabels = [],
-  tickLabel = false,
-  prefix = "",
-  suffix = "",
-  labelRotate = 45,
-  primaryColor = "black",
-  primaryColorLight = "grey",
-  width = 250,
+  initialValue,
+  min,
+  max,
+  decimals,
+  step,
+  ticks,
+  snap,
+  tickLabels,
+  tickLabel,
+  prefix,
+  suffix,
+  labelRotate,
+  primaryColorLight,
+  primaryColor,
+  width,
 }) => {
   const upperRange = useRef(null);
   const lowerRange = useRef(null);
   const [lowerVal, setLowerVal] = useState(min);
   const [upperVal, setUpperVal] = useState(max);
-  const [lowerFocused, setLowerFocused] = useState(false);
+  const [newValue2, setNewValue2] = useState(null);
+  const [newValue1, setNewValue1] = useState(null);
   const [upperFocused, setUpperFocused] = useState(false);
+  const [lowerFocused, setLowerFocused] = useState(false);
+  const newPosition1 = 10 - newValue1 * 0.2;
+  const newPosition2 = 10 - newValue2 * 0.2;
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
-  newValue1 = Number(((upperVal - min) * 100) / (max - min));
-  const newPosition1 = 10 - newValue1 * 0.2;
+  useEffect(() => {
+    setNewValue1(Number(((upperVal - min) * 100) / (max - min)));
 
-  newValue2 = Number(((lowerVal - min) * 100) / (max - min));
-  const newPosition2 = 10 - newValue2 * 0.2;
-  
+    setNewValue2(Number(((lowerVal - min) * 100) / (max - min)));
+  }, [newValue1, newValue2, lowerVal, upperVal, min, max]);
+
   let markers = [];
 
-  for (let i = min; i <= max; i += parseInt(step, 10)) {
-    const labelLength = i.toString().length;
-    markers.push(
-      <Tick
-        key={i}
-        length={labelLength}
-        tickLabel={tickLabel}
-        labelRotate={parseInt(labelRotate, 10)}
-      >
-        {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
-      </Tick>
-    );
+  if (step > 0) {
+    for (let i = min; i <= max; i += parseInt(step, 10)) {
+      let customTickText = null;
+      let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+      let labelLength = tickText.toString().length;
+      markers.push(
+        <Tick
+          key={i}
+          length={labelLength}
+          tickLabel={tickLabel}
+          labelRotate={parseInt(labelRotate, 10)}
+        >
+          {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
+        </Tick>
+      );
+    }
   }
 
   const marks = markers.map(marker => marker);
@@ -101,7 +111,7 @@ const DualRangeSlider = ({
       {/* LOWER RANGE */}
       <RangeOutput
         focused={lowerFocused}
-        style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
+        style={{ left: `calc(${newValue2}% + (${newPosition2 * 2}px))` }}>
         <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
       </RangeOutput>
 
@@ -133,7 +143,7 @@ const DualRangeSlider = ({
       {/* UPPER RANGE */}
       <RangeOutput
         focused={upperFocused}
-        style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
+        style={{ left: `calc(${newValue1}% + (${newPosition1 * 2}px))` }}>
         <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
       </RangeOutput>
 

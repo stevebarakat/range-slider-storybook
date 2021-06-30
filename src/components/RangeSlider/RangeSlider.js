@@ -49,7 +49,6 @@ const RangeSlider = ({
         let customTickText = null;
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         let labelLength = tickText.toString().length;
-        console.log(labelLength);
         tickLabels.map(label => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
             customTickText = Object.values(label);
