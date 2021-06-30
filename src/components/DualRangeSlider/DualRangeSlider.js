@@ -50,23 +50,48 @@ const DualRangeSlider = ({
 
   let markers = [];
 
-  if (step > 0) {
-    for (let i = min; i <= max; i += parseInt(step, 10)) {
-      let customTickText = null;
-      let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-      let labelLength = tickText.toString().length;
-      markers.push(
-        <Tick
-          key={i}
-          length={labelLength}
-          tickLabel={tickLabel}
-          labelRotate={parseInt(labelRotate, 10)}
-        >
-          {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
-        </Tick>
-      );
+  if (tickLabels.length !== 0) {
+    if (step > 0) {
+      for (let i = min; i <= max; i += parseInt(step, 10)) {
+        let customTickText = null;
+        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        let labelLength = tickText.toString().length;
+        tickLabels.map(label => {
+          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+            customTickText = Object.values(label);
+          }
+          return null;
+        });
+        if (customTickText !== null) labelLength = customTickText[0].length;
+        markers.push(
+          <Tick
+            key={i}
+            length={labelLength}
+            tickLabel={tickLabel}
+            labelRotate={parseInt(labelRotate, 10)}
+          >
+            {tickLabel && <div>{customTickText}</div>}
+          </Tick>
+        );
+      }
     }
-  }
+  } else {
+    if (step > 0) {
+      for (let i = min; i <= max; i += parseInt(step, 10)) {
+        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        const labelLength = tickText.toString().length;
+        markers.push(
+          Tick && <Tick
+            key={i}
+            length={labelLength}
+            labelRotate={parseInt(labelRotate, 10)}
+          >
+            {tickLabel && <div>{tickText}</div>}
+          </Tick>
+        );
+      }
+    }
+  };
 
   const marks = markers.map(marker => marker);
 
@@ -108,43 +133,11 @@ const DualRangeSlider = ({
   return (
     <RangeWrap style={{ width: width }}>
 
-      {/* LOWER RANGE */}
-      <RangeOutput
-        focused={lowerFocused}
-        style={{ left: `calc(${newValue2}% + (${newPosition2 * 2}px))` }}>
-        <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-      </RangeOutput>
-
-      <StyledRangeSlider
-        tabIndex="0"
-        ref={lowerRange}
-        min={min}
-        max={max}
-        value={lowerVal}
-        step={step}
-        onFocus={() => setLowerFocused(true)}
-        onBlur={() => setLowerFocused(false)}
-        onInput={e => {
-          setLowerVal(parseFloat(e.target.value));
-        }}
-        focused={lowerFocused}
-      />
-
-      <Progress
-        style={{
-          background: lowerFocused || upperFocused ?
-            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
-          (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
-            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
-          (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
-        }}
-      />
-
       {/* UPPER RANGE */}
       <RangeOutput
         focused={upperFocused}
         style={{ left: `calc(${newValue1}% + (${newPosition1 * 2}px))` }}>
-        <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+        <span>{upperVal && prefix + upperVal.toFixed(decimals) + suffix}</span>
       </RangeOutput>
 
       <StyledRangeSlider
@@ -162,6 +155,38 @@ const DualRangeSlider = ({
         }}
         focused={upperFocused}
       />
+
+      <Progress
+        style={{
+          background: lowerFocused || upperFocused ?
+            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
+          (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
+            `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
+          (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
+        }}
+      />
+
+      {/* LOWER RANGE */}
+      <RangeOutput
+        focused={lowerFocused}
+        style={{ left: `calc(${newValue2}% + (${newPosition2 * 2}px))` }}>
+        <span>{lowerVal && prefix + lowerVal.toFixed(decimals) + suffix}</span>
+      </RangeOutput>
+
+      <StyledRangeSlider
+        tabIndex="0"
+        ref={lowerRange}
+        min={min}
+        max={max}
+        value={lowerVal}
+        step={step}
+        onFocus={() => setLowerFocused(true)}
+        onBlur={() => setLowerFocused(false)}
+        onInput={e => {
+          setLowerVal(parseFloat(e.target.value));
+        }}
+        focused={lowerFocused}
+      />
       {ticks && <Ticks>
         {marks}
       </Ticks>}
@@ -176,6 +201,10 @@ export default DualRangeSlider;
 // Proptypes
 
 DualRangeSlider.propTypes = {
+  /**
+    The initial value.
+  */
+  initialValue: PropTypes.number.isRequired,
   /**
     The minimum value.
   */
@@ -196,28 +225,32 @@ DualRangeSlider.propTypes = {
 */
   ticks: PropTypes.bool,
   /**
+    description 
+  */
+  snap: PropTypes.bool,
+  /**
   description 
 */
   tickLabels: PropTypes.arrayOf(PropTypes.object),
   /**
-description 
-*/
+    description 
+  */
   tickLabel: PropTypes.bool,
   /**
-  description 
-*/
+    description 
+  */
   prefix: PropTypes.string,
   /**
-  description 
-*/
+    description 
+  */
   suffix: PropTypes.string,
   /**
-  description 
-*/
+    description 
+  */
   labelRotate: PropTypes.number,
   /**
-  description 
-*/
+    description 
+  */
   primaryColorLight: PropTypes.string,
   /**
   description 
@@ -232,12 +265,14 @@ description
 */
 };
 
+
 DualRangeSlider.defaultProps = {
   min: 0,
   max: 100,
   decimals: 0,
   step: 0,
   ticks: false,
+  tickLabels: [],
   tickLabel: false,
   prefix: "",
   suffix: "",
@@ -268,6 +303,7 @@ const RangeOutput = styled.output`
   justify-content: center;
   text-align: center;
   font-size: 1rem;
+  white-space: nowrap;
   span{
     border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
@@ -361,8 +397,8 @@ const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
   padding-top: 1rem; 
-  margin-right: ${newValue1 - 100 / 2 * -0.02 + "rem"};
-  margin-left: ${newValue2 - 100 / 2 * -0.02 + "rem"};
+  margin-right: ${1.25 + "rem"};
+  margin-left: ${1.25 + "rem"};
 `;
 const Tick = styled.div`
   position: relative;

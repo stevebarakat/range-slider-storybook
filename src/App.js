@@ -40,12 +40,13 @@ function App() {
             step={10}
             ticks={true}
             tickLabels={[
-              { 50: "five" },
-              { 60: "six" }
+              { 0: "low" },
+              { 50: "medium" },
+              { 100: "high" }
             ]}
             tickLabel={true}
-            prefix="$"
-            suffix="lbs"
+            prefix=""
+            suffix=""
             labelRotate={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
