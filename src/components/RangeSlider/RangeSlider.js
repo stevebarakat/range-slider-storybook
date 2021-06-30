@@ -341,8 +341,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 
 const Progress = styled.div`
   position: absolute;
-  background: ${p => p.focused ? focusColor : blurColor};
-  /* border: solid 1px ${blackColor}; */
+  /* background: ${p => p.focused ? focusColor : blurColor}; */
   border-radius: 15px;
   box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
     inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
