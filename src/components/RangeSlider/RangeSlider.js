@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+let focusColor = "";
+let blurColor = "";
+let newValue = "";
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-let focusColor = "";
-let blurColor = "";
-let newValue = "";
-let selectedValue = "";
-
 const RangeSlider = ({
+  initialValue = 50,
   min = 0,
   max = 100,
   decimals = 0,
@@ -24,48 +24,41 @@ const RangeSlider = ({
   labelRotate = 45,
   primaryColorLight = "grey",
   primaryColor = "black",
-  width = "250",
+  width = 250,
 }) => {
   const rangeEl = useRef(null);
-  const [value, setValue] = useState(4);
+  const [value, setValue] = useState(initialValue);
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
-  let markers = [];
   newValue = Number(((value - min) * 100) / (max - min));
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
-  useEffect(() => {
-    rangeEl.current.focus();
-    if (value > max) {
-      setValue(max);
-    } else {
-      setValue(rangeEl.current.valueAsNumber);
-    }
-  }, [value, max]);
+
+  let markers = [];
 
   if (tickLabels.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        const labelLength = tickText.toString().length;
+        let labelLength = tickText.toString().length;
+        console.log(labelLength);
+        tickLabels.map(label => {
+          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+            customTickText = Object.values(label);
+          }
+          return null;
+        })
+        if(customTickText !== null) labelLength = customTickText[0].length
         markers.push(
-          Tick && <Tick
+          <Tick
             key={i}
             length={labelLength}
             tickLabel={tickLabel}
             labelRotate={parseInt(labelRotate, 10)}
           >
-            {tickLabels.map(label => {
-              console.log(parseInt(tickText, 10) === parseInt(Object.keys(label), 10));
-              if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
-                console.log(Object.values(label));
-                customTickText = Object.values(label);
-              }
-              return null;
-            })}
             {tickLabel && <div>{customTickText}</div>}
           </Tick>
         );
@@ -80,7 +73,6 @@ const RangeSlider = ({
           Tick && <Tick
             key={i}
             length={labelLength}
-            tickLabel={tickLabel}
             labelRotate={parseInt(labelRotate, 10)}
           >
             {tickLabel && <div>{tickText}</div>}
@@ -100,11 +92,6 @@ const RangeSlider = ({
     const ctrl = e.ctrlKey;
 
     switch (e.keyCode) {
-      case 13: //Enter
-      case 32: //Space
-        selectedValue = value;
-        console.log(selectedValue);
-        return;
       case 27: //Esc
         rangeEl.current.blur();
         return;
@@ -169,9 +156,15 @@ export default RangeSlider;
 
 
 
+
+
 // Proptypes
 
 RangeSlider.propTypes = {
+  /**
+    The initial value.
+  */
+  initialValue: PropTypes.number.isRequired,
   /**
     The minimum value.
   */
@@ -249,18 +242,18 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const RangeWrap = styled.div`
-  /* border: 1px dotted red; */
+  border: 1px dotted red;
   position: relative;
   height: 7.5rem;
-  padding-top: 2.5rem;
+  padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
 `;
 
 const RangeOutput = styled.output`
-  margin-top: -2.5rem;
-  width: 0%;
+  margin-top: -3.75rem;
+  width: 0;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -298,7 +291,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   height: 15px;
   border-radius: 15px;
   border: 0;
-  position: relative;
+  position: absolute;
   z-index: 2;
   background: transparent;
   &:focus {
@@ -309,7 +302,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 38px;
       width: 38px;
-      top: 19px;
       border: 1px solid ${blackColor};
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -325,7 +317,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 38px;
       width: 38px;
-      top: 19px;
       border: 1px solid ${blackColor};
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -361,12 +352,13 @@ const Ticks = styled.div`
 `;
 const Tick = styled.div`
   position: relative;
-  width: ${p => p.tickLabel ? "1px" : "2px"};
-  height: ${p => p.tickLabel ? "5px" : "8px"};
+  width: 1px;
+  height: 5px;
   background: ${blackColor};
   margin-top: 1rem;
   margin-bottom: ${p => (p.length) + "ch"};
     div{
+      width: 0;
       color: ${blackColor};
       transform-origin: top center;
       margin-top: 0.5rem;

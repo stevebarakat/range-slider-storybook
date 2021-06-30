@@ -3,6 +3,9 @@ import DualRangeSlider from './DualRangeSlider';
 export default {
   component: DualRangeSlider,
   title: 'DualRangeSlider',
+  parameters: {
+    componentSubtitle: "A dual range input."
+  }
 };
 
 const Template = args => <DualRangeSlider {...args} />;
@@ -15,6 +18,10 @@ Default.args = {
   decimals: 0,
   step: 1,
   ticks: true,
+  tickLabels: [
+    { 52: "fifty-two" },
+    { 60: "sixty" }
+  ], 
   tickLabel: false,
   prefix: "$",
   suffix: "lbs",

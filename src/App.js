@@ -11,14 +11,16 @@ function App() {
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
         <Container>
           <RangeSlider
+            initialValue={50}
             min={0}
             max={100}
             decimals={0}
             step={10}
             ticks={true}
             tickLabels={[
-              { 50: "five" },
-              { 60: "six" }
+              { 0: "low" },
+              { 50: "medium" },
+              { 100: "high" }
             ]}
             tickLabel={true}
             prefix=""
@@ -36,6 +38,10 @@ function App() {
             decimals={0}
             step={10}
             ticks={true}
+            tickLabels={[
+              { 50: "five" },
+              { 60: "six" }
+            ]}
             tickLabel={true}
             prefix="$"
             suffix="lbs"

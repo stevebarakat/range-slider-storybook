@@ -1,10 +1,9 @@
 import React, { useState, useRef } from "react";
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 let newValue1 = "";
 let newValue2 = "";
-let newPosition1 = "";
-let newPosition2 = "";
 let focusColor = "";
 let blurColor = "";
 
@@ -18,13 +17,14 @@ const DualRangeSlider = ({
   decimals = 0,
   step = 0,
   ticks = false,
+  tickLabels = [],
   tickLabel = false,
   prefix = "",
   suffix = "",
   labelRotate = 45,
   primaryColor = "black",
-  primaryColorLight,
-  width = "250px",
+  primaryColorLight = "grey",
+  width = 250,
 }) => {
   const upperRange = useRef(null);
   const lowerRange = useRef(null);
@@ -37,11 +37,11 @@ const DualRangeSlider = ({
   blurColor = primaryColorLight;
 
   newValue1 = Number(((upperVal - min) * 100) / (max - min));
-  newPosition1 = 10 - newValue1 * 0.2;
+  const newPosition1 = 10 - newValue1 * 0.2;
 
   newValue2 = Number(((lowerVal - min) * 100) / (max - min));
-  newPosition2 = 10 - newValue2 * 0.2;
-
+  const newPosition2 = 10 - newValue2 * 0.2;
+  
   let markers = [];
 
   for (let i = min; i <= max; i += parseInt(step, 10)) {
@@ -111,7 +111,7 @@ const DualRangeSlider = ({
         min={min}
         max={max}
         value={lowerVal}
-        // step={step}
+        step={step}
         onFocus={() => setLowerFocused(true)}
         onBlur={() => setLowerFocused(false)}
         onInput={e => {
@@ -143,7 +143,7 @@ const DualRangeSlider = ({
         min={min}
         max={max}
         value={upperVal}
-        // step={step}
+        step={step}
         onKeyDown={handleKeyPress}
         onFocus={() => setUpperFocused(true)}
         onBlur={() => setUpperFocused(false)}
@@ -161,11 +161,87 @@ const DualRangeSlider = ({
 
 export default DualRangeSlider;
 
+
+
+// Proptypes
+
+DualRangeSlider.propTypes = {
+  /**
+    The minimum value.
+  */
+  min: PropTypes.number.isRequired,
+  /**
+  The maximum value. 
+*/
+  max: PropTypes.number.isRequired,
+  /**
+  The amount of decimal points to be rounded to. 
+*/
+  decimals: PropTypes.number,
+  /**
+*/
+  step: PropTypes.number,
+  /**
+  description 
+*/
+  ticks: PropTypes.bool,
+  /**
+  description 
+*/
+  tickLabels: PropTypes.arrayOf(PropTypes.object),
+  /**
+description 
+*/
+  tickLabel: PropTypes.bool,
+  /**
+  description 
+*/
+  prefix: PropTypes.string,
+  /**
+  description 
+*/
+  suffix: PropTypes.string,
+  /**
+  description 
+*/
+  labelRotate: PropTypes.number,
+  /**
+  description 
+*/
+  primaryColorLight: PropTypes.string,
+  /**
+  description 
+*/
+  primaryColor: PropTypes.string,
+  /**
+  description 
+*/
+  width: PropTypes.number,
+  /**
+  description 
+*/
+};
+
+DualRangeSlider.defaultProps = {
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 0,
+  ticks: false,
+  tickLabel: false,
+  prefix: "",
+  suffix: "",
+  labelRotate: 45,
+  primaryColorLight: "grey",
+  primaryColor: "black",
+  width: "250",
+};
+
 const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrap = styled.div`
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
   position: relative;
   height: 7.5rem;
   padding-top: 3.75rem;
