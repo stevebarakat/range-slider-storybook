@@ -147,7 +147,7 @@ const RangeSlider = ({
           }}
       />
       {console.log(marks)}
-      {ticks ? <Ticks>{marks}</Ticks> : marks}
+      {ticks ? <Ticks>{marks}</Ticks> : null}
     </RangeWrap>
   );
 };
