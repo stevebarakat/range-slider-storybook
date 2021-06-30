@@ -17,6 +17,7 @@ function App() {
             decimals={0}
             step={10}
             ticks={true}
+            snap={true}
             tickLabels={[
               { 0: "low" },
               { 50: "medium" },

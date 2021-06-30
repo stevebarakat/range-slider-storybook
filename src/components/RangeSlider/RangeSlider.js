@@ -1,10 +1,10 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 let focusColor = "";
 let blurColor = "";
-let newValue = "";
+// let newValue = "";
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -17,6 +17,7 @@ const RangeSlider = ({
   decimals = 0,
   step = 0,
   ticks = false,
+  snap = false,
   tickLabels = [],
   tickLabel = false,
   prefix = null,
@@ -28,13 +29,17 @@ const RangeSlider = ({
 }) => {
   const rangeEl = useRef(null);
   const [value, setValue] = useState(initialValue);
+  const [newValue, setNewValue] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
-  newValue = Number(((value - min) * 100) / (max - min));
+  // newValue = Number(((value - min) * 100) / (max - min));
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
+  useEffect(() => {
+    setNewValue(Number(((value - min) * 100) / (max - min)));
+  }, [value, min, max]);
 
   let markers = [];
 
@@ -50,8 +55,8 @@ const RangeSlider = ({
             customTickText = Object.values(label);
           }
           return null;
-        })
-        if(customTickText !== null) labelLength = customTickText[0].length
+        });
+        if (customTickText !== null) labelLength = customTickText[0].length;
         markers.push(
           <Tick
             key={i}
@@ -123,7 +128,7 @@ const RangeSlider = ({
         ref={rangeEl}
         min={min}
         max={max}
-        step={parseInt(step, 10)}
+        step={snap ? parseInt(step, 10) : parseInt(0, 10)}
         value={value > max ? max : value.toFixed(decimals)}
         onInput={(e) => {
           rangeEl.current.focus();
@@ -185,28 +190,32 @@ RangeSlider.propTypes = {
 */
   ticks: PropTypes.bool,
   /**
+    description 
+  */
+  snap: PropTypes.bool,
+  /**
   description 
 */
   tickLabels: PropTypes.arrayOf(PropTypes.object),
   /**
-description 
-*/
+    description 
+  */
   tickLabel: PropTypes.bool,
   /**
-  description 
-*/
+    description 
+  */
   prefix: PropTypes.string,
   /**
-  description 
-*/
+    description 
+  */
   suffix: PropTypes.string,
   /**
-  description 
-*/
+    description 
+  */
   labelRotate: PropTypes.number,
   /**
-  description 
-*/
+    description 
+  */
   primaryColorLight: PropTypes.string,
   /**
   description 
@@ -346,8 +355,8 @@ const Progress = styled.div`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: ${newValue - 100 / 2 * -0.022 + "rem"};
-  margin-left: ${newValue - 100 / 2 * -0.022 + "rem"};
+  margin-right: ${1.25 + "rem"};
+  margin-left: ${1.25 + "rem"};
   margin-top: 1rem;
 `;
 const Tick = styled.div`
