@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 let newValue1 = "";
@@ -7,7 +8,6 @@ let newPosition1 = "";
 let newPosition2 = "";
 let focusColor = "";
 let blurColor = "";
-let selectedValue = "";
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -203,6 +203,90 @@ const DualRangeSlider = ({
 
 export default DualRangeSlider;
 
+// PROPTYPES
+
+DualRangeSlider.propTypes = {
+  /**
+    The initial value.
+  */
+  initialValue: PropTypes.number.isRequired,
+  /**
+    The minimum value.
+  */
+  min: PropTypes.number.isRequired,
+  /**
+  The maximum value. 
+*/
+  max: PropTypes.number.isRequired,
+  /**
+  The amount of decimal points to be rounded to. 
+*/
+  decimals: PropTypes.number,
+  /**
+*/
+  step: PropTypes.number,
+  /**
+  description 
+*/
+  ticks: PropTypes.bool,
+  /**
+    description 
+  */
+  snap: PropTypes.bool,
+  /**
+  description 
+*/
+  tickLabels: PropTypes.arrayOf(PropTypes.object),
+  /**
+    description 
+  */
+  tickLabel: PropTypes.bool,
+  /**
+    description 
+  */
+  prefix: PropTypes.string,
+  /**
+    description 
+  */
+  suffix: PropTypes.string,
+  /**
+    description 
+  */
+  labelRotate: PropTypes.number,
+  /**
+    description 
+  */
+  primaryColorLight: PropTypes.string,
+  /**
+  description 
+*/
+  primaryColor: PropTypes.string,
+  /**
+  description 
+*/
+  width: PropTypes.number,
+  /**
+  description 
+*/
+};
+
+DualRangeSlider.defaultProps = {
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 0,
+  ticks: false,
+  tickLabel: false,
+  prefix: "",
+  suffix: "",
+  labelRotate: 45,
+  primaryColorLight: "grey",
+  primaryColor: "black",
+  width: "250",
+};
+
+
+// STYLES
 const blackColor = "#999";
 const whiteColor = "white";
 
@@ -318,8 +402,8 @@ const Progress = styled.div`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: ${1.25 + "rem"};
-  margin-left: ${1.25 + "rem"};
+  margin-right: ${1 + "rem"};
+  margin-left: ${1 + "rem"};
   margin-top: 1rem;
 `;
 const Tick = styled.div`
