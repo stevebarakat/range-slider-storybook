@@ -242,7 +242,7 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const RangeWrap = styled.div`
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
   position: relative;
   height: 7.5rem;
   padding-top: 3.75rem;
