@@ -143,7 +143,7 @@ const DualRangeSlider = ({
           style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}
           className="range-value"
         >
-          {lowerVal ? lowerVal.toFixed(decimals) : 0}
+          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
         </RangeOutput>
         <StyledRangeSlider
           tabIndex="2"
@@ -174,7 +174,7 @@ const DualRangeSlider = ({
           style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}
           className="range-value"
         >
-          {upperVal ? upperVal.toFixed(decimals) : 0}
+          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
         </RangeOutput>
         <StyledRangeSlider
           tabIndex="1"
@@ -207,7 +207,7 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrap = styled.div`
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
   position: relative;
   height: 7.5rem;
   padding-top: 3.75rem;
@@ -268,22 +268,23 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   }
 `;
 
-const RangeOutput = styled.div`
-  position: absolute;
+const RangeOutput = styled.output`
   margin-top: -3.75rem;
-  left: 50%;
-  border: ${p => p.focused ? "none" : `1px solid ${blackColor}`};
-  background: ${p => p.focused ? focusColor : whiteColor};
-  color: ${p => p.focused ? whiteColor : blackColor};
+  width: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
   text-align: center;
-  padding: 0.5rem;
   font-size: 1rem;
-  display: block;
-  transform: translate(-50%, 0);
-  border-radius: 5px;
-  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-  transition: all 0.15s ease-out;
-  &::before {
+  white-space: nowrap;
+  span{
+    border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
+    border-radius: 5px;
+    color: ${p => p.focused ? whiteColor : blackColor};
+    background: ${p => p.focused ? focusColor : whiteColor};
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    padding: 0.5rem 0.75rem;
+    &::before {
       content: "";
       position: absolute;
       width: 0;
@@ -296,6 +297,7 @@ const RangeOutput = styled.div`
       margin-left: -6px;
       margin-top: -1px;
     }
+  }
 `;
 
 const Progress = styled.div`
@@ -311,7 +313,6 @@ const Progress = styled.div`
   border-radius: 15px;
   width: 100%;
   height: 15px;
-  transition: width 0.15s ease-out;
 `;
 
 const Ticks = styled.div`
@@ -329,7 +330,6 @@ const Tick = styled.div`
   margin-top: 1rem;
   margin-bottom: ${p => (p.length) + "ch"};
     div{
-      width: 0;
       color: ${blackColor};
       transform-origin: top center;
       margin-top: 0.5rem;
