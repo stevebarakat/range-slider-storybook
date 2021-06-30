@@ -35,7 +35,7 @@ const RangeSlider = ({
   newValue = Number(((value - min) * 100) / (max - min));
   focusColor = primaryColor;
   blurColor = primaryColorLight;
-  
+
   useEffect(() => {
     rangeEl.current.focus();
     if (value > max) {
@@ -44,8 +44,8 @@ const RangeSlider = ({
       setValue(rangeEl.current.valueAsNumber);
     }
   }, [value, max]);
-  
-  if(step > 0) {
+
+  if (step > 0) {
     for (let i = min; i <= max; i += parseInt(step, 10)) {
       let customTickText = null;
       let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
@@ -59,7 +59,7 @@ const RangeSlider = ({
         >
           {tickLabels.map(label => {
             console.log(parseInt(tickText, 10) === parseInt(Object.keys(label), 10));
-            if(parseInt(tickText, 10) === parseInt(Object.keys(label), 10)){
+            if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
               console.log(Object.values(label));
               customTickText = Object.values(label);
             }
@@ -156,53 +156,56 @@ RangeSlider.propTypes = {
     The minimum value.
   */
   min: PropTypes.number.isRequired,
-    /**
-    The maximum value. 
-  */
+  /**
+  The maximum value. 
+*/
   max: PropTypes.number.isRequired,
-    /**
-    The amount of decimal points to be rounded to. 
-  */
+  /**
+  The amount of decimal points to be rounded to. 
+*/
   decimals: PropTypes.number,
-    /**
-     
-  */
+  /**
+*/
   step: PropTypes.number,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   ticks: PropTypes.bool,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
+  tickLabels: PropTypes.arrayOf(PropTypes.object),
+  /**
+description 
+*/
   tickLabel: PropTypes.bool,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   prefix: PropTypes.string,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   suffix: PropTypes.string,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   labelRotate: PropTypes.number,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   primaryColorLight: PropTypes.string,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   primaryColor: PropTypes.string,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
   width: PropTypes.number,
-    /**
-    description 
-  */
+  /**
+  description 
+*/
 };
 
 RangeSlider.defaultProps = {

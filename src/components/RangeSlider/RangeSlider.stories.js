@@ -22,7 +22,7 @@ Default.args = {
     { 52: "fifty-two" },
     { 60: "sixty" }
   ],
-  tickLabel: false,
+  tickLabel: true,
   prefix: "",
   suffix: "",
   labelRotate: "35",
