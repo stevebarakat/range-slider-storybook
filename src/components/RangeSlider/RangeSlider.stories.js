@@ -3,6 +3,9 @@ import RangeSlider from './RangeSlider';
 export default {
   component: RangeSlider,
   title: 'RangeSlider',
+  parameters: {
+    componentSubtitle: "A range input."
+  }
 };
 
 const Template = args => <RangeSlider {...args} />;
