@@ -6,12 +6,6 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-function calcSpace(max, min, height) {
-  const diff = min - max;
-  const ticks = height / 50;
-  return diff / ticks;
-};
-
 let focusColor = "";
 let blurColor = "";
 let newValue = "";
@@ -23,25 +17,25 @@ const RangeSlider = ({
   decimals = 0,
   step = 0,
   ticks = false,
+  tickLabels = [],
   tickLabel = false,
-  prefix = "",
-  suffix = "",
+  prefix = null,
+  suffix = null,
   labelRotate = 45,
-  primaryColorLight,
+  primaryColorLight = "grey",
   primaryColor = "black",
   width = "250",
 }) => {
   const rangeEl = useRef(null);
-  const [value, setValue] = useState((min + max) / 2);
+  const [value, setValue] = useState(4);
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
-  const space = calcSpace(min, max, width);
   let markers = [];
   newValue = Number(((value - min) * 100) / (max - min));
   focusColor = primaryColor;
   blurColor = primaryColorLight;
-
+  
   useEffect(() => {
     rangeEl.current.focus();
     if (value > max) {
@@ -50,20 +44,30 @@ const RangeSlider = ({
       setValue(rangeEl.current.valueAsNumber);
     }
   }, [value, max]);
-
-
-  for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
-    const labelLength = i.toString().length;
-    markers.push(
-      Tick && <Tick
-        key={i}
-        length={labelLength}
-        tickLabel={tickLabel}
-        labelRotate={parseInt(labelRotate, 10)}
-      >
-        {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
-      </Tick>
-    );
+  
+  if(step > 0) {
+    for (let i = min; i <= max; i += parseInt(step, 10)) {
+      let customTickText = null;
+      let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+      const labelLength = tickText.toString().length;
+      markers.push(
+        Tick && <Tick
+          key={i}
+          length={labelLength}
+          tickLabel={tickLabel}
+          labelRotate={parseInt(labelRotate, 10)}
+        >
+          {tickLabels.map(label => {
+            console.log(parseInt(tickText, 10) === parseInt(Object.keys(label), 10));
+            if(parseInt(tickText, 10) === parseInt(Object.keys(label), 10)){
+              console.log(Object.values(label));
+              customTickText = Object.values(label);
+            }
+          })}
+          {tickLabel && <div>{customTickText}</div>}
+        </Tick>
+      );
+    }
   }
 
   const marks = markers.map(marker => marker);
@@ -100,21 +104,19 @@ const RangeSlider = ({
         return;
     }
   }
-
   return (
     <RangeWrap style={{ width: width + "px" }}>
       <RangeOutput
         focused={isFocused}
-        style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
-        <span>{numberWithCommas(value.toFixed(decimals))}</span>
+        style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
+        <span>{prefix + numberWithCommas(value.toFixed(decimals)) + suffix}</span>
       </RangeOutput>
       <StyledRangeSlider
         tabIndex="0"
-        list="tickmamrks"
         ref={rangeEl}
         min={min}
         max={max}
-        step={step}
+        step={parseInt(step, 10)}
         value={value > max ? max : value.toFixed(decimals)}
         onInput={(e) => {
           rangeEl.current.focus();
@@ -137,6 +139,7 @@ const RangeSlider = ({
           (${newPosition / 100}px)), ${whiteColor} calc(${newValue}% + (${newPosition / 100}px)), ${whiteColor} 100%)`
           }}
       />
+      {console.log(marks)}
       {ticks && <Ticks>{marks}</Ticks>}
     </RangeWrap>
   );
@@ -150,21 +153,21 @@ export default RangeSlider;
 
 RangeSlider.propTypes = {
   /**
-    description 
+    The minimum value.
   */
-  min: PropTypes.number,
+  min: PropTypes.number.isRequired,
     /**
-    description 
+    The maximum value. 
   */
-  max: PropTypes.number,
+  max: PropTypes.number.isRequired,
     /**
-    description 
+    The amount of decimal points to be rounded to. 
   */
   decimals: PropTypes.number,
     /**
-    description 
+     
   */
-  step: PropTypes.string,
+  step: PropTypes.number,
     /**
     description 
   */
@@ -223,7 +226,7 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const RangeWrap = styled.div`
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
   position: relative;
   height: 7.5rem;
   padding-top: 2.5rem;
@@ -240,6 +243,7 @@ const RangeOutput = styled.output`
   justify-content: center;
   text-align: center;
   font-size: 1rem;
+  white-space: nowrap;
   span{
     border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
     border-radius: 5px;
@@ -328,8 +332,8 @@ const Progress = styled.div`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: ${newValue - 100 / 2 * -0.02 + "rem"};
-  margin-left: ${newValue - 100 / 2 * -0.02 + "rem"};
+  margin-right: ${newValue - 100 / 2 * -0.022 + "rem"};
+  margin-left: ${newValue - 100 / 2 * -0.022 + "rem"};
   margin-top: 1rem;
 `;
 const Tick = styled.div`
@@ -338,7 +342,7 @@ const Tick = styled.div`
   height: ${p => p.tickLabel ? "5px" : "8px"};
   background: ${blackColor};
   margin-top: 1rem;
-  margin-bottom: ${p => (p.length + 2) + "ch"};
+  margin-bottom: ${p => (p.length) + "ch"};
     div{
       color: ${blackColor};
       transform-origin: top center;

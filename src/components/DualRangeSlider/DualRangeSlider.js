@@ -12,12 +12,6 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-function calcSpace(max, min, height) {
-  const diff = min - max;
-  const ticks = height / 50;
-  return diff / ticks;
-};
-
 const DualRangeSlider = ({
   min = 0,
   max = 100,
@@ -38,7 +32,6 @@ const DualRangeSlider = ({
   const [upperVal, setUpperVal] = useState(max);
   const [lowerFocused, setLowerFocused] = useState(false);
   const [upperFocused, setUpperFocused] = useState(false);
-  const space = calcSpace(min, max, width);
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
@@ -51,7 +44,7 @@ const DualRangeSlider = ({
 
   let markers = [];
 
-  for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
+  for (let i = min; i <= max; i += parseInt(step, 10)) {
     const labelLength = i.toString().length;
     markers.push(
       <Tick
@@ -81,8 +74,8 @@ const DualRangeSlider = ({
     }
   };
 
-  //If the upper value slider is LESS THAN the lower value slider.
-  if (upperVal < lowerVal) {
+  //If the upper value slider is GREATER THAN the lower value slider.
+  if (upperVal > lowerVal) {
     //Set lower slider value to equal the upper value slider.
     setLowerVal(parseFloat(upperVal));
     //If the lower value slider equals its set minimum.
@@ -91,8 +84,8 @@ const DualRangeSlider = ({
       setUpperVal(min);
     }
   };
-  //If the lower value slider is GREATER THAN the upper value slider minus one.
-  if (lowerVal > upperVal - 1) {
+  //If the lower value slider is LESS THAN the upper value slider.
+  if (lowerVal < upperVal) {
     //Set the upper slider value equal to the lower value slider.
     setUpperVal(parseFloat(lowerVal));
     //If the upper value slider equals its set maximum.

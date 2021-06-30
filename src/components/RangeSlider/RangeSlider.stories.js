@@ -13,11 +13,15 @@ const Template = args => <RangeSlider {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {
-  min: 1,
-  max: 11,
+  min: 0,
+  max: 100,
   decimals: 0,
-  step: "space-evenly",
+  step: 2,
   ticks: true,
+  tickLabels: [
+    { 52: "fifty-two" },
+    { 60: "sixty" }
+  ],
   tickLabel: false,
   prefix: "",
   suffix: "",
