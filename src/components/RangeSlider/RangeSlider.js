@@ -11,21 +11,21 @@ function numberWithCommas(x) {
 };
 
 const RangeSlider = ({
-  initialValue = 50,
-  min = 0,
-  max = 100,
-  decimals = 0,
-  step = 0,
-  ticks = false,
-  snap = false,
-  tickLabels = [],
-  tickLabel = false,
-  prefix = null,
-  suffix = null,
-  labelRotate = 45,
-  primaryColorLight = "grey",
-  primaryColor = "black",
-  width = 250,
+  initialValue,
+  min,
+  max,
+  decimals,
+  step,
+  ticks,
+  snap,
+  tickLabels,
+  tickLabel,
+  prefix,
+  suffix,
+  labelRotate,
+  primaryColorLight,
+  primaryColor,
+  width,
 }) => {
   const rangeEl = useRef(null);
   const [value, setValue] = useState(initialValue);
