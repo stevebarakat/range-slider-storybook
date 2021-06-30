@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 function numberWithCommas(x) {
@@ -23,8 +24,8 @@ const RangeSlider = ({
   step = 0,
   ticks = false,
   tickLabel = false,
-  prefix="",
-  suffix="",
+  prefix = "",
+  suffix = "",
   labelRotate = 45,
   primaryColorLight,
   primaryColor = "black",
@@ -51,19 +52,19 @@ const RangeSlider = ({
   }, [value, max]);
 
 
-    for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
-      const labelLength = i.toString().length;
-      markers.push(
-        Tick && <Tick
-          key={i}
-          length={labelLength}
-          tickLabel={tickLabel}
-          labelRotate={parseInt(labelRotate, 10)}
-        >
-          {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
-        </Tick>
-      );
-    }
+  for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
+    const labelLength = i.toString().length;
+    markers.push(
+      Tick && <Tick
+        key={i}
+        length={labelLength}
+        tickLabel={tickLabel}
+        labelRotate={parseInt(labelRotate, 10)}
+      >
+        {tickLabel && <div>{prefix + numberWithCommas(i.toFixed(2)) + " " + suffix}</div>}
+      </Tick>
+    );
+  }
 
   const marks = markers.map(marker => marker);
 
@@ -143,6 +144,81 @@ const RangeSlider = ({
 
 export default RangeSlider;
 
+
+
+// Proptypes
+
+RangeSlider.propTypes = {
+  /**
+    description 
+  */
+  min: PropTypes.number,
+    /**
+    description 
+  */
+  max: PropTypes.number,
+    /**
+    description 
+  */
+  decimals: PropTypes.number,
+    /**
+    description 
+  */
+  step: PropTypes.string,
+    /**
+    description 
+  */
+  ticks: PropTypes.bool,
+    /**
+    description 
+  */
+  tickLabel: PropTypes.bool,
+    /**
+    description 
+  */
+  prefix: PropTypes.string,
+    /**
+    description 
+  */
+  suffix: PropTypes.string,
+    /**
+    description 
+  */
+  labelRotate: PropTypes.number,
+    /**
+    description 
+  */
+  primaryColorLight: PropTypes.string,
+    /**
+    description 
+  */
+  primaryColor: PropTypes.string,
+    /**
+    description 
+  */
+  width: PropTypes.number,
+    /**
+    description 
+  */
+};
+
+RangeSlider.defaultProps = {
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 0,
+  ticks: false,
+  tickLabel: false,
+  prefix: "",
+  suffix: "",
+  labelRotate: 45,
+  primaryColorLight: "grey",
+  primaryColor: "black",
+  width: "250",
+};
+
+// Styles
+
 const whiteColor = "white";
 const blackColor = "#999";
 
@@ -211,7 +287,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
       cursor: grab;
-      pointer-events: all;
       -webkit-appearance: none;
       z-index: 50;
       background: ${p => !p.focused ?
@@ -228,7 +303,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
       cursor: grab;
-      pointer-events: all;
       appearance: none;
       margin-top: -10px;
       z-index: 50;
