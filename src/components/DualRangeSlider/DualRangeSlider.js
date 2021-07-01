@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import defaultProps from '../../shared/defaultProps';
+import { defaultProps } from '../../shared/defaultProps';
 
 let newValue1 = "";
 let newValue2 = "";
@@ -15,7 +15,6 @@ function numberWithCommas(x) {
 };
 
 const DualRangeSlider = ({
-  initialValue,
   initialLowerValue,
   initialUpperValue,
   min,
@@ -210,15 +209,11 @@ export default DualRangeSlider;
 
 DualRangeSlider.propTypes = {
   /**
-    The initial value for single input range sliders.
-  */
-  initialValue: PropTypes.number.isRequired,
-  /**
-    The initial lower value for dual input range sliders.
+    The initial lower value.
   */
   initialLowerValue: PropTypes.number.isRequired,
   /**
-    The initial upper value for dual input range sliders.
+    The initial upper value.
   */
   initialUpperValue: PropTypes.number.isRequired,
   /**
@@ -279,7 +274,12 @@ DualRangeSlider.propTypes = {
   width: PropTypes.number,
 };
 
-DualRangeSlider.defaultProps = defaultProps;
+DualRangeSlider.defaultProps = {
+  initialLowerValue: 20,
+  initialUpperValue: 80,
+  ...defaultProps,
+  width: 1200,
+};
 
 
 // STYLES

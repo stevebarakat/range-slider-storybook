@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import defaultProps from '../../shared/defaultProps'
+import { defaultProps } from '../../shared/defaultProps';
 
 let focusColor = "";
 let blurColor = "";
-// let newValue = "";
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -160,7 +159,6 @@ const RangeSlider = ({
 export default RangeSlider;
 
 
-
 // PROPTYPES
 
 RangeSlider.propTypes = {
@@ -193,7 +191,7 @@ RangeSlider.propTypes = {
   */
   snap: PropTypes.bool,
   /**
-    For making custom labels. 
+    For creating custom labels. 
   */
   customLabels: PropTypes.arrayOf(PropTypes.object),
   /**

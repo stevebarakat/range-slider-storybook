@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { defaultProps } from '../../shared/defaultProps';
 
 let focusColor = "";
 let blurColor = "";
@@ -191,7 +192,7 @@ VerticalRangeSlider.propTypes = {
   */
   snap: PropTypes.bool,
   /**
-    For making custom labels. 
+    For creating custom labels. 
   */
   customLabels: PropTypes.arrayOf(PropTypes.object),
   /**
@@ -225,20 +226,10 @@ VerticalRangeSlider.propTypes = {
 };
 
 VerticalRangeSlider.defaultProps = {
-  min: 0,
-  max: 100,
-  decimals: 0,
-  step: 0,
-  showTicks: false,
-  showLabel: false,
-  prefix: "",
-  suffix: "",
-  labelRotation: 45,
-  primaryColorLight: "grey",
-  primaryColor: "black",
-  width: "400",
+  initialValue: 50,
+  ...defaultProps,
+  height: 600,
 };
-
 
 
 const whiteColor = 'white';

@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from "styled-components";
+import { defaultProps } from '../../shared/defaultProps';
 
 let newValue1 = "";
 let newValue2 = "";
@@ -21,7 +22,8 @@ function calcSpace(max, min, height) {
 ;
 
 const DualVerticalRangeSlider = ({
-  initialValue,
+  initialLowerValue,
+  initialUpperValue,
   min,
   max,
   decimals,
@@ -41,8 +43,8 @@ const DualVerticalRangeSlider = ({
   const upperRange = useRef(null);
   const outputEl = useRef(null);
   const tickEl = useRef(null);
-  const [upperVal, setUpperVal] = useState(parseInt(max / 1.5, 10));
-  const [lowerVal, setLowerVal] = useState(parseInt(max / 3, 10));
+  const [upperVal, setUpperVal] = useState(initialUpperValue);
+  const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperFocused, setUpperFocused] = useState(true);
   const [lowerFocused, setLowerFocused] = useState(true);
   const [progressFocused, setProgressFocused] = useState(false);
@@ -231,7 +233,7 @@ DualVerticalRangeSlider.propTypes = {
   */
   snap: PropTypes.bool,
   /**
-    For making custom labels. 
+    For creating custom labels. 
   */
   customLabels: PropTypes.arrayOf(PropTypes.object),
   /**
@@ -265,20 +267,11 @@ DualVerticalRangeSlider.propTypes = {
 };
 
 DualVerticalRangeSlider.defaultProps = {
-  min: 0,
-  max: 100,
-  decimals: 0,
-  step: 0,
-  showTicks: false,
-  showLabel: false,
-  prefix: "",
-  suffix: "",
-  labelRotation: 45,
-  primaryColorLight: "grey",
-  primaryColor: "black",
-  width: "400",
+  initialLowerValue: 20,
+  initialUpperValue: 80,
+  ...defaultProps,
+  height: 600,
 };
-
 
 
 // STYLES

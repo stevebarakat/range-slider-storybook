@@ -1,5 +1,5 @@
 import RangeSlider from './RangeSlider';
-import defaultProps from '../../shared/defaultProps';
+import { defaultProps } from '../../shared/defaultProps';
 
 export default {
   component: RangeSlider,
@@ -15,6 +15,6 @@ export const Default = Template.bind({});
 
 Default.args = {
   initialValue: 50,
-  width: 1200,
   ...defaultProps,
+  width: 1200,
 };
