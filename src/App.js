@@ -64,13 +64,22 @@ function App() {
       }}>
         <Container>
           <VerticalRangeSlider
-            min={-10000}
-            max={10000}
+            initialValue={50}
+            min={0}
+            max={100}
             decimals={0}
-            step={1000}
+            step={10}
             showTicks={true}
+            snap={true}
+            customLabels={[
+              { 0: "low" },
+              { 50: "medium" },
+              { 100: "high" }
+            ]}
             showLabel={true}
-            labelRotation={14}
+            prefix=""
+            suffix=""
+            labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}

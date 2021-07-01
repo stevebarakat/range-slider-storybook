@@ -31,7 +31,7 @@ const VerticalRangeSlider = ({
   const outputEl = useRef(null);
   const tickEl = useRef(null);
   const wrapEl = useRef(null);
-  const [value, setValue] = useState(min + max);
+  const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState('');
@@ -130,19 +130,21 @@ const VerticalRangeSlider = ({
 
   return (
     <RangeWrapWrap
-      ref={wrapEl}
       showTicks
+      ref={wrapEl}
       outputWidth={outputWidth}
       maxLabelLength={maxLabelLength}
     >
       <RangeWrap
+        showTicks
         heightVal={height}
+        maxLabelLength={maxLabelLength}
       >
         <RangeOutput
           ref={outputEl}
           focused={isFocused}
           className="disable-select"
-          style={{ left: `${newValue}%` }}>
+          style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
           <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
@@ -151,7 +153,7 @@ const VerticalRangeSlider = ({
           ref={rangeEl}
           min={min}
           max={max}
-          step={step}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
           value={value > max ? max : value.toFixed(decimals)}
           onClick={() => rangeEl.current.focus()}
           onInput={(e) => { setValue(e.target.valueAsNumber); }}
@@ -277,13 +279,12 @@ const RangeWrap = styled.div`
 
 const RangeOutput = styled.output`
   width: 0;
+  user-select: none;
   position: absolute;
   display: flex;
   justify-content: center;
-  margin-top: 3.5rem;
+  margin-top: 3.75rem;
   text-align: center;
-  font-size: 1rem;
-  user-select: none;
   span{
     writing-mode: vertical-lr;
     border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
@@ -291,8 +292,19 @@ const RangeOutput = styled.output`
     color: ${p => p.focused ? whiteColor : blackColor};
     background: ${p => p.focused ? focusColor : whiteColor};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-    padding: 0.5rem 0.25rem;
+    padding: 0.5rem;
     white-space: nowrap;
+    &::before {
+      content: "";
+      position: absolute;
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `0px`};
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      bottom: 100%;
+      margin-bottom: -2px;
+      margin-left: 1px;
+      transform: rotate(180deg);
+    }
   }
 `;
 
@@ -354,10 +366,11 @@ const Progress = styled.div`
 `;
 
 const Ticks = styled.div`
+  cursor: default;
   display: flex;
   justify-content: space-between;
-  margin-right: 1rem;
-  margin-left: 1rem;
+  margin-right: 1.2rem;
+  margin-left: 1.2rem;
   color: ${blackColor};
 `;
 
@@ -369,11 +382,23 @@ const Tick = styled.div`
   width: 1px;
   background: ${blackColor};
   height: 5px;
-  cursor: default;
   div {
-    white-space: nowrap;
     writing-mode: vertical-rl;
-    margin-left: 0.4rem;
+    margin-left: 0.65em;
     margin-bottom: 0.5rem;
+    white-space: nowrap;
+    &::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `0px`};
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      top: 100%;
+      left: 50%;
+      margin-left: -6px;
+      margin-top: -1px;
+    }
   }
 `;

@@ -48,15 +48,14 @@ const DualVerticalRangeSlider = ({
   blurColor = primaryColorLight;
 
   useEffect(() => {
-    const tickList = tickEl.current.children;
     let labelList = [];
+    const tickList = tickEl.current.children;
     for (let i = 0; i < tickList.length; i++) {
       labelList.push(tickList[i].firstChild.innerText.length);
     }
-    console.log(Math.max(...labelList));
     setMaxLabelLength(Math.max(...labelList));
     setOutputWidth(outputEl.current.clientHeight);
-  }, [min, max, initialLowerValue, initialUpperValue]);
+  }, [min, max]);
 
 
   newValue1 = Number(
