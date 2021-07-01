@@ -299,8 +299,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   &::-webkit-slider-thumb {
     pointer-events: all;
     position: relative;
-    height: 2.15rem;
-    width: 2.15rem;
+    height: 3em;
+    width: 3em;
     border-radius: 50%;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
     cursor: pointer;
@@ -320,8 +320,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   &::-moz-range-thumb {
     pointer-events: all;
     position: relative;
-    height: 2.15rem;
-    width: 2.15rem;
+    height: 3em;
+    width: 3em;
     border-radius: 50%;
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
     cursor: pointer;
@@ -386,8 +386,8 @@ const Progress = styled.div`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: ${1 + "rem"};
-  margin-left: ${1 + "rem"};
+  margin-right: 1.2em;
+  margin-left: 1.2em;
   margin-top: 1rem;
 `;
 const Tick = styled.div`

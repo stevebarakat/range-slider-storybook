@@ -296,8 +296,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 
     &::-webkit-slider-thumb {
       position: relative;
-      height: 38px;
-      width: 38px;
+      height: 3em;
+      width: 3em;
       border: 1px solid ${blackColor};
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -311,8 +311,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   }
     &::-moz-range-thumb {
       position: relative;
-      height: 38px;
-      width: 38px;
+      height: 3em;
+      width: 3em;
       border: 1px solid ${blackColor};
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
