@@ -297,7 +297,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 3em;
       width: 3em;
-      border: 1px solid ${blackColor};
+      border: 5px solid red;
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
       cursor: grab;
@@ -312,7 +312,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       position: relative;
       height: 3em;
       width: 3em;
-      border: 1px solid ${blackColor};
+      border: 5px solid red;
       border-radius: 50%;
       box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
       cursor: grab;
