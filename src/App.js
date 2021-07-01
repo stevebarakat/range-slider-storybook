@@ -3,13 +3,12 @@ import DualRangeSlider from './components/DualRangeSlider/DualRangeSlider';
 import VerticalRangeSlider from './components/VerticalRangeSlider/VerticalRangeSlider';
 import DualVerticalRangeSlider from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
 import Container from './components/Container/Container';
-import './shared/app.css';
 
 function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
-        <Container>
+        {/* <Container>
           <RangeSlider
             initialValue={50}
             min={0}
@@ -31,7 +30,7 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
           />
-        </Container>
+        </Container> */}
         <Container>
           <DualRangeSlider
             min={0}
@@ -62,7 +61,7 @@ function App() {
         gap: "30px",
         width: "100%"
       }}>
-        <Container>
+        {/* <Container>
           <VerticalRangeSlider
             initialValue={50}
             min={0}
@@ -84,8 +83,8 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}
           />
-        </Container>
-        <Container>
+        </Container> */}
+        {/* <Container>
           <DualVerticalRangeSlider
             initialLowerValue={20}
             initialUpperValue={80}
@@ -104,7 +103,7 @@ function App() {
               { 100: "high" }
             ]}
           />
-        </Container>
+        </Container> */}
         {/* <Container>
           <DualVerticalRangeSlider
             min={0}

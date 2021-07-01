@@ -115,7 +115,7 @@ const RangeSlider = ({
     }
   }
   return (
-    <RangeWrap style={{ width: width + "px" }}>
+    <RangeWrap style={{ width: width }}>
       <RangeOutput
         focused={isFocused}
         style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
@@ -238,9 +238,8 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const RangeWrap = styled.div`
-  /* border: 1px dotted red; */
+  border: 1px dotted red;
   position: relative;
-  height: 7.5rem;
   padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
@@ -329,7 +328,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 
 const Progress = styled.div`
   position: absolute;
-  /* background: ${p => p.focused ? focusColor : blurColor}; */
   border-radius: 15px;
   box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
     inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
@@ -343,14 +341,14 @@ const Ticks = styled.div`
   justify-content: space-between;
   margin-right: ${1.25 + "rem"};
   margin-left: ${1.25 + "rem"};
-  margin-top: 1rem;
+  margin-bottom: -2rem;
 `;
 const Tick = styled.div`
   position: relative;
   width: 1px;
   height: 5px;
   background: ${blackColor};
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: ${p => (p.length) + "ch"};
     div{
       width: 0;

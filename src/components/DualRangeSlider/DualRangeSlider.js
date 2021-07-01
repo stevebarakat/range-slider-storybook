@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { defaultProps } from '../../shared/defaultProps';
@@ -38,9 +38,16 @@ const DualRangeSlider = ({
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [lowerFocused, setLowerFocused] = useState(false);
   const [upperFocused, setUpperFocused] = useState(false);
+  const [newLowerVal, setNewLowerVal] = useState(null);
+  const [newUpperVal, setNewUpperVal] = useState(null);
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
+
+  useEffect(() => {
+    setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
+    setNewUpperVal(Number(((upperVal - min) * 100) / (max - min)));
+  }, [lowerVal, upperVal, min, max]);
 
   newValue1 = Number(
     ((lowerVal - min) * 100) /
@@ -124,12 +131,17 @@ const DualRangeSlider = ({
 
   return (
     <RangeWrap style={{ width: width }}>
+        <Progress
+          focused={lowerFocused || upperFocused}
+          id="range-color"
+          className="range-color"
+        ></Progress>
 
       {/* LOWER RANGE */}
       <>
         <RangeOutput
           focused={lowerFocused}
-          style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}
+          style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
           className="range-value"
         >
           <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
@@ -150,16 +162,11 @@ const DualRangeSlider = ({
           focused={lowerFocused}
         // style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
         />
-        <Progress
-          focused={lowerFocused || upperFocused}
-          id="range-color"
-          className="range-color"
-        ></Progress>
 
         {/* UPPER RANGE */}
         <RangeOutput
           focused={upperFocused}
-          style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}
+          style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
           className="range-value"
         >
           <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
@@ -275,69 +282,16 @@ const whiteColor = "white";
 const RangeWrap = styled.div`
   border: 1px dotted red;
   position: relative;
-  height: 7.5rem;
   padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
 `;
 
-const StyledRangeSlider = styled.input.attrs({ type: "range" })`
-  pointer-events: none;
-  cursor: default;
-  appearance: none;
-  position: absolute;
-  width: 100%;
-  height: 15px;
-  border-radius: 15px;
-  background: transparent;
-  margin: 0;
-      &:focus {
-    outline: none;
-  }
 
-  &::-webkit-slider-thumb {
-    pointer-events: all;
-    position: relative;
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
-    cursor: pointer;
-    -webkit-appearance: none;
-    z-index: 999;
-    background-color: white;
-    background: ${p => !p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`};
-  }
-
-  &:focus::-webkit-slider-thumb {
-    background: ${p => !p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-    transition: all 0.15s ease-out;
-  }
-  
-  &::-moz-range-thumb {
-    pointer-events: all;
-    position: relative;
-    height: 3em;
-    width: 3em;
-    border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 1);
-    cursor: pointer;
-    z-index: 999;
-    background: ${p => !p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`}};
-
-  &:focus::-moz-range-thumb {
-    background: ${p => !p.focused ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-    transition: all 0.15s ease-out;
-  }
-`;
 
 const RangeOutput = styled.output`
-  margin-top: -3.75rem;
+  margin-top: -4.75rem;
   width: 0;
   position: absolute;
   display: flex;
@@ -368,9 +322,59 @@ const RangeOutput = styled.output`
   }
 `;
 
+
+
+const StyledRangeSlider = styled.input.attrs({ type: "range" })`
+  appearance: none;
+  cursor: pointer;
+  margin: 0;
+  width: 100%;
+  height: 15px;
+  border-radius: 15px;
+  border: 0;
+  position: absolute;
+  z-index: 2;
+  background: transparent;
+  &:focus {
+    outline: none;
+  }
+  &::-webkit-slider-thumb {
+    position: relative;
+    height: 3em;
+    width: 3em;
+    border: 1px solid ${blackColor};
+    border-radius: 50%;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    cursor: grab;
+    -webkit-appearance: none;
+    z-index: 50;
+    margin-top: -2.5em;
+
+    background: ${p => !p.focused ?
+    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
+    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+  };
+}
+  &::-moz-range-thumb {
+    position: relative;
+    height: 3em;
+    width: 3em;
+    border: 1px solid ${blackColor};
+    border-radius: 50%;
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+    cursor: grab;
+    appearance: none;
+    margin-top: -2.5em;
+    z-index: 50;
+    background: ${p => !p.focused ?
+  `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
+  `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+  };
+}
+`;
+
 const Progress = styled.div`
   z-index: 0;
-  position: absolute;
   background: ${p => p.focused ?
     `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
   (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
@@ -386,18 +390,19 @@ const Progress = styled.div`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: 1.2em;
-  margin-left: 1.2em;
-  margin-top: 1rem;
+  margin-right: ${1.25 + "rem"};
+  margin-left: ${1.25 + "rem"};
+  margin-bottom: -2rem;
 `;
 const Tick = styled.div`
   position: relative;
   width: 1px;
   height: 5px;
   background: ${blackColor};
-  margin-top: 1rem;
+  margin-top: 2rem;
   margin-bottom: ${p => (p.length) + "ch"};
     div{
+      width: 0;
       color: ${blackColor};
       transform-origin: top center;
       margin-top: 0.5rem;
