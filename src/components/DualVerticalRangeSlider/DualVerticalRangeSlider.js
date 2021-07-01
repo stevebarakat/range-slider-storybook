@@ -49,9 +49,9 @@ const DualVerticalRangeSlider = ({
 
   useEffect(() => {
     let labelList = [];
-    const tickList = tickEl.current.children;
-    for (let i = 0; i < tickList.length; i++) {
-      labelList.push(tickList[i].firstChild.innerText.length);
+    const tickList = tickEl?.current?.children;
+    for (let i = 0; i < tickList?.length; i++) {
+      labelList.push(tickList[i].firstChild.innerText?.length);
     }
     setMaxLabelLength(Math.max(...labelList));
     setOutputWidth(outputEl.current.clientHeight);
@@ -72,7 +72,7 @@ const DualVerticalRangeSlider = ({
 
   let markers = [];
 
-  if (customLabels.length !== 0) {
+  if (customLabels?.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
@@ -326,16 +326,14 @@ const RangeWrap = styled.div`
   top: 0;
   font-family: sans-serif;
 `;
-
 const RangeOutput = styled.output`
   width: 0;
+  user-select: none;
   position: absolute;
   display: flex;
-  justify-content: center;
-  margin-top: 3.5rem;
-  text-align: center;
-  font-size: 1rem;
-  user-select: none;
+  justify-content: flex-start;
+  margin-top: 3.75rem;
+  margin-left: -1rem;
   span{
     writing-mode: vertical-lr;
     border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
@@ -343,8 +341,19 @@ const RangeOutput = styled.output`
     color: ${p => p.focused ? whiteColor : blackColor};
     background: ${p => p.focused ? focusColor : whiteColor};
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-    padding: 0.5rem 0.25rem;
+    padding: 0.5rem;
     white-space: nowrap;
+    &::before {
+      content: "";
+      position: absolute;
+      border-top: ${p => p.focused ? `12px solid ${focusColor}` : `0px`};
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      bottom: 100%;
+      margin-bottom: -2px;
+      margin-left: 1px;
+      transform: rotate(180deg);
+    }
   }
 `;
 
