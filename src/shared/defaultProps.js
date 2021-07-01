@@ -13,7 +13,6 @@ export const defaultProps = {
   showLabel: true,
   prefix: "",
   suffix: "",
-  labelRotation: 0,
   primaryColor: "hsl(196, 100%, 48%)",
   primaryColorLight: "hsl(196, 100%, 70%)",
 };

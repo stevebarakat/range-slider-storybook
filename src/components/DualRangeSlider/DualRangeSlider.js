@@ -32,8 +32,8 @@ const DualRangeSlider = ({
   primaryColor,
   width,
 }) => {
-  const upperRange = useRef(null);
   const lowerRange = useRef(null);
+  const upperRange = useRef(null);
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [lowerFocused, setLowerFocused] = useState(false);
@@ -41,6 +41,7 @@ const DualRangeSlider = ({
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
+
   newValue1 = Number(
     ((lowerVal - min) * 100) /
     (max - min)
@@ -100,20 +101,6 @@ const DualRangeSlider = ({
 
   const marks = markers.map(marker => marker);
 
-  function handleKeyPress(e) {
-    lowerRange.current.focus();
-    upperRange.current.focus();
-
-    switch (e.keyCode) {
-      case 27: //Esc
-        upperRange.current.blur();
-        lowerRange.current.blur();
-        return;
-      default:
-        return;
-    }
-  }
-
   //If the upper value slider is LESS THAN the lower value slider.
   if (upperVal > lowerVal) {
     //The lower slider value is set to equal the upper value slider.
@@ -155,7 +142,6 @@ const DualRangeSlider = ({
           max={max}
           value={lowerVal}
           step={step}
-          onKeyDown={handleKeyPress}
           onFocus={() => setLowerFocused(true)}
           onBlur={() => setLowerFocused(false)}
           onInput={e => {
@@ -186,7 +172,6 @@ const DualRangeSlider = ({
           max={max}
           value={upperVal}
           step={step}
-          onKeyDown={handleKeyPress}
           onFocus={() => setUpperFocused(true)}
           onBlur={() => setUpperFocused(false)}
           onInput={e => {
@@ -278,6 +263,7 @@ DualRangeSlider.defaultProps = {
   initialLowerValue: 20,
   initialUpperValue: 80,
   ...defaultProps,
+  labelRotation: 0,
   width: 1200,
 };
 

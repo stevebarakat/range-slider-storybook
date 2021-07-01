@@ -62,9 +62,9 @@ function App() {
         gap: "30px",
         width: "100%"
       }}>
-        {/* <Container>
+        <Container>
           <VerticalRangeSlider
-            min={0}
+            min={-10000}
             max={10000}
             decimals={0}
             step={1000}
@@ -73,23 +73,29 @@ function App() {
             labelRotation={14}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
-            height="800"
+            height={800}
           />
         </Container>
         <Container>
           <DualVerticalRangeSlider
+            initialLowerValue={20}
+            initialUpperValue={80}
             min={0}
-            max={10000}
+            max={100}
             decimals={0}
-            step={1000}
+            step={10}
             showTicks={true}
             showLabel={true}
-            labelRotation={14}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
-            height="800"
+            height={800}
+            customLabels={[
+              { 0: "low" },
+              { 50: "medium" },
+              { 100: "high" }
+            ]}
           />
-        </Container> */}
+        </Container>
         {/* <Container>
           <DualVerticalRangeSlider
             min={0}

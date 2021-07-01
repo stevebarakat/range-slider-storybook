@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from "styled-components";
 import { defaultProps } from '../../shared/defaultProps';
@@ -14,13 +14,6 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-function calcSpace(max, min, height) {
-  const diff = min - max;
-  const showTicks = height / 50;
-  return diff / showTicks;
-};
-;
-
 const DualVerticalRangeSlider = ({
   initialLowerValue,
   initialUpperValue,
@@ -34,7 +27,6 @@ const DualVerticalRangeSlider = ({
   showLabel,
   prefix,
   suffix,
-  labelRotation,
   primaryColorLight,
   primaryColor,
   height,
@@ -47,57 +39,83 @@ const DualVerticalRangeSlider = ({
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperFocused, setUpperFocused] = useState(true);
   const [lowerFocused, setLowerFocused] = useState(true);
-  const [progressFocused, setProgressFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState("");
-  const [tickWidth, setTickWidth] = useState("");
-  focusColor = primaryColor;
-  blurColor = primaryColorLight;
-  newValue1 = Number(((upperVal - min) * 100) / (max - min));
+  const [maxLabelLength, setMaxLabelLength] = useState(0);
   newPosition1 = 10 - newValue1 * 0.2;
-  newValue2 = Number(((lowerVal - min) * 100) / (max - min));
   newPosition2 = 10 - newValue2 * 0.2;
 
-  useLayoutEffect(() => {
-    showTicks &&
-      setTickWidth(
-        tickEl.current.clientHeight
-      );
-    setOutputWidth(outputEl.current.clientHeight);
-  }, [showTicks]);
+  focusColor = primaryColor;
+  blurColor = primaryColorLight;
 
-  const space = calcSpace(min, max, height);
+  useEffect(() => {
+    const tickList = tickEl.current.children;
+    let labelList = [];
+    for (let i = 0; i < tickList.length; i++) {
+      labelList.push(tickList[i].firstChild.innerText.length);
+    }
+    console.log(Math.max(...labelList));
+    setMaxLabelLength(Math.max(...labelList));
+    setOutputWidth(outputEl.current.clientHeight);
+  }, [min, max, initialLowerValue, initialUpperValue]);
+
+
+  newValue1 = Number(
+    ((lowerVal - min) * 100) /
+    (max - min)
+  );
+  newPosition1 = 10 - newValue1 * 0.2;
+
+  newValue2 = Number(
+    ((upperVal - min) * 100) /
+    (max - min)
+  );
+  newPosition2 = 10 - newValue2 * 0.2;
 
   let markers = [];
-  if (showTicks) {
-    for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
-      const labelLength = i.toString().length;
-      markers.push(
-        <Tick
-          length={labelLength}
-          key={i}
-        >
-          <div ref={tickEl} >
-            {showLabel && prefix + numberWithCommas(parseInt(i, 10).toFixed(decimals)) + " " + suffix}
-          </div>
-        </Tick>
-      );
-    }
-  }
-  const marks = markers.map((marker) => marker);
 
-  function handleKeyPress(e) {
-    switch (e.keyCode) {
-      case 27: //Esc
-        lowerRange.current.blur();
-        upperRange.current.blur();
-        return;
-      default:
-        return null;
+  if (customLabels.length !== 0) {
+    if (step > 0) {
+      for (let i = min; i <= max; i += parseInt(step, 10)) {
+        let customTickText = null;
+        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        customLabels.map(label => {
+          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+            customTickText = Object.values(label);
+          }
+          return null;
+        });
+
+        markers.push(
+          <Tick
+            key={i}
+            maxLabelLength={maxLabelLength}
+            showLabel={showLabel}
+          >
+            {showLabel && <div>{customTickText}</div>}
+          </Tick>
+        );
+      }
     }
-  }
+  } else {
+    if (step > 0) {
+      for (let i = min; i <= max; i += parseInt(step, 10)) {
+        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        markers.push(
+          Tick && <Tick
+            key={i}
+            maxLabelLength={maxLabelLength}
+          >
+            {showLabel && <div ref={tickEl}>{tickText}</div>}
+          </Tick>
+        );
+      }
+    }
+  };
+
+  const marks = markers.map(marker => marker);
 
   //If the upper value slider is LESS THAN the lower value slider.
-  if (upperVal < lowerVal) {
+  if (upperVal > lowerVal) {
     //Set lower slider value to equal the upper value slider.
     setLowerVal(parseFloat(upperVal));
     //If the lower value slider equals its set minimum.
@@ -107,7 +125,7 @@ const DualVerticalRangeSlider = ({
     }
   };
   //If the lower value slider is GREATER THAN the upper value slider minus one.
-  if (lowerVal > upperVal - 1) {
+  if (lowerVal < upperVal - 1) {
     //Set the upper slider value equal to the lower value slider.
     setUpperVal(parseFloat(lowerVal));
     //If the upper value slider equals its set maximum.
@@ -121,21 +139,36 @@ const DualVerticalRangeSlider = ({
     <RangeWrapWrap
       outputWidth={outputWidth}
       showTicks={showTicks}
-      tickWidth={tickWidth}
       heightVal={height}
+      maxLabelLength={maxLabelLength}
     >
       <RangeWrap
         outputWidth={outputWidth}
         showTicks={showTicks}
-        tickWidth={tickWidth}
         heightVal={height}
+        maxLabelLength={maxLabelLength}
       >
         <Progress
-          focused={progressFocused}
-        ></Progress>
+          style={{
+            background: lowerFocused || upperFocused ?
+              `-webkit-linear-gradient(left,  
+              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${focusColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+              :
+              `-webkit-linear-gradient(left,  
+              ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${blurColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
+              ${blurColor} ${`calc(${newValue1}% + ${newPosition1}px)`},
+              ${whiteColor} ${`calc(${newValue1}% + ${newPosition1}px)`})`
+          }}
+        />
+
+        {/* UPPER RANGE */}
         <RangeOutput
           ref={outputEl}
-          focused={progressFocused}
+          focused={lowerFocused || upperFocused}
           className="disable-select"
           style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
@@ -150,21 +183,20 @@ const DualVerticalRangeSlider = ({
           step={step}
           onFocus={() => {
             setUpperFocused(true);
-            setProgressFocused(true);
           }}
-          onBlur={() => setProgressFocused(false)}
           onInput={(e) => {
             setUpperVal(e.target.valueAsNumber);
           }}
-          onKeyDown={(e) => handleKeyPress(e)}
           focused={upperFocused}
           className="disable-select"
           style={
             upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }
           }
         />
+
+        {/* LOWER RANGE */}
         <RangeOutput
-          focused={progressFocused}
+          focused={lowerFocused || upperFocused}
           className="disable-select"
           style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
@@ -179,20 +211,19 @@ const DualVerticalRangeSlider = ({
           step={step}
           onFocus={() => {
             setLowerFocused(true);
-            setProgressFocused(true);
           }}
-          onBlur={() => setProgressFocused(false)}
           onInput={(e) => {
             setLowerVal(e.target.valueAsNumber);
           }}
-          onKeyDown={(e) => handleKeyPress(e)}
           focused={lowerFocused}
           className="disable-select"
           style={
             lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }
           }
         />
-        {showTicks && <Ticks>{marks}</Ticks>}
+
+
+        {showTicks && <Ticks ref={tickEl}>{marks}</Ticks>}
       </RangeWrap>
     </RangeWrapWrap>
   );
@@ -205,9 +236,13 @@ export default DualVerticalRangeSlider;
 
 DualVerticalRangeSlider.propTypes = {
   /**
-    The initial value.
+    The initial lower value.
   */
-  initialValue: PropTypes.number.isRequired,
+  initialLowerValue: PropTypes.number.isRequired,
+  /**
+  The initial upper value.
+*/
+  initialUpperValue: PropTypes.number.isRequired,
   /**
     The minimum value.
   */
@@ -249,10 +284,6 @@ DualVerticalRangeSlider.propTypes = {
   */
   suffix: PropTypes.string,
   /**
-    The amount in degrees to rotate the labels.
-  */
-  labelRotation: PropTypes.number,
-  /**
     The focus color. 
   */
   primaryColorLight: PropTypes.string,
@@ -279,18 +310,19 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrapWrap = styled.div`
+  text-align: ${p => console.log(p.outputWidth)};
   width: ${p => p.showTicks ?
-    p.outputWidth + p.tickWidth + 65 + "px" :
-    p.outputWidth + 60 + "px"
+    `calc(${p.maxLabelLength}em + ${p.outputWidth}px)` :
+    `${p.outputWidth} + 60 + px`
   };
   border: 1px dotted red;
 `;
 const RangeWrap = styled.div`
-  width: ${(p) => p.heightVal + "px"};
-  margin-left: ${(p) => (p.showTicks && p.tickWidth + "px")};
+  width: ${p => p.heightVal + "px"};
+  margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
   transform: rotate(270deg);
   transform-origin: top left;
-  margin-top: ${(p) => p.heightVal + "px"};
+  margin-top: ${p => p.heightVal + "px"};
   left: 0;
   top: 0;
   font-family: sans-serif;
@@ -304,7 +336,6 @@ const RangeOutput = styled.output`
   margin-top: 3.5rem;
   text-align: center;
   font-size: 1rem;
-  transition: all 0.15s ease-out;
   user-select: none;
   span{
     writing-mode: vertical-lr;
@@ -320,11 +351,6 @@ const RangeOutput = styled.output`
 
 const Progress = styled.div`
   z-index: 0;
-  background: ${(p) => p.focused
-    ? `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
-    (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
-    : `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
-    (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`};
   border-radius: 15px;
   width: 100%;
   display: block;
@@ -359,7 +385,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     -webkit-appearance: none;
     z-index: 50;
-    background: ${(p) =>
+    background: ${p =>
     p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
@@ -376,7 +402,7 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     appearance: none;
     z-index: 50;
-    background: ${(p) =>
+    background: ${p =>
     p.focused
       ? `-moz-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-moz-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
@@ -384,20 +410,18 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 
   &:focus::-webkit-slider-thumb {
     cursor: grabbing;
-    background: ${(p) =>
+    background: ${p =>
     !p.focused
       ? `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-    transition: all 0.15s ease-out;
   }
 
   &:focus::-moz-range-thumb {
     cursor: grabbing;
-    background: ${(p) =>
+    background: ${p =>
     !p.focused
       ? `-moz-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)`
       : `-moz-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`};
-    transition: all 0.15s ease-out;
   }
 `;
 
@@ -405,8 +429,8 @@ const Ticks = styled.div`
   cursor: default;
   display: flex;
   justify-content: space-between;
-  margin-right: 1rem;
-  margin-left: 1rem;
+  margin-right: 1.2rem;
+  margin-left: 1.2rem;
   color: ${blackColor};
 `;
 
@@ -420,7 +444,7 @@ const Tick = styled.div`
   height: 5px;
   div {
     writing-mode: vertical-rl;
-    margin-left: 0.4rem;
+    margin-left: 0.65em;
     margin-bottom: 0.5rem;
     white-space: nowrap;
   }

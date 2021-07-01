@@ -226,8 +226,9 @@ RangeSlider.propTypes = {
 
 RangeSlider.defaultProps = {
   initialValue: 50,
-  width: 1200,
   ...defaultProps,
+  labelRotation: 0,
+  width: 1200,
 };
 
 
