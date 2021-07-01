@@ -282,9 +282,9 @@ const RangeOutput = styled.output`
   user-select: none;
   position: absolute;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 3.75rem;
-  text-align: center;
+  margin-left: -1rem;
   span{
     writing-mode: vertical-lr;
     border: ${p => p.focused ? `1px solid ${focusColor}` : `1px solid ${blackColor}`};
@@ -325,8 +325,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     cursor: grab;
     pointer-events: all;
     position: relative;
-    width: 38px;
-    height: 38px;
+    width: 3em;
+    height: 3em;
     border: 1px solid ${blackColor};
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
@@ -340,8 +340,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     cursor: grab;
     pointer-events: all;
     position: relative;
-    height: 38px;
-    width: 38px;
+    height: 3em;
+    width: 3em;
     border: 1px solid ${blackColor};
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
