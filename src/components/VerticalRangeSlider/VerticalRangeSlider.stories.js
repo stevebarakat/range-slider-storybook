@@ -1,4 +1,5 @@
 import VerticalRangeSlider from './VerticalRangeSlider';
+import defaultProps from '../../shared/defaultProps'
 
 export default {
   component: VerticalRangeSlider,
@@ -9,17 +10,4 @@ const Template = args => <VerticalRangeSlider {...args} />;
 
 export const Default = Template.bind({});
 
-Default.args = {
-  min: 1,
-  max: 11,
-  decimals: 0,
-  step: "space-evenly",
-  ticks: true,
-  tickLabel: false,
-  prefix: "",
-  suffix: "",
-  labelRotate: "35",
-  primaryColor: "hsl(196, 100%, 48%)",
-  primaryColorLight: "hsl(196, 100%, 70%)",
-  height: "500",
-}
+Default.args = defaultProps;

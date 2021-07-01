@@ -16,17 +16,17 @@ function App() {
             max={100}
             decimals={0}
             step={10}
-            ticks={true}
+            showTicks={true}
             snap={true}
-            tickLabels={[
+            customLabels={[
               { 0: "low" },
               { 50: "medium" },
               { 100: "high" }
             ]}
-            tickLabel={true}
+            showLabel={true}
             prefix=""
             suffix=""
-            labelRotate={0}
+            labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
@@ -38,16 +38,16 @@ function App() {
             max={100}
             decimals={0}
             step={10}
-            ticks={true}
-            tickLabels={[
+            showTicks={true}
+            customLabels={[
               { 0: "low" },
               { 50: "medium" },
               { 100: "high" }
             ]}
-            tickLabel={true}
+            showLabel={true}
             prefix=""
             suffix=""
-            labelRotate={0}
+            labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
@@ -68,9 +68,9 @@ function App() {
             max={10000}
             decimals={0}
             step={1000}
-            ticks={true}
-            tickLabel={true}
-            labelRotate={14}
+            showTicks={true}
+            showLabel={true}
+            labelRotation={14}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             height="800"
@@ -82,9 +82,9 @@ function App() {
             max={10000}
             decimals={0}
             step={1000}
-            ticks={true}
-            tickLabel={true}
-            labelRotate={14}
+            showTicks={true}
+            showLabel={true}
+            labelRotation={14}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             height="800"
@@ -96,9 +96,9 @@ function App() {
             max={10}
             decimals={0}
             step={1}
-            ticks={true}
-            tickLabel={true}
-            labelRotate={14}
+            showTicks={true}
+            showLabel={true}
+            labelRotation={14}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             height="800px"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import defaultProps from '../../shared/defaultProps'
 
 let focusColor = "";
 let blurColor = "";
@@ -16,16 +17,16 @@ const RangeSlider = ({
   max,
   decimals,
   step,
-  ticks,
+  showTicks,
   snap,
-  tickLabels,
-  tickLabel,
+  customLabels,
+  showLabel,
   prefix,
   suffix,
-  labelRotate,
+  labelRotation,
   primaryColorLight,
   primaryColor,
-  width,
+  width
 }) => {
   const rangeEl = useRef(null);
   const [value, setValue] = useState(initialValue);
@@ -43,13 +44,13 @@ const RangeSlider = ({
 
   let markers = [];
 
-  if (tickLabels.length !== 0) {
+  if (customLabels.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         let labelLength = tickText.toString().length;
-        tickLabels.map(label => {
+        customLabels.map(label => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
             customTickText = Object.values(label);
           }
@@ -60,10 +61,10 @@ const RangeSlider = ({
           <Tick
             key={i}
             length={labelLength}
-            tickLabel={tickLabel}
-            labelRotate={parseInt(labelRotate, 10)}
+            showLabel={showLabel}
+            labelRotation={parseInt(labelRotation, 10)}
           >
-            {tickLabel && <div>{customTickText}</div>}
+            {showLabel && <div>{customTickText}</div>}
           </Tick>
         );
       }
@@ -77,9 +78,9 @@ const RangeSlider = ({
           Tick && <Tick
             key={i}
             length={labelLength}
-            labelRotate={parseInt(labelRotate, 10)}
+            labelRotation={parseInt(labelRotation, 10)}
           >
-            {tickLabel && <div>{tickText}</div>}
+            {showLabel && <div>{tickText}</div>}
           </Tick>
         );
       }
@@ -151,7 +152,7 @@ const RangeSlider = ({
           }}
       />
       {console.log(marks)}
-      {ticks ? <Ticks>{marks}</Ticks> : null}
+      {showTicks ? <Ticks>{marks}</Ticks> : null}
     </RangeWrap>
   );
 };
@@ -160,9 +161,7 @@ export default RangeSlider;
 
 
 
-
-
-// Proptypes
+// PROPTYPES
 
 RangeSlider.propTypes = {
   /**
@@ -174,75 +173,66 @@ RangeSlider.propTypes = {
   */
   min: PropTypes.number.isRequired,
   /**
-  The maximum value. 
-*/
+    The maximum value. 
+  */
   max: PropTypes.number.isRequired,
   /**
-  The amount of decimal points to be rounded to. 
-*/
+    The amount of decimal points to be rounded to. 
+  */
   decimals: PropTypes.number,
   /**
-*/
+    The invterval between ticks.
+  */
   step: PropTypes.number,
   /**
-  description 
-*/
-  ticks: PropTypes.bool,
+    Show or hide tick  marks.
+  */
+  showTicks: PropTypes.bool,
   /**
-    description 
+    Snap to ticks or scroll smoothly.
   */
   snap: PropTypes.bool,
   /**
-  description 
-*/
-  tickLabels: PropTypes.arrayOf(PropTypes.object),
-  /**
-    description 
+    For making custom labels. 
   */
-  tickLabel: PropTypes.bool,
+  customLabels: PropTypes.arrayOf(PropTypes.object),
   /**
-    description 
+    Show or hide labels.
+  */
+  showLabel: PropTypes.bool,
+  /**
+    Optional text displayed before value. 
   */
   prefix: PropTypes.string,
   /**
-    description 
+    Optional text displayed after value.
   */
   suffix: PropTypes.string,
   /**
-    description 
+    The amount in degrees to rotate the labels.
   */
-  labelRotate: PropTypes.number,
+  labelRotation: PropTypes.number,
   /**
-    description 
+    The focus color. 
   */
   primaryColorLight: PropTypes.string,
   /**
-  description 
-*/
+    The blur color. 
+  */
   primaryColor: PropTypes.string,
   /**
-  description 
-*/
+    The width of the range slider.
+  */
   width: PropTypes.number,
-  /**
-  description 
-*/
 };
 
 RangeSlider.defaultProps = {
-  min: 0,
-  max: 100,
-  decimals: 0,
-  step: 0,
-  ticks: false,
-  tickLabel: false,
-  prefix: "",
-  suffix: "",
-  labelRotate: 45,
-  primaryColorLight: "grey",
-  primaryColor: "black",
-  width: "250",
+  initialValue: 50,
+  width: 1200,
+  ...defaultProps,
 };
+
+
 
 // Styles
 
@@ -369,8 +359,8 @@ const Tick = styled.div`
       color: ${blackColor};
       transform-origin: top center;
       margin-top: 0.5rem;
-      margin-left: ${p => p.labelRotate < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
-      transform: ${p => `rotate(${p.labelRotate}deg)`};
+      margin-left: ${p => p.labelRotation < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
+      transform: ${p => `rotate(${p.labelRotation}deg)`};
       white-space: nowrap;
     }
 `;

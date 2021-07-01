@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
+import PropTypes from 'prop-types';
 import styled from "styled-components";
 
 let newValue1 = "";
@@ -14,23 +15,27 @@ function numberWithCommas(x) {
 
 function calcSpace(max, min, height) {
   const diff = min - max;
-  const ticks = height / 50;
-  return diff / ticks;
+  const showTicks = height / 50;
+  return diff / showTicks;
 };
 ;
 
 const DualVerticalRangeSlider = ({
-  min = 0,
-  max = 100,
-  decimals = 0,
-  step = 0,
-  ticks = true,
-  tickLabel = false,
-  height = "250px",
-  prefix = "",
-  suffix = "",
-  primaryColor = "black",
+  initialValue,
+  min,
+  max,
+  decimals,
+  step,
+  showTicks,
+  snap,
+  customLabels,
+  showLabel,
+  prefix,
+  suffix,
+  labelRotation,
   primaryColorLight,
+  primaryColor,
+  height,
 }) => {
   const lowerRange = useRef(null);
   const upperRange = useRef(null);
@@ -51,17 +56,17 @@ const DualVerticalRangeSlider = ({
   newPosition2 = 10 - newValue2 * 0.2;
 
   useLayoutEffect(() => {
-    ticks &&
+    showTicks &&
       setTickWidth(
         tickEl.current.clientHeight
       );
     setOutputWidth(outputEl.current.clientHeight);
-  }, [ticks]);
+  }, [showTicks]);
 
   const space = calcSpace(min, max, height);
 
   let markers = [];
-  if (ticks) {
+  if (showTicks) {
     for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
       const labelLength = i.toString().length;
       markers.push(
@@ -70,7 +75,7 @@ const DualVerticalRangeSlider = ({
           key={i}
         >
           <div ref={tickEl} >
-            {tickLabel && prefix + numberWithCommas(parseInt(i, 10).toFixed(decimals)) + " " + suffix}
+            {showLabel && prefix + numberWithCommas(parseInt(i, 10).toFixed(decimals)) + " " + suffix}
           </div>
         </Tick>
       );
@@ -113,13 +118,13 @@ const DualVerticalRangeSlider = ({
   return (
     <RangeWrapWrap
       outputWidth={outputWidth}
-      ticks={ticks}
+      showTicks={showTicks}
       tickWidth={tickWidth}
       heightVal={height}
     >
       <RangeWrap
         outputWidth={outputWidth}
-        ticks={ticks}
+        showTicks={showTicks}
         tickWidth={tickWidth}
         heightVal={height}
       >
@@ -185,7 +190,7 @@ const DualVerticalRangeSlider = ({
             lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }
           }
         />
-        {ticks && <Ticks>{marks}</Ticks>}
+        {showTicks && <Ticks>{marks}</Ticks>}
       </RangeWrap>
     </RangeWrapWrap>
   );
@@ -193,11 +198,95 @@ const DualVerticalRangeSlider = ({
 
 export default DualVerticalRangeSlider;
 
+
+// PROPTYPES
+
+DualVerticalRangeSlider.propTypes = {
+  /**
+    The initial value.
+  */
+  initialValue: PropTypes.number.isRequired,
+  /**
+    The minimum value.
+  */
+  min: PropTypes.number.isRequired,
+  /**
+    The maximum value. 
+  */
+  max: PropTypes.number.isRequired,
+  /**
+    The amount of decimal points to be rounded to. 
+  */
+  decimals: PropTypes.number,
+  /**
+    The invterval between ticks.
+  */
+  step: PropTypes.number,
+  /**
+    Show or hide tick  marks.
+  */
+  showTicks: PropTypes.bool,
+  /**
+    Snap to ticks or scroll smoothly.
+  */
+  snap: PropTypes.bool,
+  /**
+    For making custom labels. 
+  */
+  customLabels: PropTypes.arrayOf(PropTypes.object),
+  /**
+    Show or hide labels.
+  */
+  showLabel: PropTypes.bool,
+  /**
+    Optional text displayed before value. 
+  */
+  prefix: PropTypes.string,
+  /**
+    Optional text displayed after value.
+  */
+  suffix: PropTypes.string,
+  /**
+    The amount in degrees to rotate the labels.
+  */
+  labelRotation: PropTypes.number,
+  /**
+    The focus color. 
+  */
+  primaryColorLight: PropTypes.string,
+  /**
+    The blur color. 
+  */
+  primaryColor: PropTypes.string,
+  /**
+    The width of the range slider.
+  */
+  height: PropTypes.number,
+};
+
+DualVerticalRangeSlider.defaultProps = {
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 0,
+  showTicks: false,
+  showLabel: false,
+  prefix: "",
+  suffix: "",
+  labelRotation: 45,
+  primaryColorLight: "grey",
+  primaryColor: "black",
+  width: "400",
+};
+
+
+
+// STYLES
 const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrapWrap = styled.div`
-  width: ${p => p.ticks ?
+  width: ${p => p.showTicks ?
     p.outputWidth + p.tickWidth + 65 + "px" :
     p.outputWidth + 60 + "px"
   };
@@ -205,7 +294,7 @@ const RangeWrapWrap = styled.div`
 `;
 const RangeWrap = styled.div`
   width: ${(p) => p.heightVal + "px"};
-  margin-left: ${(p) => (p.ticks && p.tickWidth + "px")};
+  margin-left: ${(p) => (p.showTicks && p.tickWidth + "px")};
   transform: rotate(270deg);
   transform-origin: top left;
   margin-top: ${(p) => p.heightVal + "px"};

@@ -1,4 +1,5 @@
 import React, { useState, useLayoutEffect, useRef } from "react";
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 let focusColor = "";
@@ -13,12 +14,27 @@ function numberWithCommas(x) {
 
 function calcSpace(max, min, height) {
   const diff = min - max;
-  const ticks = height / 50;
-  return diff / ticks;
+  const showTicks = height / 50;
+  return diff / showTicks;
 };
 
-const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickLabel = false, ticks,
-  height = "250", prefix = "", suffix = "", primaryColor = "black", primaryColorLight }) => {
+const VerticalRangeSlider = ({
+  initialValue,
+  min,
+  max,
+  decimals,
+  step,
+  showTicks,
+  snap,
+  customLabels,
+  showLabel,
+  prefix,
+  suffix,
+  labelRotation,
+  primaryColorLight,
+  primaryColor,
+  height,
+}) => {
   const rangeEl = useRef(null);
   const outputEl = useRef(null);
   const tickEl = useRef(null);
@@ -42,7 +58,7 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
 
   const space = calcSpace(min, max, height);
 
-  if (ticks) {
+  if (showTicks) {
     let markers = [];
     for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
       const labelLength = i.toString().length;
@@ -52,7 +68,7 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
           key={i}
         >
           <div ref={tickEl} >
-            {tickLabel && prefix + numberWithCommas(i.toFixed(decimals)) + " " + suffix}
+            {showLabel && prefix + numberWithCommas(i.toFixed(decimals)) + " " + suffix}
           </div>
         </Tick>
       );
@@ -92,7 +108,7 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
   return (
     <RangeWrapWrap
       ref={wrapEl}
-      ticks
+      showTicks
       tickWidth={tickWidth}
       outputWidth={outputWidth}
     >
@@ -111,7 +127,6 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
         <StyledRangeSlider
           tabIndex={0}
           heightVal={300}
-          list="tickmamrks"
           ref={rangeEl}
           min={min}
           max={max}
@@ -144,12 +159,93 @@ const VerticalRangeSlider = ({ min = 0, max = 100, decimals = 0, step = 0, tickL
 
 export default VerticalRangeSlider;
 
+// PROPTYPES
+
+VerticalRangeSlider.propTypes = {
+  /**
+    The initial value.
+  */
+  initialValue: PropTypes.number.isRequired,
+  /**
+    The minimum value.
+  */
+  min: PropTypes.number.isRequired,
+  /**
+    The maximum value. 
+  */
+  max: PropTypes.number.isRequired,
+  /**
+    The amount of decimal points to be rounded to. 
+  */
+  decimals: PropTypes.number,
+  /**
+    The invterval between ticks.
+  */
+  step: PropTypes.number,
+  /**
+    Show or hide tick  marks.
+  */
+  showTicks: PropTypes.bool,
+  /**
+    Snap to ticks or scroll smoothly.
+  */
+  snap: PropTypes.bool,
+  /**
+    For making custom labels. 
+  */
+  customLabels: PropTypes.arrayOf(PropTypes.object),
+  /**
+    Show or hide labels.
+  */
+  showLabel: PropTypes.bool,
+  /**
+    Optional text displayed before value. 
+  */
+  prefix: PropTypes.string,
+  /**
+    Optional text displayed after value.
+  */
+  suffix: PropTypes.string,
+  /**
+    The amount in degrees to rotate the labels.
+  */
+  labelRotation: PropTypes.number,
+  /**
+    The focus color. 
+  */
+  primaryColorLight: PropTypes.string,
+  /**
+    The blur color. 
+  */
+  primaryColor: PropTypes.string,
+  /**
+    The width of the range slider.
+  */
+  height: PropTypes.number,
+};
+
+VerticalRangeSlider.defaultProps = {
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 0,
+  showTicks: false,
+  showLabel: false,
+  prefix: "",
+  suffix: "",
+  labelRotation: 45,
+  primaryColorLight: "grey",
+  primaryColor: "black",
+  width: "400",
+};
+
+
 
 const whiteColor = 'white';
 const blackColor = "#999";
 
 const RangeWrapWrap = styled.div`
-  width: ${p => p.ticks ?
+  width: ${p => p.showTicks ?
     p.outputWidth + p.tickWidth + 65 + "px" :
     p.outputWidth + 60 + "px"
   };
