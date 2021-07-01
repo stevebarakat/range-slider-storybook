@@ -31,7 +31,7 @@ function App() {
             width={1200}
           />
         </Container>
-        <Container>
+        {/* <Container>
           <DualRangeSlider
             min={0}
             max={100}
@@ -51,7 +51,7 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
           />
-        </Container>
+        </Container> */}
       </div>
       <div style={{
         display: "flex",
