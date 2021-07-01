@@ -1,22 +1,13 @@
-import React, { useState, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { defaultProps } from '../../shared/defaultProps';
 
 let focusColor = "";
 let blurColor = "";
-let newValue = "";
-let newPosition = "";
-let marks = [];
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-};
-
-function calcSpace(max, min, height) {
-  const diff = min - max;
-  const showTicks = height / 50;
-  return diff / showTicks;
 };
 
 const VerticalRangeSlider = ({
@@ -41,42 +32,73 @@ const VerticalRangeSlider = ({
   const tickEl = useRef(null);
   const wrapEl = useRef(null);
   const [value, setValue] = useState(min + max);
+  const [newValue, setNewValue] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState('');
-  const [tickWidth, setTickWidth] = useState('');
+  const [maxLabelLength, setMaxLabelLength] = useState(0);
   const factor = (max - min) / 10;
   focusColor = primaryColor;
   blurColor = primaryColorLight;
-  newValue = Number((value - min) * 100) / (max - min);
-  newPosition = Number(10 - newValue * 0.2);
+  const newPosition = Number(10 - newValue * 0.2);
 
-  useLayoutEffect(() => {
-    rangeEl.current.focus();
-    setTickWidth(tickEl.current.clientHeight);
-    setOutputWidth(outputEl.current.clientHeight);
-    setTimeout(() => setValue((max + min) / 2));
-  }, [min, max]);
-
-  const space = calcSpace(min, max, height);
-
-  if (showTicks) {
-    let markers = [];
-    for (let i = min; i <= max; i += step === "space-evenly" ? space : parseInt(step, 10)) {
-      const labelLength = i.toString().length;
-      markers.push(
-        <Tick
-          length={labelLength}
-          key={i}
-        >
-          <div ref={tickEl} >
-            {showLabel && prefix + numberWithCommas(i.toFixed(decimals)) + " " + suffix}
-          </div>
-        </Tick>
-      );
+  useEffect(() => {
+    setNewValue(Number(((value - min) * 100) / (max - min)));
+    const tickList = tickEl.current.children;
+    let labelList = [];
+    for (let i = 0; i < tickList.length; i++) {
+      labelList.push(tickList[i].firstChild.innerText.length);
     }
-    marks = markers.map((marker) => marker);
+    console.log(Math.max(...labelList));
+    setMaxLabelLength(Math.max(...labelList));
+    setOutputWidth(outputEl.current.clientHeight);
+  }, [min, max, value]);
+
+  let markers = [];
+
+  if (customLabels.length !== 0) {
+    if (step > 0) {
+      for (let i = min; i <= max; i += parseInt(step, 10)) {
+        let customTickText = null;
+        let tickText = numberWithCommas(i.toFixed(decimals));
+        let labelLength = tickText.toString().length;
+        customLabels.map(label => {
+          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+            customTickText = Object.values(label);
+          }
+          return null;
+        });
+        if (customTickText !== null) labelLength = customTickText[0].length;
+        markers.push(
+          <Tick
+            key={i}
+            length={labelLength}
+            showLabel={showLabel}
+            labelRotation={parseInt(labelRotation, 10)}
+          >
+            {showLabel && <div>{customTickText}</div>}
+          </Tick>
+        );
+      }
+    }
+  } else {
+    if (step > 0) {
+      for (let i = min; i <= max; i += parseInt(step, 10)) {
+        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        const labelLength = tickText.toString().length;
+        markers.push(
+          Tick && <Tick
+            key={i}
+            length={labelLength}
+            labelRotation={parseInt(labelRotation, 10)}
+          >
+            {showLabel && <div>{tickText}</div>}
+          </Tick>
+        );
+      }
+    }
   }
 
+  const marks = markers.map(marker => marker);
 
   function handleKeyPress(e) {
     rangeEl.current.focus();
@@ -110,19 +132,17 @@ const VerticalRangeSlider = ({
     <RangeWrapWrap
       ref={wrapEl}
       showTicks
-      tickWidth={tickWidth}
       outputWidth={outputWidth}
+      maxLabelLength={maxLabelLength}
     >
       <RangeWrap
         heightVal={height}
-        tickWidth={tickWidth}
       >
         <RangeOutput
           ref={outputEl}
           focused={isFocused}
           className="disable-select"
-          style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}
-        >
+          style={{ left: `${newValue}%` }}>
           <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
@@ -131,7 +151,7 @@ const VerticalRangeSlider = ({
           ref={rangeEl}
           min={min}
           max={max}
-          step={space}
+          step={step}
           value={value > max ? max : value.toFixed(decimals)}
           onClick={() => rangeEl.current.focus()}
           onInput={(e) => { setValue(e.target.valueAsNumber); }}
@@ -150,7 +170,7 @@ const VerticalRangeSlider = ({
               (${newPosition / 10}rem)),${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)),${whiteColor} 100%)`
           }}
         />
-        <Ticks>
+        <Ticks ref={tickEl}>
           {marks}
         </Ticks>
       </RangeWrap>
@@ -236,16 +256,17 @@ const whiteColor = 'white';
 const blackColor = "#999";
 
 const RangeWrapWrap = styled.div`
+  text-align: ${p => console.log(p.maxLabelLength, p.outputWidth)};
   width: ${p => p.showTicks ?
-    p.outputWidth + p.tickWidth + 65 + "px" :
-    p.outputWidth + 60 + "px"
+    p.maxLabelLength + p.outputWidth + 125 + "px" :
+    p.maxLabelLength + 60 + "px"
   };
   border: 1px dotted red;
 `;
 
 const RangeWrap = styled.div`
   width: ${p => p.heightVal + "px"};
-  margin-left: ${p => (p.tickWidth) + "px"};
+  margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
   transform: rotate(270deg);
   transform-origin: top left;
   margin-top: ${p => p.heightVal + "px"};

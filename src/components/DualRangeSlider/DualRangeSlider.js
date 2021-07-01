@@ -60,7 +60,7 @@ const DualRangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        let tickText = numberWithCommas(i.toFixed(decimals));
         let labelLength = tickText.toString().length;
         customLabels.map(label => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
@@ -273,7 +273,7 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrap = styled.div`
-  /* border: 1px dotted red; */
+  border: 1px dotted red;
   position: relative;
   height: 7.5rem;
   padding-top: 3.75rem;
@@ -283,6 +283,8 @@ const RangeWrap = styled.div`
 `;
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
+  pointer-events: none;
+  cursor: default;
   appearance: none;
   position: absolute;
   width: 100%;

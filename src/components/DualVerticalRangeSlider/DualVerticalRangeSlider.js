@@ -77,7 +77,7 @@ const DualVerticalRangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        let tickText = numberWithCommas(i.toFixed(decimals));
         customLabels.map(label => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
             customTickText = Object.values(label);
@@ -171,7 +171,7 @@ const DualVerticalRangeSlider = ({
           focused={lowerFocused || upperFocused}
           className="disable-select"
           style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
-          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
+          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
           tabIndex="0"
@@ -199,7 +199,7 @@ const DualVerticalRangeSlider = ({
           focused={lowerFocused || upperFocused}
           className="disable-select"
           style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
-          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
+          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
           tabIndex="0"
@@ -312,8 +312,8 @@ const whiteColor = "white";
 const RangeWrapWrap = styled.div`
   text-align: ${p => console.log(p.outputWidth)};
   width: ${p => p.showTicks ?
-    `calc(${p.maxLabelLength}em + ${p.outputWidth}px)` :
-    `${p.outputWidth} + 60 + px`
+    p.maxLabelLength + p.outputWidth + 125 + "px" :
+    p.maxLabelLength + 60 + "px"
   };
   border: 1px dotted red;
 `;
@@ -362,7 +362,8 @@ const Progress = styled.div`
   `;
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
-  cursor: pointer;
+  pointer-events: none;
+  cursor: default;
   appearance: none;
   position: absolute;
   width: 100%;

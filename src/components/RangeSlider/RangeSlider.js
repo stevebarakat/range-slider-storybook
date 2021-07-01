@@ -33,7 +33,6 @@ const RangeSlider = ({
   const [isFocused, setIsFocused] = useState(false);
   const factor = (max - min) / 10;
   const newPosition = 10 - newValue * 0.2;
-  // newValue = Number(((value - min) * 100) / (max - min));
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
@@ -47,7 +46,7 @@ const RangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
-        let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
+        let tickText = numberWithCommas(i.toFixed(decimals));
         let labelLength = tickText.toString().length;
         customLabels.map(label => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
