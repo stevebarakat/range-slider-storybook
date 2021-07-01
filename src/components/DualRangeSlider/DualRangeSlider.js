@@ -141,7 +141,7 @@ const DualRangeSlider = ({
           min={min}
           max={max}
           value={lowerVal}
-          step={step}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
           onFocus={() => setLowerFocused(true)}
           onBlur={() => setLowerFocused(false)}
           onInput={e => {
@@ -171,7 +171,7 @@ const DualRangeSlider = ({
           min={min}
           max={max}
           value={upperVal}
-          step={step}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
           onFocus={() => setUpperFocused(true)}
           onBlur={() => setUpperFocused(false)}
           onInput={e => {
