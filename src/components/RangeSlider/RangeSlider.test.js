@@ -1,23 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from '@testing-library/react';
 
-import { RangeSlider } from './RangeSlider';
+import { composeStories } from '@storybook/testing-react';
 
-/**
- * Description goes here...
- */
+import * as TaskListStories from './TaskList.stories'; //👈  Our stories imported here
 
-it('has a href attribute when rendering with linkWrapper', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(
-    <RangeSlider href="https://storybook.js.org/tutorials/" LinkWrapper={LinkWrapper}>
-      RangeSlider Text
-    </RangeSlider>,
-    div
-  );
+//👇 composeStories will process all information related to the component (e.g., args)
+const { WithPinnedTasks } = composeStories(TaskListStories);
 
-  expect(div.querySelector('a[href="https://storybook.js.org/tutorials/"]')).not.toBeNull();
-  expect(div.textContent).toEqual('RangeSlider Text');
+it('renders pinned tasks at the start of the list', () => {
+  const { container } = render(<WithPinnedTasks />);
 
-  ReactDOM.unmountComponentAtNode(div);
+  expect(
+    container.querySelector('.list-item:nth-child(1) input[value="Task 6 (pinned)"]')
+  ).not.toBe(null);
 });

@@ -88,15 +88,13 @@ const RangeSlider = ({
   const marks = markers.map(marker => marker);
 
   function handleKeyPress(e) {
-    rangeEl.current.focus();
-    console.log(e.key);
     // Check if modifier key is pressed
     const cmd = e.metaKey;
     const ctrl = e.ctrlKey;
 
     switch (e.keyCode) {
       case 27: //Esc
-        rangeEl.current.blur();
+        // rangeEl.current.blur();
         return;
       case 37: //Left
         (cmd || ctrl) && setValue(value - factor);

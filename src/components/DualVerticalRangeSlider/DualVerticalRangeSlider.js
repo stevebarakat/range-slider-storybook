@@ -39,6 +39,7 @@ const DualVerticalRangeSlider = ({
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperFocused, setUpperFocused] = useState(true);
   const [lowerFocused, setLowerFocused] = useState(true);
+  const [progressFocused, setProgressFocused] = useState(false);
   const [outputWidth, setOutputWidth] = useState("");
   const [maxLabelLength, setMaxLabelLength] = useState(0);
   newPosition1 = 10 - newValue1 * 0.2;
@@ -149,7 +150,7 @@ const DualVerticalRangeSlider = ({
       >
         <Progress
           style={{
-            background: lowerFocused || upperFocused ?
+            background: progressFocused ?
               `-webkit-linear-gradient(left,  
               ${whiteColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
               ${focusColor} ${`calc(${newValue2}% + ${newPosition2}px)`},
@@ -167,8 +168,7 @@ const DualVerticalRangeSlider = ({
         {/* UPPER RANGE */}
         <RangeOutput
           ref={outputEl}
-          focused={lowerFocused || upperFocused}
-          className="disable-select"
+          focused={progressFocused}
           style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
@@ -180,23 +180,20 @@ const DualVerticalRangeSlider = ({
           max={max}
           value={upperVal}
           step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          focused={upperFocused}
           onFocus={() => {
             setUpperFocused(true);
+            setProgressFocused(true);
           }}
+          onBlur={() => setProgressFocused(false)}
           onInput={(e) => {
             setUpperVal(e.target.valueAsNumber);
           }}
-          focused={upperFocused}
-          className="disable-select"
-          style={
-            upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }
-          }
         />
 
         {/* LOWER RANGE */}
         <RangeOutput
-          focused={lowerFocused || upperFocused}
-          className="disable-select"
+          focused={progressFocused}
           style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
@@ -208,17 +205,15 @@ const DualVerticalRangeSlider = ({
           max={max}
           value={lowerVal}
           step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          focused={lowerFocused}
           onFocus={() => {
             setLowerFocused(true);
+            setProgressFocused(true);
           }}
+          onBlur={() => setProgressFocused(false)}
           onInput={(e) => {
             setLowerVal(e.target.valueAsNumber);
           }}
-          focused={lowerFocused}
-          className="disable-select"
-          style={
-            lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }
-          }
         />
 
 
@@ -295,6 +290,14 @@ DualVerticalRangeSlider.propTypes = {
   */
   height: PropTypes.number,
 };
+
+DualVerticalRangeSlider.defaultProps = {
+  initialLowerValue: 20,
+  initialUpperValue: 80,
+  ...defaultProps,
+  height: 600,
+};
+
 
 // STYLES
 const blackColor = "#999";

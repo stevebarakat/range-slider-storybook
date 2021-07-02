@@ -13,7 +13,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const DualRangeSlider = ({
+const ClampSlider = ({
   initialLowerValue,
   initialUpperValue,
   min,
@@ -129,12 +129,17 @@ const DualRangeSlider = ({
   }
 
   return (
+    <>
+    <h4>Clampslider</h4>
     <RangeWrap style={{ width: width }}>
-      <Progress
-        focused={lowerFocused || upperFocused}
-      />
+        <Progress
+          focused={lowerFocused || upperFocused}
+          id="range-color"
+          className="range-color"
+        ></Progress>
 
       {/* LOWER RANGE */}
+      <>
         <RangeOutput
           focused={lowerFocused}
           style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
@@ -156,6 +161,7 @@ const DualRangeSlider = ({
             setLowerVal(e.target.valueAsNumber);
           }}
           focused={lowerFocused}
+        // style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
         />
 
         {/* UPPER RANGE */}
@@ -180,19 +186,22 @@ const DualRangeSlider = ({
             setUpperVal(parseFloat(e.target.value));
           }}
           focused={upperFocused}
+        // style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
         />
+      </>
       <Ticks>
         {marks}
       </Ticks>
     </RangeWrap>
+    </>
   );
 };
 
-export default DualRangeSlider;
+export default ClampSlider;
 
 // PROPTYPES
 
-DualRangeSlider.propTypes = {
+ClampSlider.propTypes = {
   /**
     The initial lower value.
   */
@@ -351,8 +360,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     margin-top: -2.5em;
     z-index: 50;
     background: ${p => !p.focused ?
-    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+  `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
+  `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
   };
 }
 `;
@@ -385,13 +394,13 @@ const Tick = styled.div`
   background: ${blackColor};
   margin-top: 2rem;
   margin-bottom: ${p => (p.length) + "ch"};
-  div{
-    width: 0;
-    color: ${blackColor};
-    transform-origin: top center;
-    margin-top: 0.5rem;
-    margin-left: ${p => p.labelRotation < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
-    transform: ${p => `rotate(${p.labelRotation}deg)`};
-    white-space: nowrap;
-  }
+    div{
+      width: 0;
+      color: ${blackColor};
+      transform-origin: top center;
+      margin-top: 0.5rem;
+      margin-left: ${p => p.labelRotation < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
+      transform: ${p => `rotate(${p.labelRotation}deg)`};
+      white-space: nowrap;
+    }
 `;
