@@ -35,11 +35,14 @@ const ClampSlider = ({
   const upperRange = useRef(null);
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperVal, setUpperVal] = useState(initialUpperValue);
+  const [trackFocused, setTrackFocused] = useState(false);
   const [lowerFocused, setLowerFocused] = useState(false);
   const [upperFocused, setUpperFocused] = useState(false);
   const [newLowerVal, setNewLowerVal] = useState(null);
   const [newUpperVal, setNewUpperVal] = useState(null);
-  const [distance, setDistance] = useState(null);
+  const [lowerDistance, setLowerDistance] = useState(null);
+  const [middleDistance, setMiddleDistance] = useState(null);
+  const [upperDistance, setUpperDistance] = useState(null);
   const [locked, setLocked] = useState(false);
 
   focusColor = primaryColor;
@@ -48,21 +51,23 @@ const ClampSlider = ({
   useEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
     setNewUpperVal(Number(((upperVal - min) * 100) / (max - min)));
-    setDistance(upperVal - lowerVal);
+    setLowerDistance(lowerVal - min);
+    setMiddleDistance(upperVal - lowerVal);
+    setUpperDistance(max - upperVal);
   }, [lowerVal, upperVal, min, max]);
 
   useEffect(() => {
     // If the upper value is greater than max, set upper value to max.
     if (upperVal > max) {
       setUpperVal(max);
-      setLowerVal(max - distance);
+      setLowerVal(max - middleDistance);
     };
     // If the lower value is less than min, set lower value to min.
     if (lowerVal < min) {
       setLowerVal(min);
-      setUpperVal(min + distance);
+      setUpperVal(min + middleDistance);
     }
-  }, [upperVal, lowerVal, min, max, distance]);
+  }, [upperVal, lowerVal, min, max, middleDistance]);
 
   newValue1 = Number(
     ((lowerVal - min) * 100) /
@@ -145,78 +150,73 @@ const ClampSlider = ({
   // }
   return (
     <>
-    <h4>Clampslider</h4>
-    <RangeWrap style={{ width: width }}>
-    {console.log(distance)}
-    <div style={{display: "flex", justifyContent: "center", }}><div style={{width: distance + "%", background: "red", left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)`, position: "absolute"}}>div</div></div>
+      <h4>Clampslider</h4>
+      <RangeWrap style={{ width: width }}>
 
+        <Track focused={trackFocused}focusColor={focusColor}>
+          <div style={{ width: lowerDistance + "%" }}>&nbsp;</div>
+          <div style={{ width: middleDistance + "%", left: `calc(${newLowerVal}%)` }}>&nbsp;</div>
+          <div style={{ width: upperDistance + "%" }}>&nbsp;</div>
+        </Track>
 
-        <Progress
-          focused={lowerFocused || upperFocused}
-          id="range-color"
-          className="range-color"
-        ></Progress>
+        {/* LOWER RANGE */}
+          <RangeOutput
+            focused={lowerFocused}
+            style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
+            className="range-value"
+          >
+            <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+          </RangeOutput>
+          <StyledRangeSlider
+            tabIndex="0"
+            ref={lowerRange}
+            type="range"
+            min={min}
+            max={max}
+            value={lowerVal}
+            step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+            onFocus={() => setLowerFocused(true)}
+            onBlur={() => setLowerFocused(false)}
+            onDoubleClick={() => setLocked(!locked)}
+            onInput={e => {
+              locked && setUpperVal(e.target.valueAsNumber + middleDistance);
+              setLowerVal(e.target.valueAsNumber);
+            }}
+            focused={lowerFocused}
+          // style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
+          />
 
-      {/* LOWER RANGE */}
-      <>
-        <RangeOutput
-          focused={lowerFocused}
-          style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
-          className="range-value"
-        >
-          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex="2"
-          ref={lowerRange}
-          type="range"
-          min={min}
-          max={max}
-          value={lowerVal}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-          onFocus={() => setLowerFocused(true)}
-          onBlur={() => setLowerFocused(false)}
-          onDoubleClick={() => setLocked(!locked)}
-          onInput={e => {
-            locked && setUpperVal(e.target.valueAsNumber + distance);
-            setLowerVal(e.target.valueAsNumber);
-          }}
-          focused={lowerFocused}
-        // style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-        />
-
-        {/* UPPER RANGE */}
-        <RangeOutput
-          focused={upperFocused}
-          style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
-          className="range-value"
-        >
-          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex="1"
-          ref={upperRange}
-          type="range"
-          min={min}
-          max={max}
-          value={upperVal}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-          onFocus={() => setUpperFocused(true)}
-          onBlur={() => setUpperFocused(false)}
-          onDoubleClick={() => setLocked(!locked)}
-          onInput={e => {
-            locked && setLowerVal(e.target.valueAsNumber - distance);
-            setUpperVal(parseFloat(e.target.value));
-          }}
-          focused={upperFocused}
-        // style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-        />
-      </>
-      <Ticks>
-        {marks}
-      </Ticks>
-    </RangeWrap>
-    </>
+          {/* UPPER RANGE */}
+          <RangeOutput
+            focused={upperFocused}
+            style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
+            className="range-value"
+          >
+            <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+          </RangeOutput>
+          <StyledRangeSlider
+            tabIndex="0"
+            ref={upperRange}
+            type="range"
+            min={min}
+            max={max}
+            value={upperVal}
+            step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+            onFocus={() => setUpperFocused(true)}
+            onBlur={() => setUpperFocused(false)}
+            onDoubleClick={() => setLocked(!locked)}
+            onInput={e => {
+              locked && setLowerVal(e.target.valueAsNumber - middleDistance);
+              setUpperVal(parseFloat(e.target.value));
+            }}
+            focused={upperFocused}
+          // style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
+          />
+        <Ticks>
+          {marks}
+        </Ticks>
+      </RangeWrap>
+        </>
   );
 };
 
@@ -301,13 +301,12 @@ const RangeWrap = styled.div`
   padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
-  user-select: none;
 `;
 
 
 
 const RangeOutput = styled.output`
-  margin-top: -4.75rem;
+  margin-top: -3.75rem;
   width: 0;
   position: absolute;
   display: flex;
@@ -343,6 +342,7 @@ const RangeOutput = styled.output`
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
   cursor: pointer;
+  pointer-events: none;
   margin: 0;
   width: 100%;
   height: 15px;
@@ -362,10 +362,9 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     cursor: grab;
+    pointer-events: all;
     -webkit-appearance: none;
     z-index: 50;
-    margin-top: -2.5em;
-
     background: ${p => !p.focused ?
     `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
     `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
@@ -379,28 +378,35 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     border-radius: 50%;
     box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
     cursor: grab;
+    pointer-events: all;
     appearance: none;
-    margin-top: -2.5em;
     z-index: 50;
     background: ${p => !p.focused ?
-  `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
-  `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
+    `-webkit-radial-gradient(center, ellipse cover,  ${focusColor} 0%,${focusColor} 35%,${whiteColor} 40%,${whiteColor} 100%)` :
+    `-webkit-radial-gradient(center, ellipse cover,  ${whiteColor} 0%,${whiteColor} 35%,${focusColor} 40%,${focusColor} 100%)`
   };
 }
 `;
 
-const Progress = styled.div`
-  z-index: 0;
-  background: ${p => p.focused ?
-    `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${focusColor} ${`calc(${newValue2}% + 
-  (${newPosition2}px))`},${focusColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})` :
-    `-webkit-linear-gradient(left,  ${whiteColor} ${`calc(${newValue2}% + (${newPosition2}px))`},${blurColor} ${`calc(${newValue2}% + 
-    (${newPosition2}px))`},${blurColor} ${`calc(${newValue1}% + (${newPosition1}px))`},${whiteColor} ${`calc(${newValue1}% + (${newPosition1}px))`})`
-  };
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-  border-radius: 15px;
-  width: 100%;
-  height: 15px;
+const Track = styled.div`
+  div{
+box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
+border-radius: 15px;
+width: 100%;
+height: 15px;
+    position: absolute;
+    &:first-of-type {
+      background: ${whiteColor};
+    }
+    &:nth-of-type(2) {
+      /* background: ${p => p.focused ? p.focusColor : p.blurColor}; */
+      background: ${p => p.focusColor};
+    }
+    &:last-of-type {
+      background: ${whiteColor};
+      right: 0;
+    }
+  }
 `;
 
 const Ticks = styled.div`
