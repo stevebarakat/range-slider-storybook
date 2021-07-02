@@ -1,8 +1,8 @@
-import RangeSlider from './components/RangeSlider/RangeSlider';
-import ClampSlider from './components/ClampSlider/ClampSlider';
-import VerticalRangeSlider from './components/VerticalRangeSlider/VerticalRangeSlider';
-import DualVerticalRangeSlider from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
+// import RangeSlider from './components/RangeSlider/RangeSlider';
+// import VerticalRangeSlider from './components/VerticalRangeSlider/VerticalRangeSlider';
+// import DualVerticalRangeSlider from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
 import Container from './components/Container/Container';
+import ClampSlider from './components/ClampSlider/ClampSlider';
 
 function App() {
   return (
@@ -107,7 +107,7 @@ function App() {
             height={800}
           />
         </Container> */}
-        <Container>
+        {/* <Container>
           <DualVerticalRangeSlider
             initialLowerValue={20}
             initialUpperValue={80}
@@ -130,7 +130,7 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}
           />
-        </Container>
+        </Container> */}
       </div>
     </div>
   );

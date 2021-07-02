@@ -39,6 +39,8 @@ const ClampSlider = ({
   const [upperFocused, setUpperFocused] = useState(false);
   const [newLowerVal, setNewLowerVal] = useState(null);
   const [newUpperVal, setNewUpperVal] = useState(null);
+  const [distance, setDistance] = useState(null);
+  const [locked, setLocked] = useState(false);
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
@@ -46,7 +48,21 @@ const ClampSlider = ({
   useEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
     setNewUpperVal(Number(((upperVal - min) * 100) / (max - min)));
+    setDistance(upperVal - lowerVal);
   }, [lowerVal, upperVal, min, max]);
+
+  useEffect(() => {
+    // If the upper value is greater than max, set upper value to max.
+    if (upperVal > max) {
+      setUpperVal(max);
+      setLowerVal(max - distance);
+    };
+    // If the lower value is less than min, set lower value to min.
+    if (lowerVal < min) {
+      setLowerVal(min);
+      setUpperVal(min + distance);
+    }
+  }, [upperVal, lowerVal, min, max, distance]);
 
   newValue1 = Number(
     ((lowerVal - min) * 100) /
@@ -107,31 +123,34 @@ const ClampSlider = ({
 
   const marks = markers.map(marker => marker);
 
-  //If the upper value slider is LESS THAN the lower value slider.
-  if (upperVal > lowerVal) {
-    //The lower slider value is set to equal the upper value slider.
-    setLowerVal(parseFloat(upperVal));
-    //If the lower value slider equals its set minimum.
-    if (lowerVal === 0) {
-      //Set the upper slider value to equal min.
-      setUpperVal(min);
-    }
-  }
-  //If the lower value slider is GREATER THAN the upper value slider minus one.
-  if (lowerVal < upperVal - 1) {
-    //The upper slider value is set to equal the lower value slider plus one.
+  //If the upper value slider is GREATER THAN the lower value slider.
+  if (upperVal < lowerVal) {
+    //Set the upper value to lower value.
     setUpperVal(parseFloat(lowerVal));
-    //If the upper value slider equals its set maximum.
-    if (upperVal === max) {
-      //Set the lower slider value to equal the upper value slider's maximum value minus one.
-      setLowerVal(parseFloat(max));
+    //If the lower value slider equals its set minimum.
+    if (lowerVal <= min) {
+      //Set the upper slider value to equal min.
+      setLowerVal(min);
     }
   }
-
+  // //If the lower value slider is GREATER THAN the upper value slider minus one.
+  // if (lowerVal > upperVal - 1) {
+  //   //The upper slider value is set to equal the lower slider value.
+  //   setUpperVal(parseFloat(lowerVal));
+  //   //If the upper value slider equals its set maximum.
+  //   if (upperVal === max) {
+  //     //Set the lower slider value to equal the upper value slider's maximum value.
+  //     setLowerVal(parseFloat(max));
+  //   }
+  // }
   return (
     <>
     <h4>Clampslider</h4>
     <RangeWrap style={{ width: width }}>
+    {console.log(distance)}
+    <div style={{display: "flex", justifyContent: "center", }}><div style={{width: distance + "%", background: "red", left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)`, position: "absolute"}}>div</div></div>
+
+
         <Progress
           focused={lowerFocused || upperFocused}
           id="range-color"
@@ -157,7 +176,9 @@ const ClampSlider = ({
           step={snap ? parseInt(step, 10) : parseInt(0, 10)}
           onFocus={() => setLowerFocused(true)}
           onBlur={() => setLowerFocused(false)}
+          onDoubleClick={() => setLocked(!locked)}
           onInput={e => {
+            locked && setUpperVal(e.target.valueAsNumber + distance);
             setLowerVal(e.target.valueAsNumber);
           }}
           focused={lowerFocused}
@@ -182,7 +203,9 @@ const ClampSlider = ({
           step={snap ? parseInt(step, 10) : parseInt(0, 10)}
           onFocus={() => setUpperFocused(true)}
           onBlur={() => setUpperFocused(false)}
+          onDoubleClick={() => setLocked(!locked)}
           onInput={e => {
+            locked && setLowerVal(e.target.valueAsNumber - distance);
             setUpperVal(parseFloat(e.target.value));
           }}
           focused={upperFocused}

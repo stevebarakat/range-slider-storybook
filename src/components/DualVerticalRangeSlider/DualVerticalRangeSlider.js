@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from "styled-components";
-import { defaultProps } from '../../shared/defaultProps';
 
 let newValue1 = "";
 let newValue2 = "";
@@ -291,20 +290,11 @@ DualVerticalRangeSlider.propTypes = {
   height: PropTypes.number,
 };
 
-DualVerticalRangeSlider.defaultProps = {
-  initialLowerValue: 20,
-  initialUpperValue: 80,
-  ...defaultProps,
-  height: 600,
-};
-
-
 // STYLES
 const blackColor = "#999";
 const whiteColor = "white";
 
 const RangeWrapWrap = styled.div`
-  text-align: ${p => console.log(p.outputWidth)};
   width: ${p => p.showTicks ?
     p.maxLabelLength + p.outputWidth + 125 + "px" :
     p.maxLabelLength + 60 + "px"
