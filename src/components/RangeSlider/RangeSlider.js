@@ -223,15 +223,6 @@ RangeSlider.propTypes = {
   width: PropTypes.number,
 };
 
-RangeSlider.defaultProps = {
-  initialValue: 50,
-  ...defaultProps,
-  labelRotation: 0,
-  width: 1200,
-};
-
-
-
 // Styles
 
 const whiteColor = "white";

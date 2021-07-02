@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultProps } from '../../shared/defaultProps';
 
 let newValue1 = "";
 let newValue2 = "";
@@ -265,15 +264,6 @@ DualRangeSlider.propTypes = {
   */
   width: PropTypes.number,
 };
-
-DualRangeSlider.defaultProps = {
-  initialLowerValue: 20,
-  initialUpperValue: 80,
-  ...defaultProps,
-  labelRotation: 0,
-  width: 1200,
-};
-
 
 // STYLES
 const blackColor = "#999";

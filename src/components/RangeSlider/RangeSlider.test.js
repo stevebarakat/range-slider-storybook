@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import { RangeSlider } from './RangeSlider';
 
 /**
- * A straightforward link wrapper that renders an <a> with the passed props.
- * What we are testing here is that the RangeSlider component passes the right props to the wrapper and itself.
+ * Description goes here...
  */
 
 it('has a href attribute when rendering with linkWrapper', () => {

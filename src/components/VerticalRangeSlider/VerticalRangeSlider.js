@@ -247,13 +247,6 @@ VerticalRangeSlider.propTypes = {
   height: PropTypes.number,
 };
 
-VerticalRangeSlider.defaultProps = {
-  initialValue: 50,
-  ...defaultProps,
-  height: 600,
-};
-
-
 const whiteColor = 'white';
 const blackColor = "#999";
 

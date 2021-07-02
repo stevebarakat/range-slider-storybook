@@ -13,4 +13,8 @@ const Template = args => <VerticalRangeSlider {...args} />;
 
 export const Default = Template.bind({});
 
-Default.args = defaultProps;
+Default.args = {
+  initialValue: 50,
+  ...defaultProps,
+  height: 600,
+};

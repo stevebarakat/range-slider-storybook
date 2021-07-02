@@ -296,14 +296,6 @@ DualVerticalRangeSlider.propTypes = {
   height: PropTypes.number,
 };
 
-DualVerticalRangeSlider.defaultProps = {
-  initialLowerValue: 20,
-  initialUpperValue: 80,
-  ...defaultProps,
-  height: 600,
-};
-
-
 // STYLES
 const blackColor = "#999";
 const whiteColor = "white";
