@@ -33,6 +33,7 @@ const ClampSlider = ({
 }) => {
   const lowerRange = useRef(null);
   const upperRange = useRef(null);
+  const midSectionEl = useRef(null);
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [trackFocused, setTrackFocused] = useState(false);
@@ -44,6 +45,8 @@ const ClampSlider = ({
   const [middleDistance, setMiddleDistance] = useState(null);
   const [upperDistance, setUpperDistance] = useState(null);
   const [locked, setLocked] = useState(false);
+  const factor = (max - min) / 100;
+  console.log(factor);
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
@@ -148,75 +151,103 @@ const ClampSlider = ({
   //     setLowerVal(parseFloat(max));
   //   }
   // }
+
+
+  console.log(midSectionEl.current);
+
   return (
     <>
       <h4>Clampslider</h4>
       <RangeWrap style={{ width: width }}>
 
-        <Track focused={trackFocused}focusColor={focusColor}>
-          <div style={{ width: lowerDistance + "%" }}>&nbsp;</div>
-          <div style={{ width: middleDistance + "%", left: `calc(${newLowerVal}%)` }}>&nbsp;</div>
-          <div style={{ width: upperDistance + "%" }}>&nbsp;</div>
+        <Track focused={trackFocused} focusColor={focusColor}>
+          <div
+            onClick={e => setLowerVal(lowerVal - 1)}
+            style={{ width: lowerDistance - "%" }}
+          >&nbsp;</div>
+          <div ref={midSectionEl}
+            style={{ width: middleDistance + "%", left: newLowerVal + "%" }}
+            onMouseDown={() => setTrackFocused(true)}
+            onMouseMove={e => {
+              trackFocused && console.log("middle moving");
+              trackFocused && console.log(e);
+            }}
+            onMouseUp={() => setTrackFocused(false)}
+          >&nbsp;</div>
+          <div
+            onClick={e => setUpperVal(upperVal + 1)}
+            style={{ width: upperDistance + "%" }}
+          >&nbsp;</div>
         </Track>
 
         {/* LOWER RANGE */}
-          <RangeOutput
-            focused={lowerFocused}
-            style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
-            className="range-value"
-          >
-            <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
-          </RangeOutput>
-          <StyledRangeSlider
-            tabIndex="0"
-            ref={lowerRange}
-            type="range"
-            min={min}
-            max={max}
-            value={lowerVal}
-            step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-            onFocus={() => setLowerFocused(true)}
-            onBlur={() => setLowerFocused(false)}
-            onDoubleClick={() => setLocked(!locked)}
-            onInput={e => {
-              locked && setUpperVal(e.target.valueAsNumber + middleDistance);
-              setLowerVal(e.target.valueAsNumber);
-            }}
-            focused={lowerFocused}
-          // style={lowerFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-          />
+        <RangeOutput
+          focused={lowerFocused}
+          style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
+          className="range-value"
+        >
+          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+        </RangeOutput>
+        <StyledRangeSlider
+          tabIndex="0"
+          ref={lowerRange}
+          type="range"
+          min={min}
+          max={max}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          value={lowerVal}
+          focused={lowerFocused}
+          onFocus={() => {
+            setLowerFocused(true);
+            setTrackFocused(true);
+          }}
+          onBlur={() => {
+            setLowerFocused(false);
+            setTrackFocused(false);
+          }}
+          onDoubleClick={() => setLocked(!locked)}
+          onInput={e => {
+            locked && setUpperVal(e.target.valueAsNumber + middleDistance);
+            setLowerVal(e.target.valueAsNumber);
+          }}
+        />
 
-          {/* UPPER RANGE */}
-          <RangeOutput
-            focused={upperFocused}
-            style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
-            className="range-value"
-          >
-            <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
-          </RangeOutput>
-          <StyledRangeSlider
-            tabIndex="0"
-            ref={upperRange}
-            type="range"
-            min={min}
-            max={max}
-            value={upperVal}
-            step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-            onFocus={() => setUpperFocused(true)}
-            onBlur={() => setUpperFocused(false)}
-            onDoubleClick={() => setLocked(!locked)}
-            onInput={e => {
-              locked && setLowerVal(e.target.valueAsNumber - middleDistance);
-              setUpperVal(parseFloat(e.target.value));
-            }}
-            focused={upperFocused}
-          // style={upperFocused ? { pointerEvents: "none" } : { pointerEvents: "all" }}
-          />
+        {/* UPPER RANGE */}
+        <RangeOutput
+          focused={upperFocused}
+          style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
+          className="range-value"
+        >
+          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+        </RangeOutput>
+        <StyledRangeSlider
+          tabIndex="0"
+          ref={upperRange}
+          type="range"
+          min={min}
+          max={max}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          value={upperVal}
+          focused={upperFocused}
+          onFocus={() => {
+            setUpperFocused(true);
+            setTrackFocused(true);
+          }}
+          onBlur={() => {
+            setUpperFocused(false);
+            setTrackFocused(false);
+          }}
+          onDoubleClick={() => setLocked(!locked)}
+          onInput={e => {
+            locked && setLowerVal(e.target.valueAsNumber - middleDistance);
+            setUpperVal(parseFloat(e.target.value));
+          }}
+        />
         <Ticks>
           {marks}
         </Ticks>
       </RangeWrap>
-        </>
+    </>
   );
 };
 
@@ -390,17 +421,17 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 
 const Track = styled.div`
   div{
-box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-border-radius: 15px;
-width: 100%;
-height: 15px;
+    box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
+    border-radius: 15px;
+    width: 100%;
+    height: 15px;
     position: absolute;
     &:first-of-type {
       background: ${whiteColor};
     }
     &:nth-of-type(2) {
       /* background: ${p => p.focused ? p.focusColor : p.blurColor}; */
-      background: ${p => p.focusColor};
+      background: ${p => p.focused ? focusColor : blurColor};
     }
     &:last-of-type {
       background: ${whiteColor};

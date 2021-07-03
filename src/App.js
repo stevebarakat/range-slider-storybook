@@ -49,7 +49,7 @@ function App() {
             labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
-            width={800}
+            width={1200}
             initialUpperValue={80}
             initialLowerValue={20}
           />
