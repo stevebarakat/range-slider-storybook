@@ -44,9 +44,7 @@ const ClampSlider = ({
   const [lowerDistance, setLowerDistance] = useState(null);
   const [middleDistance, setMiddleDistance] = useState(null);
   const [upperDistance, setUpperDistance] = useState(null);
-  const [locked, setLocked] = useState(false);
-  const factor = (max - min) / 100;
-  console.log(factor);
+  const [locked, setLocked] = useState(true);
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
@@ -154,6 +152,44 @@ const ClampSlider = ({
 
 
   console.log(midSectionEl.current);
+  let upperTimer = null;
+
+  function handleLowerPointerDown() {
+    setTrackFocused(true);
+    console.log("lower pointer down");
+    upperTimer = setTimeout(() => {
+      setLocked(false);
+      console.log("not locked");
+    }, 2000);
+    return upperTimer;
+  };
+
+  function handleLowerPointerMove() {
+    clearTimeout(upperTimer);
+  }
+
+  function handleLowerPointerUp() {
+    clearTimeout(upperTimer);
+    setTrackFocused(false);
+    setLocked(true);
+  }
+  var mylatesttap;
+  
+  function doubletap() {
+
+    var now = new Date().getTime();
+    var timesince = now - mylatesttap;
+    if ((timesince < 600) && (timesince > 0)) {
+
+      // double tap   
+
+    } else {
+      // too much time to be a doubletap
+    }
+
+    mylatesttap = new Date().getTime();
+
+  }
 
   return (
     <>
@@ -161,25 +197,33 @@ const ClampSlider = ({
       <RangeWrap style={{ width: width }}>
 
         <Track focused={trackFocused} focusColor={focusColor}>
+
+
+
           <div
             onClick={e => setLowerVal(lowerVal - 1)}
             style={{ width: lowerDistance - "%" }}
           >&nbsp;</div>
+
+
+
           <div ref={midSectionEl}
+            onPointerUp={handleLowerPointerUp}
+            onPointerMove={handleLowerPointerMove}
+            onPointerDown={handleLowerPointerDown}
             style={{ width: middleDistance + "%", left: newLowerVal + "%" }}
-            onMouseDown={() => setTrackFocused(true)}
-            onMouseMove={e => {
-              trackFocused && console.log("middle moving");
-              trackFocused && console.log(e);
-            }}
-            onMouseUp={() => setTrackFocused(false)}
           >&nbsp;</div>
+
+
+
           <div
             onClick={e => setUpperVal(upperVal + 1)}
             style={{ width: upperDistance + "%" }}
           >&nbsp;</div>
-        </Track>
 
+
+
+        </Track>
         {/* LOWER RANGE */}
         <RangeOutput
           focused={lowerFocused}
