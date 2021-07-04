@@ -34,14 +34,14 @@ function App() {
         <Container>
           <ClampSlider
             min={0}
-            max={100}
+            max={423}
             decimals={0}
-            step={10}
+            step={20}
             showTicks={true}
             customLabels={[
-              { 0: "low" },
-              { 50: "medium" },
-              { 100: "high" }
+              // { 0: "low" },
+              // { 50: "medium" },
+              // { 100: "high" }
             ]}
             showLabel={true}
             prefix=""
@@ -49,9 +49,9 @@ function App() {
             labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
-            width={1200}
-            initialUpperValue={80}
+            width={800}
             initialLowerValue={20}
+            initialUpperValue={80}
           />
         </Container>
         {/* <Container>

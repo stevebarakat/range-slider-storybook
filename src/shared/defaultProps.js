@@ -6,9 +6,9 @@ export const defaultProps = {
   showTicks: true,
   snap: true,
   customLabels: [
-    { 0: "low" },
-    { 50: "medium" },
-    { 100: "high"}
+    // { 0: "low" },
+    // { 50: "medium" },
+    // { 100: "high"}
   ],
   showLabel: true,
   prefix: "",

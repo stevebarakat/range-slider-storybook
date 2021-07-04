@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useLayoutEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -49,15 +49,21 @@ const ClampSlider = ({
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
     setNewUpperVal(Number(((upperVal - min) * 100) / (max - min)));
     setLowerDistance(lowerVal - min);
     setMiddleDistance(upperVal - lowerVal);
     setUpperDistance(max - upperVal);
-  }, [lowerVal, upperVal, min, max]);
+  }, [lowerVal, upperVal, min, max, middleDistance]);
 
-  useEffect(() => {
+  console.log("newLowerVal", newLowerVal);
+  console.log("lowerVal", lowerVal);
+  console.log("newUpperVal", newUpperVal);
+  console.log("upperVal", upperVal);
+  console.log("middleDistance", middleDistance);
+
+  useLayoutEffect(() => {
     // If the upper value is greater than max, set upper value to max.
     if (upperVal > max) {
       setUpperVal(max);
@@ -173,23 +179,6 @@ const ClampSlider = ({
     setTrackFocused(false);
     setLocked(true);
   }
-  var mylatesttap;
-  
-  function doubletap() {
-
-    var now = new Date().getTime();
-    var timesince = now - mylatesttap;
-    if ((timesince < 600) && (timesince > 0)) {
-
-      // double tap   
-
-    } else {
-      // too much time to be a doubletap
-    }
-
-    mylatesttap = new Date().getTime();
-
-  }
 
   return (
     <>
@@ -202,23 +191,24 @@ const ClampSlider = ({
 
           <div
             onClick={e => setLowerVal(lowerVal - 1)}
-            style={{ width: lowerDistance - "%" }}
+            style={{ width: lowerDistance / (max * 0.01) + "%" }}
           >&nbsp;</div>
 
 
 
           <div ref={midSectionEl}
+            onLostPointerCapture={() => setLocked(true)}
             onPointerUp={handleLowerPointerUp}
             onPointerMove={handleLowerPointerMove}
             onPointerDown={handleLowerPointerDown}
-            style={{ width: middleDistance + "%", left: newLowerVal + "%" }}
+            style={{ width: middleDistance / (max * 0.01) + "%", left: newLowerVal + "%" }}
           >&nbsp;</div>
 
 
 
           <div
             onClick={e => setUpperVal(upperVal + 1)}
-            style={{ width: upperDistance + "%" }}
+            style={{ width: upperDistance / (max * 0.01) + "%" }}
           >&nbsp;</div>
 
 
