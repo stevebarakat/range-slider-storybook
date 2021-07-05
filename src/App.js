@@ -33,8 +33,8 @@ function App() {
         </Container> */}
         <Container>
           <ClampSlider
-            min={253}
-            max={658}
+            min={0}
+            max={238}
             decimals={0}
             step={10}
             showTicks={true}
