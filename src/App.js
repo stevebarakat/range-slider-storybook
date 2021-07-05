@@ -33,10 +33,10 @@ function App() {
         </Container> */}
         <Container>
           <ClampSlider
-            min={0}
-            max={423}
+            min={253}
+            max={658}
             decimals={0}
-            step={20}
+            step={10}
             showTicks={true}
             customLabels={[
               // { 0: "low" },
@@ -49,7 +49,7 @@ function App() {
             labelRotation={45}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
-            width={2800}
+            width={1200}
             initialLowerValue={20}
             initialUpperValue={40}
           />

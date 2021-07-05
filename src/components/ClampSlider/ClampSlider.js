@@ -62,6 +62,8 @@ const ClampSlider = ({
   console.log("newUpperVal", newUpperVal);
   console.log("upperVal", upperVal);
   console.log("middleDistance", middleDistance);
+  console.log("upperDistance", upperDistance);
+  console.log("lowerDistance", lowerDistance);
 
   useLayoutEffect(() => {
     // If the upper value is greater than max, set upper value to max.
@@ -459,7 +461,8 @@ const Track = styled.div`
     height: 15px;
     position: absolute;
     &:first-of-type {
-      background: ${whiteColor};
+      /* background: ${whiteColor}; */
+      background: red;
       border-radius: 15px 0 0 15px;
     }
     &:nth-of-type(2) {
@@ -467,7 +470,8 @@ const Track = styled.div`
       background: ${p => p.focused ? focusColor : blurColor};
     }
     &:last-of-type {
-      background: ${whiteColor};
+      /* background: ${whiteColor}; */
+      background: green;
       border-radius: 0 15px 15px 0;
       right: 0;
     }
