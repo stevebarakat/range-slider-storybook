@@ -46,12 +46,12 @@ function App() {
             showLabel={true}
             prefix=""
             suffix=""
-            labelRotation={0}
+            labelRotation={45}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
-            width={800}
+            width={2800}
             initialLowerValue={20}
-            initialUpperValue={80}
+            initialUpperValue={40}
           />
         </Container>
         {/* <Container>

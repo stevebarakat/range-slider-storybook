@@ -138,7 +138,7 @@ const ClampSlider = ({
   //If the upper value slider is GREATER THAN the lower value slider.
   if (upperVal < lowerVal) {
     //Set the upper value to lower value.
-    setUpperVal(parseFloat(lowerVal));
+    setUpperVal(lowerVal);
     //If the lower value slider equals its set minimum.
     if (lowerVal <= min) {
       //Set the upper slider value to equal min.
@@ -148,11 +148,11 @@ const ClampSlider = ({
   // //If the lower value slider is GREATER THAN the upper value slider minus one.
   // if (lowerVal > upperVal - 1) {
   //   //The upper slider value is set to equal the lower slider value.
-  //   setUpperVal(parseFloat(lowerVal));
+  //   setUpperVal(lowerVal);
   //   //If the upper value slider equals its set maximum.
   //   if (upperVal === max) {
   //     //Set the lower slider value to equal the upper value slider's maximum value.
-  //     setLowerVal(parseFloat(max));
+  //     setLowerVal(max);
   //   }
   // }
 
@@ -228,7 +228,7 @@ const ClampSlider = ({
           type="range"
           min={min}
           max={max}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          step={snap ? parseInt(step, 10) : 0}
           value={lowerVal}
           focused={lowerFocused}
           onFocus={() => {
@@ -260,7 +260,7 @@ const ClampSlider = ({
           type="range"
           min={min}
           max={max}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          step={snap ? parseInt(step, 10) : 0}
           value={upperVal}
           focused={upperFocused}
           onFocus={() => {
@@ -274,7 +274,7 @@ const ClampSlider = ({
           onDoubleClick={() => setLocked(!locked)}
           onInput={e => {
             locked && setLowerVal(e.target.valueAsNumber - middleDistance);
-            setUpperVal(parseFloat(e.target.value));
+            setUpperVal(e.target.valueAsNumber);
           }}
         />
         <Ticks>
@@ -364,7 +364,6 @@ const RangeWrap = styled.div`
   border: 1px dotted red;
   position: relative;
   padding-top: 3.75rem;
-  font-family: sans-serif;
   max-width: 100%;
 `;
 
@@ -456,12 +455,12 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 const Track = styled.div`
   div{
     box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25), inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-    border-radius: 15px;
     width: 100%;
     height: 15px;
     position: absolute;
     &:first-of-type {
       background: ${whiteColor};
+      border-radius: 15px 0 0 15px;
     }
     &:nth-of-type(2) {
       /* background: ${p => p.focused ? p.focusColor : p.blurColor}; */
@@ -469,6 +468,7 @@ const Track = styled.div`
     }
     &:last-of-type {
       background: ${whiteColor};
+      border-radius: 0 15px 15px 0;
       right: 0;
     }
   }

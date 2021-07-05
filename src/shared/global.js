@@ -135,14 +135,14 @@ table {
   border-spacing: 0;
 }
 
-* {
+body {
   box-sizing: border-box;
-  font-family: "Nunito Sans";
+  font-family: sans-serif;
 }
 
 `;
 
 export const GlobalStyle = createGlobalStyle`
-  body {
+  html {
     ${bodyStyles}
   }`;
