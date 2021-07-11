@@ -21,7 +21,6 @@ const VerticalRangeSlider = ({
   showLabel,
   prefix,
   suffix,
-  labelRotation,
   primaryColorLight,
   primaryColor,
   height,
@@ -72,7 +71,6 @@ const VerticalRangeSlider = ({
             key={i}
             length={labelLength}
             showLabel={showLabel}
-            labelRotation={parseInt(labelRotation, 10)}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -88,7 +86,6 @@ const VerticalRangeSlider = ({
           Tick && <Tick
             key={i}
             length={labelLength}
-            labelRotation={parseInt(labelRotation, 10)}
           >
             {showLabel && <div>{tickText}</div>}
           </Tick>
@@ -228,10 +225,6 @@ VerticalRangeSlider.propTypes = {
     Optional text displayed after value.
   */
   suffix: PropTypes.string,
-  /**
-    The amount in degrees to rotate the labels.
-  */
-  labelRotation: PropTypes.number,
   /**
     The focus color. 
   */

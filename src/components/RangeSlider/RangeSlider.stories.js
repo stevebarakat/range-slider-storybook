@@ -18,6 +18,6 @@ export const Default = Template.bind({});
 Default.args = {
   initialValue: 50,
   ...defaultProps,
-  labelRotation: 0,
+  rotateLabel: true,
   width: 1200,
 };

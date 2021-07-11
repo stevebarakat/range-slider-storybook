@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { defaultProps } from '../../shared/defaultProps';
 
 let focusColor = "";
 let blurColor = "";
@@ -22,12 +21,13 @@ const RangeSlider = ({
   showLabel,
   prefix,
   suffix,
-  labelRotation,
+  rotateLabel,
   primaryColorLight,
   primaryColor,
   width
 }) => {
   const rangeEl = useRef(null);
+  const ticksEl = useRef(null);
   const [value, setValue] = useState(initialValue);
   const [newValue, setNewValue] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -40,6 +40,16 @@ const RangeSlider = ({
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
 
+  // Make sure min never exceds max
+  if (min > max) {
+    min = max;
+  }
+  // Make sure max is never less than min
+  if (max < min) {
+    max = min;
+  }
+
+  // For collecting tick marks
   let markers = [];
 
   if (customLabels.length !== 0) {
@@ -60,7 +70,7 @@ const RangeSlider = ({
             key={i}
             length={labelLength}
             showLabel={showLabel}
-            labelRotation={parseInt(labelRotation, 10)}
+            rotateLabel={rotateLabel}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -72,11 +82,13 @@ const RangeSlider = ({
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
+        console.log(labelLength);
         markers.push(
           Tick && <Tick
             key={i}
             length={labelLength}
-            labelRotation={parseInt(labelRotation, 10)}
+            rotateLabel={rotateLabel}
+          // style={{ marginBottom: "3rem" }}
           >
             {showLabel && <div>{tickText}</div>}
           </Tick>
@@ -113,43 +125,47 @@ const RangeSlider = ({
     }
   }
   return (
-    <RangeWrap style={{ width: width }}>
-      <RangeOutput
-        focused={isFocused}
-        style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
-        <span>{prefix + numberWithCommas(value.toFixed(decimals)) + suffix}</span>
-      </RangeOutput>
-      <StyledRangeSlider
-        tabIndex="0"
-        ref={rangeEl}
-        min={min}
-        max={max}
-        step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-        value={value > max ? max : value.toFixed(decimals)}
-        onInput={(e) => {
-          rangeEl.current.focus();
-          setValue(e.target.valueAsNumber);
-        }}
-        onKeyDown={handleKeyPress}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        focused={isFocused}
-      />
-      <Progress
-        focused={isFocused}
-        style={isFocused ?
-          {
-            background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + 
-          (${newPosition / 100}px)), ${whiteColor} calc(${newValue}% + (${newPosition / 100}px)), ${whiteColor} 100%)`
-          } :
-          {
-            background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + 
-          (${newPosition / 100}px)), ${whiteColor} calc(${newValue}% + (${newPosition / 100}px)), ${whiteColor} 100%)`
+    <Wrapper
+      length={showLabel && ticksEl.current?.lastChild.firstChild.innerText.length}
+      rotateLabel={rotateLabel}
+    >
+      <RangeWrap style={{ width: width }}>
+
+        <Progress
+          focused={isFocused}
+          style={isFocused ?
+            {
+              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} 100%)`
+            } :
+            {
+              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} 100%)`
+            }}
+        />
+
+        <RangeOutput
+          focused={isFocused}
+          style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
+          <span>{prefix + numberWithCommas(value.toFixed(decimals)) + suffix}</span>
+        </RangeOutput>
+        <StyledRangeSlider
+          tabIndex="0"
+          ref={rangeEl}
+          min={min}
+          max={max}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          value={value > max ? max : value.toFixed(decimals)}
+          onInput={(e) => {
+            rangeEl.current.focus();
+            setValue(e.target.valueAsNumber);
           }}
-      />
-      {console.log(marks)}
-      {showTicks ? <Ticks>{marks}</Ticks> : null}
-    </RangeWrap>
+          onKeyDown={handleKeyPress}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          focused={isFocused}
+        />
+        {showTicks ? <Ticks ref={ticksEl}>{marks}</Ticks> : null}
+      </RangeWrap>
+    </Wrapper>
   );
 };
 
@@ -206,7 +222,7 @@ RangeSlider.propTypes = {
   /**
     The amount in degrees to rotate the labels.
   */
-  labelRotation: PropTypes.number,
+  rotateLabel: PropTypes.bool,
   /**
     The focus color. 
   */
@@ -226,13 +242,18 @@ RangeSlider.propTypes = {
 const whiteColor = "white";
 const blackColor = "#999";
 
+const Wrapper = styled.div`
+  padding-right: ${p => p.rotateLabel ? p.length / 1.75 + "ch" : p.length / 10 + "ch" };
+  /* border: 1px dotted red; */
+`;
+
 const RangeWrap = styled.div`
-  border: 1px dotted red;
   position: relative;
   padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
+  text-align: ${p => console.log(p.length)}
 `;
 
 const RangeOutput = styled.output`
@@ -267,20 +288,30 @@ const RangeOutput = styled.output`
   }
 `;
 
+const Progress = styled.div`
+  position: absolute;
+  border-radius: 15px;
+  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
+    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
+  height: 15px;
+  width: 100%;
+  /* cursor: pointer; */
+  z-index: 0;
+`;
+
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
   cursor: pointer;
   margin: 0;
   width: 100%;
   height: 15px;
-  border-radius: 15px;
-  border: 0;
   position: absolute;
   z-index: 2;
   background: transparent;
   &:focus {
     outline: none;
   }
+  padding-right: 2rem;
 
     &::-webkit-slider-thumb {
       position: relative;
@@ -315,37 +346,24 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   }
 `;
 
-const Progress = styled.div`
-  position: absolute;
-  border-radius: 15px;
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
-    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-  height: 15px;
-  width: 100%;
-  cursor: pointer;
-  z-index: 0;
-`;
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: ${1.25 + "rem"};
-  margin-left: ${1.25 + "rem"};
-  margin-bottom: -2rem;
+  margin: 32px 20px 20px;
 `;
 const Tick = styled.div`
   position: relative;
   width: 1px;
   height: 5px;
   background: ${blackColor};
-  margin-top: 2rem;
-  margin-bottom: ${p => (p.length) + "ch"};
-    div{
-      width: 0;
-      color: ${blackColor};
-      transform-origin: top center;
-      margin-top: 0.5rem;
-      margin-left: ${p => p.labelRotation < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
-      transform: ${p => `rotate(${p.labelRotation}deg)`};
-      white-space: nowrap;
-    }
+  margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
+  div{
+    width: 0;
+    color: ${blackColor};
+    transform-origin: top center;
+    margin-top: 0.5rem;
+    margin-left: ${p => !p.rotateLabel ? p.length / 2 * -1 + "ch" : "0.5rem"};
+    transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
+    white-space: nowrap;
+  }
 `;

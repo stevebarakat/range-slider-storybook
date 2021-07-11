@@ -26,7 +26,7 @@ const ClampSlider = ({
   showLabel,
   prefix,
   suffix,
-  labelRotation,
+  rotateLabel,
   primaryColorLight,
   primaryColor,
   width,
@@ -110,7 +110,7 @@ const ClampSlider = ({
             key={i}
             length={labelLength}
             showLabel={showLabel}
-            labelRotation={parseInt(labelRotation, 10)}
+            rotateLabel={parseInt(rotateLabel, 10)}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -126,7 +126,7 @@ const ClampSlider = ({
           Tick && <Tick
             key={i}
             length={labelLength}
-            labelRotation={parseInt(labelRotation, 10)}
+            rotateLabel={parseInt(rotateLabel, 10)}
           >
             {showLabel && <div>{tickText}</div>}
           </Tick>
@@ -343,7 +343,7 @@ ClampSlider.propTypes = {
   /**
     The amount in degrees to rotate the labels.
   */
-  labelRotation: PropTypes.number,
+  rotateLabel: PropTypes.number,
   /**
     The focus color. 
   */
@@ -497,8 +497,8 @@ const Tick = styled.div`
       color: ${blackColor};
       transform-origin: top center;
       margin-top: 0.5rem;
-      margin-left: ${p => p.labelRotation < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
-      transform: ${p => `rotate(${p.labelRotation}deg)`};
+      margin-left: ${p => p.rotateLabel < 15 ? p.length / 2 * -1 + "ch" : "0.5rem"};
+      transform: ${p => `rotate(${p.rotateLabel}deg)`};
       white-space: nowrap;
     }
 `;

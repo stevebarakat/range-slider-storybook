@@ -17,6 +17,6 @@ Default.args =  {
   initialLowerValue: 20,
   initialUpperValue: 80,
   ...defaultProps,
-  labelRotation: 0,
+  rotateLabel: 0,
   width: 1200,
 };

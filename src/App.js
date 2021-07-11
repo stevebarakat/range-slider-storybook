@@ -1,14 +1,14 @@
-// import RangeSlider from './components/RangeSlider/RangeSlider';
+import RangeSlider from './components/RangeSlider/RangeSlider';
+import DualRangeSlider from './components/DualRangeSlider/DualRangeSlider';
 // import VerticalRangeSlider from './components/VerticalRangeSlider/VerticalRangeSlider';
 // import DualVerticalRangeSlider from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
 import Container from './components/Container/Container';
-import ClampSlider from './components/ClampSlider/ClampSlider';
 
 function App() {
   return (
     <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
       <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "30px" }}>
-        {/* <Container>
+        <Container>
           <RangeSlider
             initialValue={50}
             min={0}
@@ -20,33 +20,33 @@ function App() {
             customLabels={[
               { 0: "low" },
               { 50: "medium" },
+              { 100: "hfghh" }
+            ]}
+            showLabel={true}
+            prefix=""
+            suffix=""
+            rotateLabel={true}
+            primaryColor="hsl(196, 100%, 50%)"
+            primaryColorLight="hsl(196, 100%, 70%)"
+            width={1200}
+          />
+        </Container>
+        <Container>
+          <DualRangeSlider
+            min={0}
+            max={100}
+            decimals={0}
+            step={10}
+            showTicks={true}
+            customLabels={[
+              { 0: "low" },
+              { 50: "mediuasdadadadadadm" },
               { 100: "high" }
             ]}
             showLabel={true}
             prefix=""
             suffix=""
-            labelRotation={0}
-            primaryColor="hsl(196, 100%, 50%)"
-            primaryColorLight="hsl(196, 100%, 70%)"
-            width={1200}
-          />
-        </Container> */}
-        <Container>
-          <ClampSlider
-            min={0}
-            max={238}
-            decimals={0}
-            step={10}
-            showTicks={true}
-            customLabels={[
-              // { 0: "low" },
-              // { 50: "medium" },
-              // { 100: "high" }
-            ]}
-            showLabel={true}
-            prefix=""
-            suffix=""
-            labelRotation={45}
+            rotateLabel={false}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
@@ -69,7 +69,7 @@ function App() {
             showLabel={true}
             prefix=""
             suffix=""
-            labelRotation={0}
+            rotateLabel={false}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             width={1200}
@@ -101,7 +101,6 @@ function App() {
             showLabel={true}
             prefix=""
             suffix=""
-            labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}
@@ -125,7 +124,6 @@ function App() {
             showLabel={true}
             prefix=""
             suffix=""
-            labelRotation={0}
             primaryColor="hsl(196, 100%, 50%)"
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}
