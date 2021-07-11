@@ -1,7 +1,7 @@
 import RangeSlider from './components/RangeSlider/RangeSlider';
 import DualRangeSlider from './components/DualRangeSlider/DualRangeSlider';
-// import VerticalRangeSlider from './components/VerticalRangeSlider/VerticalRangeSlider';
-// import DualVerticalRangeSlider from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
+import VerticalRangeSlider from './components/VerticalRangeSlider/VerticalRangeSlider';
+import DualVerticalRangeSlider from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';
 import Container from './components/Container/Container';
 
 function App() {
@@ -84,7 +84,7 @@ function App() {
         gap: "30px",
         width: "100%"
       }}>
-        {/* <Container>
+        <Container>
           <VerticalRangeSlider
             initialValue={50}
             min={0}
@@ -95,7 +95,7 @@ function App() {
             snap={true}
             customLabels={[
               { 0: "low" },
-              { 50: "medium" },
+              { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
               { 100: "high" }
             ]}
             showLabel={true}
@@ -105,8 +105,8 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}
           />
-        </Container> */}
-        {/* <Container>
+        </Container>
+        <Container>
           <DualVerticalRangeSlider
             initialLowerValue={20}
             initialUpperValue={80}
@@ -118,7 +118,7 @@ function App() {
             snap={true}
             customLabels={[
               { 0: "low" },
-              { 50: "medium" },
+              { 50: "dasdadadadadaddasdasdadadaasdada" },
               { 100: "high" }
             ]}
             showLabel={true}
@@ -128,7 +128,7 @@ function App() {
             primaryColorLight="hsl(196, 100%, 70%)"
             height={800}
           />
-        </Container> */}
+        </Container>
       </div>
     </div>
   );

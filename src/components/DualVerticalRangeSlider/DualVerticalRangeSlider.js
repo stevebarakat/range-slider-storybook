@@ -300,7 +300,9 @@ const RangeWrapWrap = styled.div`
     p.maxLabelLength + 60 + "px"
   };
   border: 1px dotted red;
+  padding-right: 200px;
 `;
+
 const RangeWrap = styled.div`
   width: ${p => p.heightVal + "px"};
   margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
@@ -311,6 +313,7 @@ const RangeWrap = styled.div`
   top: 0;
   font-family: sans-serif;
 `;
+
 const RangeOutput = styled.output`
   width: 0;
   user-select: none;

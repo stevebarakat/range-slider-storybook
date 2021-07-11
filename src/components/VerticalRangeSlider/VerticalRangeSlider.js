@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 let focusColor = "";
 let blurColor = "";
+let labelLength = 0;
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -58,7 +59,7 @@ const VerticalRangeSlider = ({
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
         let tickText = numberWithCommas(i.toFixed(decimals));
-        let labelLength = tickText.toString().length;
+        labelLength = tickText.toString().length;
         customLabels.map(label => {
           if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
             customTickText = Object.values(label);
@@ -69,7 +70,6 @@ const VerticalRangeSlider = ({
         markers.push(
           <Tick
             key={i}
-            length={labelLength}
             showLabel={showLabel}
           >
             {showLabel && <div>{customTickText}</div>}
@@ -81,11 +81,10 @@ const VerticalRangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        const labelLength = tickText.toString().length;
+        labelLength = tickText.toString().length;
         markers.push(
           Tick && <Tick
             key={i}
-            length={labelLength}
           >
             {showLabel && <div>{tickText}</div>}
           </Tick>
@@ -125,54 +124,51 @@ const VerticalRangeSlider = ({
   };
 
   return (
-    <RangeWrapWrap
-      showTicks
-      ref={wrapEl}
-      outputWidth={outputWidth}
-      maxLabelLength={maxLabelLength}
-    >
-      <RangeWrap
-        showTicks
-        heightVal={height}
-        maxLabelLength={maxLabelLength}
+    <Wrapper maxLabelLength={maxLabelLength}>
+      <RangeWrapWrap
+        ref={wrapEl}
+        outputWidth={outputWidth}
       >
-        <RangeOutput
-          ref={outputEl}
-          focused={isFocused}
-          className="disable-select"
-          style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
-          <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          tabIndex={0}
-          heightVal={300}
-          ref={rangeEl}
-          min={min}
-          max={max}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-          value={value > max ? max : value.toFixed(decimals)}
-          onClick={() => rangeEl.current.focus()}
-          onInput={(e) => { setValue(e.target.valueAsNumber); }}
-          onKeyDown={handleKeyPress}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          focused={isFocused}
-          className="disable-select"
-        />
-        <Progress
-          style={{
-            background: isFocused ?
-              `-webkit-linear-gradient(left, ${focusColor} 0%,${focusColor} calc(${newValue}% + 
+        <RangeWrap
+          heightVal={height}
+          maxLabelLength={maxLabelLength}
+        >
+          <RangeOutput
+            ref={outputEl}
+            focused={isFocused}
+            className="disable-select"
+            style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
+            <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
+          </RangeOutput>
+          <StyledRangeSlider
+            tabIndex={0}
+            heightVal={300}
+            ref={rangeEl}
+            min={min}
+            max={max}
+            step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+            value={value > max ? max : value.toFixed(decimals)}
+            onClick={() => rangeEl.current.focus()}
+            onInput={(e) => { setValue(e.target.valueAsNumber); }}
+            onKeyDown={handleKeyPress}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            focused={isFocused}
+            className="disable-select"
+          />
+          <Progress
+            style={{
+              background: isFocused ?
+                `-webkit-linear-gradient(left, ${focusColor} 0%,${focusColor} calc(${newValue}% + 
               (${newPosition / 10}rem)),${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)),${whiteColor} 100%)` :
-              `-webkit-linear-gradient(left, ${blurColor} 0%,${blurColor} calc(${newValue}% + 
+                `-webkit-linear-gradient(left, ${blurColor} 0%,${blurColor} calc(${newValue}% + 
               (${newPosition / 10}rem)),${whiteColor} calc(${newValue}% + (${newPosition / 10}rem)),${whiteColor} 100%)`
-          }}
-        />
-        <Ticks ref={tickEl}>
-          {marks}
-        </Ticks>
-      </RangeWrap>
-    </RangeWrapWrap>
+            }}
+          />
+          {showTicks && <Ticks ref={tickEl}>{marks}</Ticks>}
+        </RangeWrap>
+      </RangeWrapWrap>
+    </Wrapper>
   );
 };
 
@@ -242,18 +238,17 @@ VerticalRangeSlider.propTypes = {
 const whiteColor = 'white';
 const blackColor = "#999";
 
-const RangeWrapWrap = styled.div`
-  text-align: ${p => console.log(p.maxLabelLength, p.outputWidth)};
-  width: ${p => p.showTicks ?
-    p.maxLabelLength + p.outputWidth + 125 + "px" :
-    p.maxLabelLength + 60 + "px"
-  };
+const Wrapper = styled.div`
   border: 1px dotted red;
+  padding-left: ${p => `${p.maxLabelLength + 1}ch`};
+`;
+
+const RangeWrapWrap = styled.div`
+  width: 100px;
 `;
 
 const RangeWrap = styled.div`
   width: ${p => p.heightVal + "px"};
-  margin-left: ${p => (p.showTicks && `${p.maxLabelLength + 1}ch`)};
   transform: rotate(270deg);
   transform-origin: top left;
   margin-top: ${p => p.heightVal + "px"};
