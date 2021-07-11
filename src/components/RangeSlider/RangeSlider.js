@@ -16,6 +16,7 @@ const RangeSlider = ({
   decimals,
   step,
   showTicks,
+  showTooltip,
   snap,
   customLabels,
   showLabel,
@@ -71,6 +72,7 @@ const RangeSlider = ({
             length={labelLength}
             showLabel={showLabel}
             rotateLabel={rotateLabel}
+            showTicks={showTicks}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -88,7 +90,8 @@ const RangeSlider = ({
             key={i}
             length={labelLength}
             rotateLabel={rotateLabel}
-          // style={{ marginBottom: "3rem" }}
+            showLabel={showLabel}
+            showTicks={showTicks}
           >
             {showLabel && <div>{tickText}</div>}
           </Tick>
@@ -135,16 +138,16 @@ const RangeSlider = ({
           focused={isFocused}
           style={isFocused ?
             {
-              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} 100%)`
+              background: `-webkit-linear-gradient(left, ${focusColor} 0%, ${focusColor} calc(${newValue}% + ${newPosition * 2}px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 2}px), hsl(210, 52%, 93%) 100%)`
             } :
             {
-              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} calc(${newValue}% + ${newPosition * 2}px), ${whiteColor} 100%)`
+              background: `-webkit-linear-gradient(left, ${blurColor} 0%, ${blurColor} calc(${newValue}% + ${newPosition * 2}px), hsl(210, 52%, 93%) calc(${newValue}% + ${newPosition * 2}px), hsl(210, 52%, 93%) 100%)`
             }}
         />
 
         <RangeOutput
           focused={isFocused}
-          style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
+          style={{ left: showTooltip ? `calc(${newValue}% + ${newPosition * 2}px)` : "50%"}}>
           <span>{prefix + numberWithCommas(value.toFixed(decimals)) + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
@@ -163,7 +166,7 @@ const RangeSlider = ({
           onBlur={() => setIsFocused(false)}
           focused={isFocused}
         />
-        {showTicks ? <Ticks ref={ticksEl}>{marks}</Ticks> : null}
+        <Ticks ref={ticksEl}>{marks}</Ticks>
       </RangeWrap>
     </Wrapper>
   );
@@ -243,8 +246,14 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const Wrapper = styled.div`
-  padding-right: ${p => p.rotateLabel ? p.length / 1.75 + "ch" : p.length / 10 + "ch" };
-  /* border: 1px dotted red; */
+  /* background: #F6F9FC;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid ${blackColor};
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 8px;
+  padding: 30px;
+  padding-right: ${p => p.rotateLabel && p.length / 1.75 + "ch"}; */
 `;
 
 const RangeWrap = styled.div`
@@ -291,11 +300,8 @@ const RangeOutput = styled.output`
 const Progress = styled.div`
   position: absolute;
   border-radius: 15px;
-  box-shadow: inset 1px 1px 2px hsla(0, 0%, 0%, 0.25),
-    inset 0px 0px 2px hsla(0, 0%, 0%, 0.25);
-  height: 15px;
+  box-shadow: inset 2px 2px 3px rgba(0, 0, 0, 0.12), inset 2px 2px 2px rgba(0, 0, 0, 0.24);  height: 15px;
   width: 100%;
-  /* cursor: pointer; */
   z-index: 0;
 `;
 
@@ -319,8 +325,9 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       width: 3em;
       border: 1px solid ${blackColor};
       border-radius: 50%;
-      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
-      cursor: grab;
+          box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+
+        cursor: grab;
       -webkit-appearance: none;
       z-index: 50;
       background: ${p => !p.focused ?
@@ -334,7 +341,8 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
       width: 3em;
       border: 1px solid ${blackColor};
       border-radius: 50%;
-      box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+          box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.25);
+
       cursor: grab;
       appearance: none;
       margin-top: -10px;
@@ -354,9 +362,9 @@ const Ticks = styled.div`
 const Tick = styled.div`
   position: relative;
   width: 1px;
-  height: 5px;
+  height: ${p => p.showTicks ? "5px" : "0"};
   background: ${blackColor};
-  margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
+  margin-bottom: ${p => p.showLabel && p.rotateLabel && `${p.length / 2}ch`};
   div{
     width: 0;
     color: ${blackColor};

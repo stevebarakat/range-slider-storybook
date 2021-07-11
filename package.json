@@ -1,5 +1,5 @@
 {
-  "name": "storybook",
+  "name": "@stevebarakat/just-another-component-library",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,12 +14,22 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "cross-env BABEL_ENV=production babel src -d dist",
     "test": "react-scripts test --setupFiles ./setupFile.js",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public",
+    "build-storybook": "build-storybook -s public --docs",
     "chromatic": "npx chromatic --project-token=3d7889fc29b9"
+  },
+  "babel": {
+    "presets": [
+      [
+        "react-app",
+        {
+          "absoluteRuntime": false
+        }
+      ]
+    ]
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
     "@storybook/addon-a11y": "^6.3.2",
     "@storybook/addon-actions": "^6.3.1",
     "@storybook/addon-essentials": "^6.3.1",
@@ -59,7 +70,14 @@
     "@storybook/preset-create-react-app": "^3.1.7",
     "@storybook/react": "^6.3.1",
     "@storybook/testing-react": "^0.0.18",
+    "auto": "^10.29.3",
     "babel-loader": "8.1.0",
-    "chromatic": "^5.9.2"
-  }
+    "chromatic": "^5.9.2",
+    "cross-env": "^7.0.3"
+  },
+  "description": "Just another component library.",
+  "main": "index.js",
+  "repository": "git@github.com:stevebarakat/range-slider-storybook.git",
+  "author": "Steve <stevebarakat@gmail.com>",
+  "license": "MIT"
 }

@@ -1,0 +1,151 @@
+import { Meta, Story, Canvas } from "@storybook/addon-docs/blocks";
+import RangeSlider from "./RangeSlider";
+import { defaultProps } from "../../shared/defaultProps";
+
+<Meta 
+  title="Input: Range Slider" 
+  component={RangeSlider} 
+  decorators={[(Story) => (
+    <div style={{ margin: '1rem 0 5rem' }}>
+      <Story/>
+    </div>
+    ),]} 
+  />
+
+# RangeSlider
+
+## A single value horizontal range slider.
+A control for entering a number whose exact value is not important. Displays as
+a range widget defaulting to the middle value. Used in conjunction min and max
+to define the range of acceptable values.
+
+### Basic Configuration
+Default labels, not rotated, snapping, 10 steps.
+
+<Story name="basic"
+  decorators={[
+    (Story) => (
+      <div style={{ margin: '1rem 0 5rem' }}>
+        <Story/>
+      </div>
+    ),
+  ]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={5}
+    showTicks={true}
+    snap={true}
+    customLabels={[]}
+    showLabel={false}
+    prefix=""
+    suffix=""
+    rotateLabel={false}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
+
+### Configuration 2
+Default labels, not rotated, snapping, 10 steps.
+
+<Story name="two"
+  decorators={[
+    (Story) => (
+      <div style={{ margin: '1rem 0 5rem' }}>
+        <Story/>
+      </div>
+    ),
+  ]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={10}
+    showTicks={false}
+    snap={true}
+    customLabels={[]}
+    showLabel={false}
+    prefix=""
+    suffix=" gallons"
+    rotateLabel={true}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
+
+### Configuration 3
+Default labels, rotated, smooth.
+
+<Story name="three"
+  decorators={[
+    (Story) => (
+      <div style={{ margin: '1rem 0 5rem' }}>
+        <Story/>
+      </div>
+    ),
+  ]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={10}
+    showTicks={true}
+    snap={true}
+    customLabels={[
+      { 0: "low" },
+      { 50: "medium" },
+      { 100: "hfghh" }
+    ]}
+    showLabel={true}
+    prefix=""
+    suffix=""
+    rotateLabel={true}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
+
+### Configuration 4
+Default labels, not rotated, snapping, 10 steps.
+
+<Story name="four"
+  decorators={[(Story) => (
+      <div style={{ margin: '0 0 5rem' }}>
+        <Story/>
+      </div>
+    ),]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={10}
+    showTicks={true}
+    snap={true}
+    customLabels={[
+      { 0: "low" },
+      { 50: "medium" },
+      { 100: "hfghh" }
+    ]}
+    showLabel={false}
+    prefix=""
+    suffix=""
+    rotateLabel={true}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
+

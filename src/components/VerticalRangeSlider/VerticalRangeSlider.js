@@ -42,15 +42,15 @@ const VerticalRangeSlider = ({
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
-    const tickList = tickEl.current.children;
+    const tickList = showTicks && tickEl.current.children;
     let labelList = [];
     for (let i = 0; i < tickList.length; i++) {
-      labelList.push(tickList[i].firstChild.innerText.length);
+      showTicks && showLabel && labelList.push(tickList[i].firstChild.innerText.length);
     }
     console.log(Math.max(...labelList));
     setMaxLabelLength(Math.max(...labelList));
     setOutputWidth(outputEl.current.clientHeight);
-  }, [min, max, value]);
+  }, [min, max, value, showLabel, showTicks]);
 
   let markers = [];
 
