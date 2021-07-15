@@ -1,14 +1,16 @@
-import { Meta, Story, ArgsTable, Preview, Canvas } from "@storybook/addon-docs/blocks";
+import { Meta, Story, Canvas } from "@storybook/addon-docs/blocks";
 import RangeSlider from "./RangeSlider";
 import { defaultProps } from "../../shared/defaultProps";
 
 <Meta 
-  title="components/RangeSlider/RangeSlider" 
+  title="Input: Range Slider" 
   component={RangeSlider} 
-/>
-
-export const Template = (args) => <RangeSlider {...args } />
-
+  decorators={[(Story) => (
+    <div style={{ margin: '1rem 0 5rem' }}>
+      <Story/>
+    </div>
+    ),]} 
+  />
 
 # RangeSlider
 
@@ -20,126 +22,130 @@ to define the range of acceptable values.
 ### Basic Configuration
 Default labels, not rotated, snapping, 10 steps.
 
-<Preview withToolbar>
-<Story 
-  name="basic"
-  args={{
-    initialValue: 50,
-    min: 0,
-    max: 100,
-    decimals: 0,
-    step: 5,
-    showTicks: true,
-    snap: true,
-    customLabels: [
-    { 0: "lfgdfdw" },
-    { 50: "mehfium" },
-    { 100: "hgfddgdfdfgdgdfgh"}
-    ],
-    showLabel: true,
-    prefix: "",
-    suffix: "",
-    primaryColor: "hsl(196, 100%, 48%)",
-    primaryColorLight: "hsl(196, 100%, 70%)",
-    rotateLabel: false,
-    width: 800
-  }}
+<Story name="basic"
+  decorators={[
+    (Story) => (
+      <div style={{ margin: '1rem 0 5rem' }}>
+        <Story/>
+      </div>
+    ),
+  ]}
 >
-  {Template.bind({})}
-</Story>  
-</Preview>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={5}
+    showTicks={true}
+    snap={true}
+    customLabels={[]}
+    showLabel={false}
+    prefix=""
+    suffix=""
+    rotateLabel={false}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
 
 ### Configuration 2
 Default labels, not rotated, snapping, 10 steps.
 
-<Preview withToolbar>
-  <Story 
-    name="two"
-    args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
-      showTicks: true,
-      snap: true,
-      customLabels: [
-      { 0: "lfgdfdw" },
-      { 50: "mehfium" },
-      { 100: "hgfddgdfdfgdfgh"}
-      ],
-      showLabel: true,
-      prefix: "",
-      suffix: "",
-      primaryColor: "hsl(196, 100%, 48%)",
-      primaryColorLight: "hsl(196, 100%, 70%)",
-      rotateLabel: false,
-      width: 800
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-</Preview>
+<Story name="two"
+  decorators={[
+    (Story) => (
+      <div style={{ margin: '1rem 0 5rem' }}>
+        <Story/>
+      </div>
+    ),
+  ]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={10}
+    showTicks={false}
+    snap={true}
+    customLabels={[]}
+    showLabel={false}
+    prefix=""
+    suffix=" gallons"
+    rotateLabel={true}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
 
 ### Configuration 3
 Default labels, rotated, smooth.
 
-<Preview withToolbar>
-  <Story 
-    name="three"
-    args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
-      showTicks: true,
-      snap: true,
-      customLabels: [
-      { 0: "lfgdfdw" },
-      { 50: "mehfium" },
-      { 100: "hgfddgdfdfgdfgh"}
-      ],
-      showLabel: true,
-      prefix: "",
-      suffix: "",
-      primaryColor: "hsl(196, 100%, 48%)",
-      primaryColorLight: "hsl(196, 100%, 70%)",
-      rotateLabel: false,
-      width: 800
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-</Preview>
+<Story name="three"
+  decorators={[
+    (Story) => (
+      <div style={{ margin: '1rem 0 5rem' }}>
+        <Story/>
+      </div>
+    ),
+  ]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={10}
+    showTicks={true}
+    snap={true}
+    customLabels={[
+      { 0: "low" },
+      { 50: "medium" },
+      { 100: "hfghh" }
+    ]}
+    showLabel={true}
+    prefix=""
+    suffix=""
+    rotateLabel={true}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
 
 ### Configuration 4
 Default labels, not rotated, snapping, 10 steps.
 
-<Preview withToolbar>
-  <Story 
-    name="four"
-    args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
-      showTicks: true,
-      snap: true,
-      customLabels: [],
-      showLabel: true,
-      prefix: "",
-      suffix: "",
-      primaryColor: "hsl(196, 100%, 48%)",
-      primaryColorLight: "hsl(196, 100%, 70%)",
-      rotateLabel: false,
-      width: 800
-    }}
-  >
-    {Template.bind({})}
-  </Story>
-</Preview>
-
-<ArgsTable of={RangeSlider} />
+<Story name="four"
+  decorators={[(Story) => (
+      <div style={{ margin: '0 0 5rem' }}>
+        <Story/>
+      </div>
+    ),]}
+>
+  <RangeSlider 
+    initialValue={50}
+    min={0}
+    max={100}
+    decimals={0}
+    step={10}
+    showTicks={true}
+    snap={true}
+    customLabels={[
+      { 0: "low" },
+      { 50: "medium" },
+      { 100: "hfghh" }
+    ]}
+    showLabel={false}
+    prefix=""
+    suffix=""
+    rotateLabel={true}
+    primaryColor="hsl(196, 100%, 50%)"
+    primaryColorLight="hsl(196, 100%, 70%)"
+    width={1200}
+  />
+</Story>
 

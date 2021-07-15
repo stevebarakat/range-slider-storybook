@@ -141,8 +141,8 @@ const DualRangeSlider = ({
 
   return (
     <Wrapper 
-      lastLabelLength={showLabel && (step > 0) && ticksEl.current?.lastChild.firstChild?.innerText.length}
-      firstLabelLength={showLabel && (step > 0) && ticksEl.current?.firstChild.firstChild?.innerText.length}
+      lastLabelLength={showLabel && (step > 0) && ticksEl.current?.lastChild.firstChild.innerText.length}
+      firstLabelLength={showLabel && (step > 0) && ticksEl.current?.firstChild.firstChild.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -284,6 +284,7 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const Wrapper = styled.div`
+  padding-top: ${p => console.log(p.rotateLabel, p.firstLabelLength, p.lastLabelLength)};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch" };
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 3.5 + "ch" };
   border: 1px dotted red;

@@ -128,9 +128,8 @@ const RangeSlider = ({
     }
   }
   return (
-    <Wrapper 
-      lastLabelLength={showLabel && (step > 0) && ticksEl.current?.lastChild.firstChild?.innerText.length}
-      firstLabelLength={showLabel && (step > 0) && ticksEl.current?.firstChild.firstChild?.innerText.length}
+    <Wrapper
+      length={showLabel && ticksEl.current?.lastChild.firstChild.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -246,20 +245,24 @@ RangeSlider.propTypes = {
 const whiteColor = "white";
 const blackColor = "#999";
 
-
 const Wrapper = styled.div`
-  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch" };
-  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 3.5 + "ch" };
-  border: 1px dotted red;
-`
+  /* background: #F6F9FC;
+  width: fit-content;
+  max-width: 100%;
+  border: 1px solid ${blackColor};
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 8px;
+  padding: 30px;
+  padding-right: ${p => p.rotateLabel && p.length / 1.75 + "ch"}; */
+`;
+
 const RangeWrap = styled.div`
   position: relative;
   padding-top: 3.75rem;
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
-  text-align: ${p => console.log(p.length)};
-  margin: 0 auto;
+  text-align: ${p => console.log(p.length)}
 `;
 
 const RangeOutput = styled.output`
@@ -367,7 +370,7 @@ const Tick = styled.div`
     color: ${blackColor};
     transform-origin: top center;
     margin-top: 0.5rem;
-    margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
+    margin-left: ${p => !p.rotateLabel ? p.length / 2 * -1 + "ch" : "0.5rem"};
     transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
     white-space: nowrap;
   }
