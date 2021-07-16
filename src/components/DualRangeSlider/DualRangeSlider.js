@@ -297,6 +297,7 @@ const RangeWrap = styled.div`
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
+  margin: 0 auto;
 `;
 
 const RangeOutput = styled.output`

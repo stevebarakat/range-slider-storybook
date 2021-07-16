@@ -235,12 +235,41 @@ VerticalRangeSlider.propTypes = {
   height: PropTypes.number,
 };
 
+
+// DEFAULT PROPS
+
+VerticalRangeSlider.defaultProps = {
+  initialValue: 50,
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 5,
+  showTicks: true,
+  showTooltip: true,
+  snap: true,
+  customLabels: [
+  { 0: "lfgdfdw" },
+  { 50: "mehfium" },
+  { 100: "hgfddgdfdfgdfgh"}
+  ],
+  showLabel: true,
+  prefix: "",
+  suffix: "",
+  primaryColor: "hsl(196, 100%, 48%)",
+  primaryColorLight: "hsl(196, 100%, 70%)",
+  rotateLabel: false,
+  height: 800
+}
+
+
 const whiteColor = 'white';
 const blackColor = "#999";
 
 const Wrapper = styled.div`
+  width: fit-content;
   border: 1px dotted red;
   padding-left: ${p => `${p.maxLabelLength + 1}ch`};
+  margin: 0 auto;
 `;
 
 const RangeWrapWrap = styled.div`

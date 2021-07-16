@@ -1,9 +1,15 @@
-import * as defaultProps from './shared/defaultProps';
-import * as global from './shared/global';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import { EricMeyerReset } from '../src/shared/reset';
+import { GlobalStyle } from './shared/global.js';
 
-export { defaultProps, global };
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+    <EricMeyerReset />
+    <GlobalStyle />
+  </React.StrictMode>,
+  document.getElementById('root')
+);
 
-export * from './components/RangeSlider/RangeSlider';
-export * from './components/DualRangeSlider/DualRangeSlider';
-export * from './components/VerticalRangeSlider/VerticalRangeSlider';
-export * from './components/DualVerticalRangeSlider/DualVerticalRangeSlider';

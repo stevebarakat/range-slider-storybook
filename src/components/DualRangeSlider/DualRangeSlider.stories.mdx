@@ -1,16 +1,16 @@
 import { Meta, Story, ArgsTable, Preview, Canvas } from "@storybook/addon-docs/blocks";
-import RangeSlider from "./RangeSlider";
+import DualRangeSlider from "./DualRangeSlider";
 import { defaultProps } from "../../shared/defaultProps";
 
 <Meta 
-  title="components/RangeSlider/RangeSlider" 
-  component={RangeSlider} 
+  title="components/DualRangeSlider/DualRangeSlider" 
+  component={DualRangeSlider} 
 />
 
-export const Template = (args) => <RangeSlider {...args } />
+export const Template = (args) => <DualRangeSlider {...args } />
 
 
-# RangeSlider
+# DualRangeSlider
 
 ## A single value horizontal range slider.
 A control for entering a number whose exact value is not important. Displays as
@@ -24,7 +24,8 @@ Default labels, not rotated, snapping, 10 steps.
 <Story 
   name="basic"
   args={{
-    initialValue: 50,
+    initialLowerValue: 20,
+    initialUpperValue: 80,
     min: 0,
     max: 100,
     decimals: 0,
@@ -56,7 +57,8 @@ Default labels, not rotated, snapping, 10 steps.
   <Story 
     name="two"
     args={{
-      initialValue: 50,
+      initialLowerValue: 20,
+      initialUpperValue: 80,
       min: 0,
       max: 100,
       decimals: 0,
@@ -88,7 +90,8 @@ Default labels, rotated, smooth.
   <Story 
     name="three"
     args={{
-      initialValue: 50,
+      initialLowerValue: 20,
+      initialUpperValue: 80,
       min: 0,
       max: 100,
       decimals: 0,
@@ -120,7 +123,8 @@ Default labels, not rotated, snapping, 10 steps.
   <Story 
     name="four"
     args={{
-      initialValue: 50,
+      initialLowerValue: 20,
+      initialUpperValue: 80,
       min: 0,
       max: 100,
       decimals: 0,
@@ -141,5 +145,5 @@ Default labels, not rotated, snapping, 10 steps.
   </Story>
 </Preview>
 
-<ArgsTable of={RangeSlider} />
+<ArgsTable of={DualRangeSlider} />
 
