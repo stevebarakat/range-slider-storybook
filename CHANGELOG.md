@@ -1,3 +1,17 @@
+# v0.1.2 (Fri Jul 16 2021)
+
+#### ⚠️ Pushed to `main`
+
+- check in (stevebarakat@gmail.com)
+- Revert "check in" (stevebarakat@gmail.com)
+- Revert "v0.1.1" (stevebarakat@gmail.com)
+
+#### Authors: 1
+
+- [@stevebarakat](https://github.com/stevebarakat)
+
+---
+
 # v0.1.2 (Thu Jul 15 2021)
 
 #### ⚠️ Pushed to `main`
