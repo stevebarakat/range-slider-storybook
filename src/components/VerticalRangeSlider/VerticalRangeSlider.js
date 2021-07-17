@@ -7,7 +7,7 @@ let blurColor = "";
 let labelLength = 0;
 
 function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 export const VerticalRangeSlider = ({
@@ -44,8 +44,8 @@ export const VerticalRangeSlider = ({
     setNewValue(Number(((value - min) * 100) / (max - min)));
     const tickList = showTicks && tickEl.current.children;
     let labelList = [];
-    for (let i = 0; i < tickList.length; i++) {
-      showTicks && showLabel && labelList.push(tickList[i].firstChild.innerText.length);
+    for (let i = 0; i < tickList?.length; i++) {
+      showTicks && showLabel && labelList.push(tickList[i].firstChild.clientHeight);
     }
     console.log(Math.max(...labelList));
     setMaxLabelLength(Math.max(...labelList));
@@ -54,7 +54,7 @@ export const VerticalRangeSlider = ({
 
   let markers = [];
 
-  if (customLabels.length !== 0) {
+  if (customLabels?.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
@@ -81,7 +81,6 @@ export const VerticalRangeSlider = ({
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
-        labelLength = tickText.toString().length;
         markers.push(
           Tick && <Tick
             key={i}
@@ -138,7 +137,7 @@ export const VerticalRangeSlider = ({
             focused={isFocused}
             className="disable-select"
             style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
-            <span>{prefix + numberWithCommas(value.toFixed(decimals)) + " " + suffix}</span>
+            <span>{prefix + numberWithCommas(value?.toFixed(decimals)) + " " + suffix}</span>
           </RangeOutput>
           <StyledRangeSlider
             tabIndex={0}
@@ -147,7 +146,7 @@ export const VerticalRangeSlider = ({
             min={min}
             max={max}
             step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-            value={value > max ? max : value.toFixed(decimals)}
+            value={value > max ? max : value?.toFixed(decimals)}
             onClick={() => rangeEl.current.focus()}
             onInput={(e) => { setValue(e.target.valueAsNumber); }}
             onKeyDown={handleKeyPress}
@@ -233,16 +232,43 @@ VerticalRangeSlider.propTypes = {
   height: PropTypes.number,
 };
 
+// DEFAULT PROPS
+
+VerticalRangeSlider.defaultProps = {
+  initialValue: 50,
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 5,
+  showTicks: true,
+  snap: true,
+  customLabels: [
+    { 0: "lfgdfdw" },
+    { 50: "mehfium" },
+    { 100: "hgfddgdfdfgdfgh" }
+  ],
+  showLabel: true,
+  prefix: "",
+  suffix: "",
+  primaryColor: "hsl(196, 100%, 48%)",
+  primaryColorLight: "hsl(196, 100%, 70%)",
+  rotateLabel: false,
+  height: 500,
+};
+
+
 const whiteColor = 'white';
 const blackColor = "#999";
 
 const Wrapper = styled.div`
-  border: 1px dotted red;
-  padding-left: ${p => `${p.maxLabelLength + 1}ch`};
+  /* border: 1px dotted red; */
+  padding-left: ${p => `${p.maxLabelLength}px`};
 `;
 
 const RangeWrapWrap = styled.div`
-  width: 100px;
+  width: ${p => p.outputWidth + 60 + "px"};
+  height: 0;
+  /* background: pink; */
 `;
 
 const RangeWrap = styled.div`
@@ -288,6 +314,7 @@ const RangeOutput = styled.output`
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   cursor: pointer;
+  position: relative;
   appearance: none;
   width: 100%;
   height: 15px;
@@ -348,6 +375,7 @@ const Ticks = styled.div`
   justify-content: space-between;
   margin-right: 1.2rem;
   margin-left: 1.2rem;
+  margin-top: -2.2rem;
   color: ${blackColor};
 `;
 
@@ -361,7 +389,7 @@ const Tick = styled.div`
   height: 5px;
   div {
     writing-mode: vertical-rl;
-    margin-left: 0.65em;
+    margin-left: 1ch;
     margin-bottom: 0.5rem;
     white-space: nowrap;
     &::before {

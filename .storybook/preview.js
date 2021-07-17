@@ -13,6 +13,7 @@ export const decorators = [
 ];
 
 export const parameters = {
+  layout: 'centered',
   actions: { argTypesRegex: '^on[A-Z].*' },
   // Storybook a11y addon configuration
   a11y: {

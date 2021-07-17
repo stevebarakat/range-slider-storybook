@@ -1,6 +1,6 @@
 {
   "name": "@stevebarakat/just-another-component-library",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",

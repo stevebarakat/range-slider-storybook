@@ -92,7 +92,7 @@ const ClampSlider = ({
 
   let markers = [];
 
-  if (customLabels.length !== 0) {
+  if (customLabels && customLabels.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;

@@ -16,7 +16,6 @@ function App() {
             decimals={0}
             step={10}
             showTicks={true}
-            showTooltip={true}
             snap={true}
             customLabels={[
               { 0: "low" },
@@ -39,7 +38,6 @@ function App() {
             decimals={0}
             step={10}
             showTicks={true}
-            showTooltip={true}
             customLabels={[
               { 0: "low" },
               { 50: "mediuasdadadadadadm" },
@@ -63,7 +61,6 @@ function App() {
             decimals={0}
             step={10}
             showTicks={true}
-            showTooltip={true}
             customLabels={[
               { 0: "low" },
               { 50: "medium" },
@@ -95,7 +92,6 @@ function App() {
             decimals={0}
             step={10}
             showTicks={true}
-            showTooltip={true}
             snap={true}
             customLabels={[
               { 0: "low" },
@@ -119,7 +115,6 @@ function App() {
             decimals={0}
             step={10}
             showTicks={true}
-            showTooltip={true}
             snap={true}
             customLabels={[
               { 0: "low" },

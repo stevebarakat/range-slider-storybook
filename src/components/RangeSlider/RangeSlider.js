@@ -16,7 +16,6 @@ export const RangeSlider = ({
   decimals,
   step,
   showTicks,
-  showTooltip,
   snap,
   customLabels,
   showLabel,
@@ -53,7 +52,7 @@ export const RangeSlider = ({
   // For collecting tick marks
   let markers = [];
 
-  if (customLabels.length !== 0) {
+  if (customLabels && customLabels.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
@@ -129,7 +128,7 @@ export const RangeSlider = ({
   }
   return (
     <Wrapper
-      length={showLabel && ticksEl.current?.lastChild.firstChild.innerText.length}
+      length={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -147,7 +146,7 @@ export const RangeSlider = ({
 
         <RangeOutput
           focused={isFocused}
-          style={{ left: showTooltip ? `calc(${newValue}% + ${newPosition * 2}px)` : "50%"}}>
+          style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
           <span>{prefix + numberWithCommas(value.toFixed(decimals)) + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
@@ -243,14 +242,7 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const Wrapper = styled.div`
-  /* background: #F6F9FC;
-  width: fit-content;
-  max-width: 100%;
-  border: 1px solid ${blackColor};
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  border-radius: 8px;
-  padding: 30px;
-  padding-right: ${p => p.rotateLabel && p.length / 1.75 + "ch"}; */
+  padding-right: ${p => p.rotateLabel && p.length / 1.75 + "ch"};
 `;
 
 const RangeWrap = styled.div`
@@ -304,6 +296,8 @@ const Progress = styled.div`
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
+  position: absolute;
+  left: 0;
   cursor: pointer;
   margin: 0;
   width: 100%;

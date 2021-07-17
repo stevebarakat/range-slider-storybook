@@ -140,6 +140,28 @@ body {
   font-family: sans-serif;
 }
 
+h2 {
+  border-bottom: none;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+.description {
+  margin: 0;
+}
+
+.previews {
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-top: 50px;
+  column-gap: 50px;
+}
+
 `;
 
 export const GlobalStyle = createGlobalStyle`

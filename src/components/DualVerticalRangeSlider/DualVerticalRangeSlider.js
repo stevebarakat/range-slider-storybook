@@ -168,7 +168,7 @@ export const DualVerticalRangeSlider = ({
         <RangeOutput
           ref={outputEl}
           focused={progressFocused}
-          style={{ left: `calc(${newValue1}% + (${newPosition1 / 10}rem))` }}>
+          style={{ left: `calc(${newValue1}% + ${newPosition1 * 2}px)` }}>
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
@@ -193,7 +193,7 @@ export const DualVerticalRangeSlider = ({
         {/* LOWER RANGE */}
         <RangeOutput
           focused={progressFocused}
-          style={{ left: `calc(${newValue2}% + (${newPosition2 / 10}rem))` }}>
+          style={{ left: `calc(${newValue2}% + ${newPosition2 * 2}px)` }}>
           <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + " " + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
@@ -357,6 +357,7 @@ const Progress = styled.div`
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   pointer-events: none;
   cursor: default;
+  position: absolute;
   appearance: none;
   width: 100%;
   height: 15px;

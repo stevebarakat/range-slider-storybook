@@ -73,7 +73,7 @@ export const DualRangeSlider = ({
   // For collecting tick marks
   let markers = [];
 
-  if (customLabels.length !== 0) {
+  if (customLabels && customLabels.length !== 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
@@ -119,30 +119,32 @@ export const DualRangeSlider = ({
   const marks = markers.map(marker => marker);
 
   //If the upper value slider is LESS THAN the lower value slider.
-  if (upperVal > lowerVal) {
-    //The lower slider value is set to equal the upper value slider.
-    setLowerVal(parseFloat(upperVal));
+  if (upperVal < lowerVal) {
+    //Set upperVal to lowerVal.
+    setUpperVal(parseFloat(lowerVal));
     //If the lower value slider equals its set minimum.
-    if (lowerVal === 0) {
+    if (lowerVal < min) {
       //Set the upper slider value to equal min.
-      setUpperVal(min);
+      setLowerVal(min);
     }
   }
-  //If the lower value slider is GREATER THAN the upper value slider minus one.
-  if (lowerVal < upperVal - 1) {
-    //The upper slider value is set to equal the lower value slider plus one.
-    setUpperVal(parseFloat(lowerVal));
+  //If the lower value slider is GREATER THAN the upper value.
+  if (lowerVal > upperVal) {
+    //Set lowerVal to upperVal.
+    setLowerVal(parseFloat(upperVal));
     //If the upper value slider equals its set maximum.
-    if (upperVal === max) {
-      //Set the lower slider value to equal the upper value slider's maximum value minus one.
-      setLowerVal(parseFloat(max));
+    if (upperVal > max) {
+      //Set the lower slider value to equal max.
+      setLowerVal(max);
     }
   }
 
+  console.log(upperVal)
+
   return (
     <Wrapper 
-      lastLabelLength={showLabel && (step > 0) && ticksEl.current?.lastChild.firstChild.innerText.length}
-      firstLabelLength={showLabel && (step > 0) && ticksEl.current?.firstChild.firstChild.innerText.length}
+      firstLabelLength={showLabel && ticksEl.current?.firstChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
+      lastLabelLength={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -159,12 +161,11 @@ export const DualRangeSlider = ({
         <RangeOutput
           focused={lowerFocused}
           style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
-          className="range-value"
         >
           <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
         </RangeOutput>
         <StyledRangeSlider
-          tabIndex="2"
+          tabIndex="0"
           ref={lowerRange}
           type="range"
           min={min}
@@ -183,12 +184,11 @@ export const DualRangeSlider = ({
         <RangeOutput
           focused={upperFocused}
           style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
-          className="range-value"
         >
           <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
         </RangeOutput>
         <StyledRangeSlider
-          tabIndex="1"
+          tabIndex="0"
           ref={upperRange}
           type="range"
           min={min}
@@ -339,6 +339,8 @@ const Progress = styled.div`
 
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
+  position: absolute;
+  left: 0;
   cursor: pointer;
   pointer-events: none;
   margin: 0;
@@ -352,7 +354,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
     outline: none;
   }
   &::-webkit-slider-thumb {
-    position: relative;
     height: 3em;
     width: 3em;
     border: 1px solid ${blackColor};
@@ -369,7 +370,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   };
 }
   &::-moz-range-thumb {
-    position: relative;
     height: 3em;
     width: 3em;
     border: 1px solid ${blackColor};
