@@ -35,12 +35,12 @@ export const DualRangeSlider = ({
   const upperRange = useRef(null);
   const ticksEl = useRef(null);
   const factor = (max - min) / 10;
-  const [lowerVal, setLowerVal] = useState(initialLowerValue);
-  const [upperVal, setUpperVal] = useState(initialUpperValue);
-  const [lowerFocused, setLowerFocused] = useState(false);
-  const [upperFocused, setUpperFocused] = useState(false);
-  const [newLowerVal, setNewLowerVal] = useState(null);
+  const [upperVal, setUpperVal] = useState(initialLowerValue);
+  const [lowerVal, setLowerVal] = useState(initialUpperValue);
+  const [upperFocused, setLowerFocused] = useState(false);
+  const [lowerFocused, setUpperFocused] = useState(false);
   const [newUpperVal, setNewUpperVal] = useState(null);
+  const [newLowerVal, setNewLowerVal] = useState(null);
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
@@ -48,9 +48,9 @@ export const DualRangeSlider = ({
   if (!showTicks) step = 0;
 
   useEffect(() => {
-    setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
     setNewUpperVal(Number(((upperVal - min) * 100) / (max - min)));
-  }, [lowerVal, upperVal, min, max]);
+    setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
+  }, [upperVal, lowerVal, min, max]);
 
   // Make sure min never exceds max
   if (min > max) {
@@ -63,13 +63,13 @@ export const DualRangeSlider = ({
 
   // Calculations for positioning lower value tooltip
   newValue1 = Number(
-    ((lowerVal - min) * 100) / (max - min)
+    ((upperVal - min) * 100) / (max - min)
   );
   newPosition1 = 10 - newValue1 * 0.2;
 
   // Calculations for positioning upper value tooltip
   newValue2 = Number(
-    ((upperVal - min) * 100) / (max - min)
+    ((lowerVal - min) * 100) / (max - min)
   );
   newPosition2 = 10 - newValue2 * 0.2;
 
@@ -90,15 +90,16 @@ export const DualRangeSlider = ({
         });
         if (customTickText !== null) labelLength = customTickText[0].length;
         markers.push(
-          <Tick
-            key={i}
-            length={labelLength}
-            showLabel={showLabel}
-            rotateLabel={rotateLabel}
-            customTickText={customTickText}
-          >
+          <div>
+            {showTicks && <Tick
+              key={i}
+              length={labelLength}
+              showLabel={showLabel}
+              rotateLabel={rotateLabel}
+              customTickText={customTickText}
+            />}
             {showLabel && <div>{customTickText}</div>}
-          </Tick>
+          </div>
         );
       }
     }
@@ -108,7 +109,7 @@ export const DualRangeSlider = ({
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
         markers.push(
-          Tick && <Tick
+          <Tick
             key={i}
             length={labelLength}
             rotateLabel={rotateLabel}
@@ -123,26 +124,26 @@ export const DualRangeSlider = ({
   const marks = markers.map(marker => marker);
 
   //If the upper value slider is LESS THAN the lower value slider.
-  if (upperVal < lowerVal) {
-    //Set upperVal to lowerVal.
+  if (lowerVal > upperVal) {
+    //The lower slider value is set to equal the upper value slider.
     setUpperVal(parseFloat(lowerVal));
     //If the lower value slider equals its set minimum.
-    if (lowerVal < min) {
+    if (upperVal === 0) {
       //Set the upper slider value to equal min.
       setLowerVal(min);
     }
   }
-  //If the lower value slider is GREATER THAN the upper value.
-  if (lowerVal > upperVal) {
-    //Set lowerVal to upperVal.
+  //If the lower value slider is GREATER THAN the upper value slider minus one.
+  if (upperVal < lowerVal - 1) {
+    //The upper slider value is set to equal the lower value slider plus one.
     setLowerVal(parseFloat(upperVal));
     //If the upper value slider equals its set maximum.
-    if (upperVal > max) {
-      //Set the lower slider value to equal max.
-      setLowerVal(max);
+    if (lowerVal === max) {
+      //Set the lower slider value to equal the upper value slider's maximum value minus one.
+      setUpperVal(parseFloat(max));
     }
   }
-
+  
   function handleKeyPress(e) {
     // Check if modifier key is pressed
     const id = e.target.id;
@@ -151,16 +152,16 @@ export const DualRangeSlider = ({
 
     switch (e.keyCode) {
       case 37: //Left
-        id === "lowerVal" ? (cmd || ctrl) && setLowerVal(lowerVal - factor) : (cmd || ctrl) && setUpperVal(upperVal - factor);
+        id === "upperVal" ? (cmd || ctrl) && setUpperVal(upperVal - factor) : (cmd || ctrl) && setLowerVal(lowerVal - factor);
         return;
       case 40: //Down
-        (cmd || ctrl) && setLowerVal(lowerVal - factor);
+        (cmd || ctrl) && setUpperVal(upperVal - factor);
         return;
       case 38: //Up
-        (cmd || ctrl) && setLowerVal(lowerVal >= max ? max : lowerVal + factor);
+        (cmd || ctrl) && setUpperVal(upperVal >= max ? max : upperVal + factor);
         return;
       case 39: //Right
-        (cmd || ctrl) && setLowerVal(lowerVal >= max ? max : lowerVal + factor);
+        (cmd || ctrl) && setUpperVal(upperVal >= max ? max : upperVal + factor);
         return;
       default:
         return;
@@ -175,18 +176,51 @@ export const DualRangeSlider = ({
     >
       <RangeWrap style={{ width: width }}>
         <Progress
-          focused={lowerFocused || upperFocused}
           style={{
-            background: lowerFocused || upperFocused ?
-              `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${focusColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${focusColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`})` :
-              `-webkit-linear-gradient(left, ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newUpperVal}% + ${newPosition2 * 2}px)`},${blurColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`},${whiteColor} ${`calc(${newLowerVal}% + ${newPosition1 * 2}px)`})`
+            background: upperFocused || lowerFocused ?
+              `-webkit-linear-gradient(left,  
+              ${whiteColor} ${`calc(${newLowerVal}% + ${newPosition2}px)`},
+              ${focusColor} ${`calc(${newLowerVal}% + ${newPosition2}px)`},
+              ${focusColor} ${`calc(${newUpperVal}% + ${newPosition1}px)`},
+              ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition1}px)`})`
+              :
+              `-webkit-linear-gradient(left,  
+              ${whiteColor} ${`calc(${newLowerVal}% + ${newPosition2}px)`},
+              ${blurColor} ${`calc(${newLowerVal}% + ${newPosition2}px)`},
+              ${blurColor} ${`calc(${newUpperVal}% + ${newPosition1}px)`},
+              ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition1}px)`})`
           }}
         />
 
         {/* LOWER RANGE */}
         <RangeOutput
+          focused={upperFocused}
+          style={{ left: `calc(${newUpperVal}% + ${newPosition1 * 2}px)` }}
+        >
+          <span>up: {prefix + numberWithCommas(upperVal.toFixed(decimals)) + suffix}</span>
+        </RangeOutput>
+        <StyledRangeSlider
+          id="upperVal"
+          onKeyDown={handleKeyPress}
+          tabIndex="0"
+          ref={lowerRange}
+          type="range"
+          min={min}
+          max={max}
+          value={upperVal}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          onFocus={() => setLowerFocused(true)}
+          onBlur={() => setLowerFocused(false)}
+          onInput={e => {
+            setUpperVal(e.target.valueAsNumber);
+          }}
+          focused={upperFocused}
+        />
+
+        {/* UPPER RANGE */}
+        <RangeOutput
           focused={lowerFocused}
-          style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
+          style={{ left: `calc(${newLowerVal}% + ${newPosition2 * 2}px)` }}
         >
           <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + suffix}</span>
         </RangeOutput>
@@ -194,45 +228,20 @@ export const DualRangeSlider = ({
           id="lowerVal"
           onKeyDown={handleKeyPress}
           tabIndex="0"
-          ref={lowerRange}
+          ref={upperRange}
           type="range"
           min={min}
           max={max}
           value={lowerVal}
           step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-          onFocus={() => setLowerFocused(true)}
-          onBlur={() => setLowerFocused(false)}
-          onInput={e => {
-            setLowerVal(e.target.valueAsNumber);
-          }}
-          focused={lowerFocused}
-        />
-
-        {/* UPPER RANGE */}
-        <RangeOutput
-          focused={upperFocused}
-          style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
-        >
-          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + suffix}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          id="upperVal"
-          onKeyDown={handleKeyPress}
-          tabIndex="0"
-          ref={upperRange}
-          type="range"
-          min={min}
-          max={max}
-          value={upperVal}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
           onFocus={() => setUpperFocused(true)}
           onBlur={() => setUpperFocused(false)}
           onInput={e => {
-            setUpperVal(parseFloat(e.target.value));
+            setLowerVal(parseFloat(e.target.value));
           }}
-          focused={upperFocused}
+          focused={lowerFocused}
         />
-        {showTicks ? <Ticks ref={ticksEl} rotateLabel={rotateLabel}>{marks}</Ticks> : null}
+        {<Ticks ref={ticksEl} rotateLabel={rotateLabel}>{marks}</Ticks>}
       </RangeWrap>
     </Wrapper>
   );
@@ -427,11 +436,11 @@ const Ticks = styled.div`
 
 const Tick = styled.div`
   position: relative;
-  width: ${p => p.customTickText ? "1px" : 0};
+  width: ${p => p.customTickText ? p.customTickText ? "5px" : "1px" : "1px"};
   height: 5px;
   background: ${blackColor};
   margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
-  div{
+  & + div{
     width: 0;
     color: ${blackColor};
     transform-origin: top center;
