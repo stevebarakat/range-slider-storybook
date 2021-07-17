@@ -83,19 +83,19 @@ export const DualRangeSlider = ({
         let tickText = numberWithCommas(i.toFixed(decimals));
         let labelLength = tickText.toString().length;
         customLabels.map(label => {
-          console.log((parseInt(tickText, 10) === parseInt(numberWithCommas(Object.keys(label)), 10)))
           if (parseInt(tickText, 10) === parseInt(numberWithCommas(Object.keys(label)), 10)) {
             customTickText = Object.values(label);
           }
           return null;
         });
         if (customTickText !== null) labelLength = customTickText[0].length;
-        customTickText && markers.push(
+        markers.push(
           <Tick
             key={i}
             length={labelLength}
             showLabel={showLabel}
             rotateLabel={rotateLabel}
+            customTickText={customTickText}
           >
             {showLabel && <div>{customTickText}</div>}
           </Tick>
@@ -108,7 +108,7 @@ export const DualRangeSlider = ({
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
         markers.push(
-          <Tick
+          Tick && <Tick
             key={i}
             length={labelLength}
             rotateLabel={rotateLabel}
@@ -312,6 +312,7 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const Wrapper = styled.div`
+  padding-top: ${p => console.log(p.rotateLabel, p.firstLabelLength, p.lastLabelLength)};
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 2.5 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 2.5 + "ch"};
   border: 1px dotted red;
@@ -426,7 +427,7 @@ const Ticks = styled.div`
 
 const Tick = styled.div`
   position: relative;
-  width: 1px;
+  width: ${p => p.customTickText ? "1px" : 0};
   height: 5px;
   background: ${blackColor};
   margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
