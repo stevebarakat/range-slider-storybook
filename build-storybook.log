@@ -175,7 +175,7 @@ info => Using default Webpack4 setup
 <s> [webpack.Progress] 19% building 75/84 modules 9 active /Users/sb/Dev/storybook/node_modules/react/index.js
 <s> [webpack.Progress] 19% building 75/85 modules 10 active /Users/sb/Dev/storybook/node_modules/@storybook/addon-docs/dist/esm/blocks/index.js
 <s> [webpack.Progress] 19% building 75/86 modules 11 active /Users/sb/Dev/storybook/node_modules/@storybook/addon-docs/dist/esm/frameworks/react/extractProps.js
-<s> [webpack.Progress] 19% building 75/87 modules 12 active /Users/sb/Dev/storybook/node_modules/@storybook/addon-docs/blocks.js
+<s> [webpack.Progress] 19% building 75/87 modules 12 active /Users/sb/Dev/storybook/node_modules/@storybook/addon-docs.js
 <s> [webpack.Progress] 19% building 75/88 modules 13 active /Users/sb/Dev/storybook/node_modules/@storybook/addon-docs/dist/esm/shared.js
 <s> [webpack.Progress] 19% building 75/89 modules 14 active /Users/sb/Dev/storybook/node_modules/react/cjs/react-jsx-runtime.production.min.js
 <s> [webpack.Progress] 19% building 76/89 modules 13 active /Users/sb/Dev/storybook/node_modules/react/cjs/react-jsx-runtime.production.min.js

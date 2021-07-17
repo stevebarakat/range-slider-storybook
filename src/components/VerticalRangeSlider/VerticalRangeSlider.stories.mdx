@@ -1,4 +1,4 @@
-import { Meta, Story, ArgsTable, Preview, Canvas } from "@storybook/addon-docs/blocks";
+import { Meta, Story, ArgsTable, Canvas } from "@storybook/addon-docs";
 import { VerticalRangeSlider } from "./VerticalRangeSlider";
 import { defaultProps } from "../../shared/defaultProps";
 
@@ -25,7 +25,7 @@ to define the range of acceptable values.
   ### Base Configuration
   Default labels, not rotated, snapping, 10 steps.
   
-  <Preview withToolbar>
+  <Canvas withToolbar>
   <Story 
     name="base"
     args={{
@@ -51,7 +51,7 @@ to define the range of acceptable values.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 </div>
 
@@ -61,7 +61,7 @@ to define the range of acceptable values.
   ### Configuration 2
   Default labels, not rotated, snapping, 10 steps.
   
-  <Preview withToolbar>
+  <Canvas withToolbar>
   <Story 
     name="two"
     args={{
@@ -87,7 +87,7 @@ to define the range of acceptable values.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 </div>
 
@@ -97,7 +97,7 @@ to define the range of acceptable values.
   ### Configuration 3
   <p className="description">Default labels, not rotated, snapping, 10 steps.</p>
 
-  <Preview withToolbar>
+  <Canvas withToolbar>
   <Story 
     name="three"
     args={{
@@ -124,7 +124,7 @@ to define the range of acceptable values.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 </div>
 
@@ -133,7 +133,7 @@ to define the range of acceptable values.
 
   ### Configuration 4
   Default labels, not rotated, snapping, 10 steps.
-  <Preview withToolbar>
+  <Canvas withToolbar>
   <Story 
     name="four"
     args={{
@@ -159,7 +159,7 @@ to define the range of acceptable values.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 
 </div>

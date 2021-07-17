@@ -34,6 +34,7 @@ export const DualRangeSlider = ({
   const lowerRange = useRef(null);
   const upperRange = useRef(null);
   const ticksEl = useRef(null);
+  const factor = (max - min) / 10;
   const [lowerVal, setLowerVal] = useState(initialLowerValue);
   const [upperVal, setUpperVal] = useState(initialUpperValue);
   const [lowerFocused, setLowerFocused] = useState(false);
@@ -43,6 +44,8 @@ export const DualRangeSlider = ({
 
   focusColor = primaryColor;
   blurColor = primaryColorLight;
+
+  if (!showTicks) step = 0;
 
   useEffect(() => {
     setNewLowerVal(Number(((lowerVal - min) * 100) / (max - min)));
@@ -80,13 +83,14 @@ export const DualRangeSlider = ({
         let tickText = numberWithCommas(i.toFixed(decimals));
         let labelLength = tickText.toString().length;
         customLabels.map(label => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+          console.log((parseInt(tickText, 10) === parseInt(numberWithCommas(Object.keys(label)), 10)))
+          if (parseInt(tickText, 10) === parseInt(numberWithCommas(Object.keys(label)), 10)) {
             customTickText = Object.values(label);
           }
           return null;
         });
         if (customTickText !== null) labelLength = customTickText[0].length;
-        markers.push(
+        customTickText && markers.push(
           <Tick
             key={i}
             length={labelLength}
@@ -104,7 +108,7 @@ export const DualRangeSlider = ({
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
         markers.push(
-          Tick && <Tick
+          <Tick
             key={i}
             length={labelLength}
             rotateLabel={rotateLabel}
@@ -139,12 +143,34 @@ export const DualRangeSlider = ({
     }
   }
 
-  console.log(upperVal)
+  function handleKeyPress(e) {
+    // Check if modifier key is pressed
+    const id = e.target.id;
+    const cmd = e.metaKey;
+    const ctrl = e.ctrlKey;
+
+    switch (e.keyCode) {
+      case 37: //Left
+        id === "lowerVal" ? (cmd || ctrl) && setLowerVal(lowerVal - factor) : (cmd || ctrl) && setUpperVal(upperVal - factor);
+        return;
+      case 40: //Down
+        (cmd || ctrl) && setLowerVal(lowerVal - factor);
+        return;
+      case 38: //Up
+        (cmd || ctrl) && setLowerVal(lowerVal >= max ? max : lowerVal + factor);
+        return;
+      case 39: //Right
+        (cmd || ctrl) && setLowerVal(lowerVal >= max ? max : lowerVal + factor);
+        return;
+      default:
+        return;
+    }
+  }
 
   return (
-    <Wrapper 
-      firstLabelLength={showLabel && ticksEl.current?.firstChild.firstChild?.innerText !== null && ticksEl.current?.firstChild.firstChild?.innerText.length}
-      lastLabelLength={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
+    <Wrapper
+      firstLabelLength={showLabel && ticksEl.current?.firstChild?.firstChild?.innerText !== null && ticksEl.current?.firstChild?.firstChild?.innerText.length}
+      lastLabelLength={showLabel && ticksEl.current?.lastChild?.firstChild?.innerText !== null && ticksEl.current?.lastChild?.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -162,9 +188,11 @@ export const DualRangeSlider = ({
           focused={lowerFocused}
           style={{ left: `calc(${newLowerVal}% + ${newPosition1 * 2}px)` }}
         >
-          <span>{lowerVal ? lowerVal.toFixed(decimals) : 0}</span>
+          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
+          id="lowerVal"
+          onKeyDown={handleKeyPress}
           tabIndex="0"
           ref={lowerRange}
           type="range"
@@ -185,9 +213,11 @@ export const DualRangeSlider = ({
           focused={upperFocused}
           style={{ left: `calc(${newUpperVal}% + ${newPosition2 * 2}px)` }}
         >
-          <span>{upperVal ? upperVal.toFixed(decimals) : 0}</span>
+          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
+          id="upperVal"
+          onKeyDown={handleKeyPress}
           tabIndex="0"
           ref={upperRange}
           type="range"
@@ -282,9 +312,8 @@ const blackColor = "#999";
 const whiteColor = "white";
 
 const Wrapper = styled.div`
-  padding-top: ${p => console.log(p.rotateLabel, p.firstLabelLength, p.lastLabelLength)};
-  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch" };
-  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 3.5 + "ch" };
+  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 2.5 + "ch"};
+  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 2.5 + "ch"};
   border: 1px dotted red;
 `;
 

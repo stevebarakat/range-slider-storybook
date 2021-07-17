@@ -1,4 +1,4 @@
-import { Meta, Story, ArgsTable, Preview, Canvas } from "@storybook/addon-docs/blocks";
+import { Meta, Story, ArgsTable, Canvas } from "@storybook/addon-docs";
 import { DualVerticalRangeSlider } from "./DualVerticalRangeSlider";
 import { defaultProps } from "../../shared/defaultProps";
 
@@ -20,7 +20,7 @@ to define the range of acceptable values.
 ### Basic Configuration
 Default labels, not rotated, snapping, 10 steps.
 
-<Preview withToolbar>
+<Canvas withToolbar>
 <Story 
   name="basic"
   args={{
@@ -48,12 +48,12 @@ Default labels, not rotated, snapping, 10 steps.
 >
   {Template.bind({})}
 </Story>  
-</Preview>
+</Canvas>
 
 ### Configuration 2
 Default labels, not rotated, snapping, 10 steps.
 
-<Preview withToolbar>
+<Canvas withToolbar>
   <Story 
     name="two"
     args={{
@@ -81,12 +81,12 @@ Default labels, not rotated, snapping, 10 steps.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 ### Configuration 3
 Default labels, rotated, smooth.
 
-<Preview withToolbar>
+<Canvas withToolbar>
   <Story 
     name="three"
     args={{
@@ -114,12 +114,12 @@ Default labels, rotated, smooth.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 ### Configuration 4
 Default labels, not rotated, snapping, 10 steps.
 
-<Preview withToolbar>
+<Canvas withToolbar>
   <Story 
     name="four"
     args={{
@@ -143,6 +143,6 @@ Default labels, not rotated, snapping, 10 steps.
   >
     {Template.bind({})}
   </Story>
-</Preview>
+</Canvas>
 
 <ArgsTable of={DualVerticalRangeSlider} />

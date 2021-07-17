@@ -36,6 +36,8 @@ export const RangeSlider = ({
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
+  if (!showTicks) step = 0;
+
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
   }, [value, min, max]);
@@ -59,7 +61,7 @@ export const RangeSlider = ({
         let tickText = numberWithCommas(i.toFixed(decimals));
         let labelLength = tickText.toString().length;
         customLabels.map(label => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+          if (parseInt(tickText, 10) === parseInt(numberWithCommas(Object.keys(label)), 10)) {
             customTickText = Object.values(label);
           }
           return null;
@@ -128,8 +130,8 @@ export const RangeSlider = ({
   }
   return (
     <Wrapper
-      firstLabelLength={showLabel && ticksEl.current?.firstChild.firstChild?.innerText !== null && ticksEl.current?.firstChild.firstChild?.innerText.length}
-      lastLabelLength={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
+      firstLabelLength={showLabel && ticksEl.current?.firstChild?.firstChild?.innerText !== null && ticksEl.current?.firstChild?.firstChild?.innerText.length}
+      lastLabelLength={showLabel && ticksEl.current?.lastChild?.firstChild?.innerText !== null && ticksEl.current?.lastChild?.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
