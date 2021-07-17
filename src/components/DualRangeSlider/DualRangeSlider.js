@@ -23,7 +23,7 @@ export const DualRangeSlider = ({
   showTicks,
   snap,
   customLabels,
-  showLabel,
+  showLabels,
   prefix,
   suffix,
   rotateLabel,
@@ -90,15 +90,14 @@ export const DualRangeSlider = ({
         });
         if (customTickText !== null) labelLength = customTickText[0].length;
         markers.push(
-          <div>
-            {showTicks && <Tick
-              key={i}
+          <div key={i}>
+            <Tick
               length={labelLength}
-              showLabel={showLabel}
+              showLabels={showLabels}
               rotateLabel={rotateLabel}
               customTickText={customTickText}
-            />}
-            {showLabel && <div>{customTickText}</div>}
+            />
+            {showLabels && <div>{customTickText}</div>}
           </div>
         );
       }
@@ -109,13 +108,15 @@ export const DualRangeSlider = ({
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
         markers.push(
-          <Tick
-            key={i}
-            length={labelLength}
-            rotateLabel={rotateLabel}
-          >
-            {showLabel && <div>{tickText}</div>}
-          </Tick>
+          <div key={i}>
+            <Tick
+              length={labelLength}
+              showLabels={showLabels}
+              rotateLabel={rotateLabel}
+              customTickText={tickText}
+            />
+            {showLabels && <div>{tickText}</div>}
+          </div>
         );
       }
     }
@@ -143,7 +144,7 @@ export const DualRangeSlider = ({
       setUpperVal(parseFloat(max));
     }
   }
-  
+
   function handleKeyPress(e) {
     // Check if modifier key is pressed
     const id = e.target.id;
@@ -167,11 +168,10 @@ export const DualRangeSlider = ({
         return;
     }
   }
-
   return (
     <Wrapper
-      firstLabelLength={showLabel && ticksEl.current?.firstChild?.firstChild?.innerText !== null && ticksEl.current?.firstChild?.firstChild?.innerText.length}
-      lastLabelLength={showLabel && ticksEl.current?.lastChild?.firstChild?.innerText !== null && ticksEl.current?.lastChild?.firstChild?.innerText.length}
+      firstLabelLength={showLabels && ticksEl.current?.firstChild?.lastChild.innerText !== null && ticksEl.current?.firstChild?.lastChild.innerText.length}
+      lastLabelLength={showLabels && ticksEl.current?.lastChild?.lastChild.innerText !== null && ticksEl.current?.lastChild?.lastChild.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -190,6 +190,31 @@ export const DualRangeSlider = ({
               ${blurColor} ${`calc(${newUpperVal}% + ${newPosition1}px)`},
               ${whiteColor} ${`calc(${newUpperVal}% + ${newPosition1}px)`})`
           }}
+        />
+
+        {/* UPPER RANGE */}
+        <RangeOutput
+          focused={lowerFocused}
+          style={{ left: `calc(${newLowerVal}% + ${newPosition2 * 2}px)` }}
+        >
+          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + suffix}</span>
+        </RangeOutput>
+        <StyledRangeSlider
+          id="lowerVal"
+          onKeyDown={handleKeyPress}
+          tabIndex="0"
+          ref={upperRange}
+          type="range"
+          min={min}
+          max={max}
+          value={lowerVal}
+          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
+          onFocus={() => setUpperFocused(true)}
+          onBlur={() => setUpperFocused(false)}
+          onInput={e => {
+            setLowerVal(parseFloat(e.target.value));
+          }}
+          focused={lowerFocused}
         />
 
         {/* LOWER RANGE */}
@@ -217,30 +242,6 @@ export const DualRangeSlider = ({
           focused={upperFocused}
         />
 
-        {/* UPPER RANGE */}
-        <RangeOutput
-          focused={lowerFocused}
-          style={{ left: `calc(${newLowerVal}% + ${newPosition2 * 2}px)` }}
-        >
-          <span>{prefix + numberWithCommas(lowerVal.toFixed(decimals)) + suffix}</span>
-        </RangeOutput>
-        <StyledRangeSlider
-          id="lowerVal"
-          onKeyDown={handleKeyPress}
-          tabIndex="0"
-          ref={upperRange}
-          type="range"
-          min={min}
-          max={max}
-          value={lowerVal}
-          step={snap ? parseInt(step, 10) : parseInt(0, 10)}
-          onFocus={() => setUpperFocused(true)}
-          onBlur={() => setUpperFocused(false)}
-          onInput={e => {
-            setLowerVal(parseFloat(e.target.value));
-          }}
-          focused={lowerFocused}
-        />
         {<Ticks ref={ticksEl} rotateLabel={rotateLabel}>{marks}</Ticks>}
       </RangeWrap>
     </Wrapper>
@@ -289,7 +290,7 @@ DualRangeSlider.propTypes = {
   /**
     Show or hide labels.
   */
-  showLabel: PropTypes.bool,
+  showLabels: PropTypes.bool,
   /**
     Optional text displayed before value. 
   */
@@ -316,12 +317,38 @@ DualRangeSlider.propTypes = {
   width: PropTypes.number,
 };
 
+
+// DEFAULT PROPS
+DualRangeSlider.defaultProps = {
+  initialLowerValue: 20,
+  initialUpperValue: 80,
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 5,
+  showTicks: true,
+  showTooltip: true,
+  snap: true,
+  customLabels: [
+    { 0: "lfgdfdw" },
+    { 50: "mehfium" },
+    { 100: "hgfddgdfdfgdfgh" }
+  ],
+  showLabels: true,
+  prefix: "",
+  suffix: "",
+  primaryColor: "hsl(196, 100%, 48%)",
+  primaryColorLight: "hsl(196, 100%, 70%)",
+  rotateLabel: false,
+  width: 1200
+};
+
+
 // STYLES
 const blackColor = "#999";
 const whiteColor = "white";
 
 const Wrapper = styled.div`
-  padding-top: ${p => console.log(p.rotateLabel, p.firstLabelLength, p.lastLabelLength)};
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 2.5 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 2.5 + "ch"};
   border: 1px dotted red;
@@ -436,11 +463,11 @@ const Ticks = styled.div`
 
 const Tick = styled.div`
   position: relative;
-  width: ${p => p.customTickText ? p.customTickText ? "5px" : "1px" : "1px"};
+  width: ${p => p.customTickText ? "1px" : "0px"};
   height: 5px;
   background: ${blackColor};
-  margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
   & + div{
+    margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
     width: 0;
     color: ${blackColor};
     transform-origin: top center;

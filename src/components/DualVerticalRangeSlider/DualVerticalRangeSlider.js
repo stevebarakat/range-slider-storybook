@@ -13,6 +13,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
+
 export const DualVerticalRangeSlider = ({
   initialLowerValue,
   initialUpperValue,
@@ -23,7 +24,7 @@ export const DualVerticalRangeSlider = ({
   showTicks,
   snap,
   customLabels,
-  showLabel,
+  showLabels,
   prefix,
   suffix,
   primaryColorLight,
@@ -88,9 +89,9 @@ export const DualVerticalRangeSlider = ({
           <Tick
             key={i}
             maxLabelLength={maxLabelLength}
-            showLabel={showLabel}
+            showLabels={showLabels}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabels && <div>{customTickText}</div>}
           </Tick>
         );
       }
@@ -104,7 +105,7 @@ export const DualVerticalRangeSlider = ({
             key={i}
             maxLabelLength={maxLabelLength}
           >
-            {showLabel && <div ref={tickEl}>{tickText}</div>}
+            {showLabels && <div ref={tickEl}>{tickText}</div>}
           </Tick>
         );
       }
@@ -264,7 +265,7 @@ DualVerticalRangeSlider.propTypes = {
   /**
     Show or hide labels.
   */
-  showLabel: PropTypes.bool,
+  showLabels: PropTypes.bool,
   /**
     Optional text displayed before value. 
   */
@@ -286,6 +287,32 @@ DualVerticalRangeSlider.propTypes = {
   */
   height: PropTypes.number,
 };
+
+// DEFAULT PROPS
+
+DualVerticalRangeSlider.defaultProps = {
+  initialLowerValue: 20,
+  initialUpperValue: 80,
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 5,
+  showTicks: true,
+  showTooltip: true,
+  snap: true,
+  customLabels: [
+  { 0: "lfgdfdw" },
+  { 50: "mehfium" },
+  { 100: "hgfddgdfdfgdfgh"}
+  ],
+  showLabels: true,
+  prefix: "",
+  suffix: "",
+  primaryColor: "hsl(196, 100%, 48%)",
+  primaryColorLight: "hsl(196, 100%, 70%)",
+  rotateLabel: false,
+  height: 500
+}
 
 // STYLES
 const blackColor = "#999";

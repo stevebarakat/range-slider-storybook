@@ -17,7 +17,7 @@ ReactDOM.render(
         { 50: "medium" },
         { 100: "high" }
       ]}
-      showLabel={true}
+      showLabels={true}
       prefix=""
       suffix=""
       labelRotation={0}

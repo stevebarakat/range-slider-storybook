@@ -22,7 +22,7 @@ function App() {
               { 50: "medium" },
               { 100: "hfghh" }
             ]}
-            showLabel={true}
+            showLabels={true}
             prefix=""
             suffix=""
             rotateLabel={true}
@@ -43,7 +43,7 @@ function App() {
               { 50: "mediuasdadadadadadm" },
               { 100: "high" }
             ]}
-            showLabel={true}
+            showLabels={true}
             prefix=""
             suffix=""
             rotateLabel={false}
@@ -66,7 +66,7 @@ function App() {
               { 50: "medium" },
               { 100: "high" }
             ]}
-            showLabel={true}
+            showLabels={true}
             prefix=""
             suffix=""
             rotateLabel={false}
@@ -98,7 +98,7 @@ function App() {
               { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
               { 100: "high" }
             ]}
-            showLabel={true}
+            showLabels={true}
             prefix=""
             suffix=""
             primaryColor="hsl(196, 100%, 50%)"
@@ -121,7 +121,7 @@ function App() {
               { 50: "dasdadadadadaddasdasdadadaasdada" },
               { 100: "high" }
             ]}
-            showLabel={true}
+            showLabels={true}
             prefix=""
             suffix=""
             primaryColor="hsl(196, 100%, 50%)"

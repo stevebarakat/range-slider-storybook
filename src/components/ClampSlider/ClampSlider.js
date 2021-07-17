@@ -23,7 +23,7 @@ const ClampSlider = ({
   showTicks,
   snap,
   customLabels,
-  showLabel,
+  showLabels,
   prefix,
   suffix,
   rotateLabel,
@@ -109,10 +109,10 @@ const ClampSlider = ({
           <Tick
             key={i}
             length={labelLength}
-            showLabel={showLabel}
+            showLabels={showLabels}
             rotateLabel={parseInt(rotateLabel, 10)}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabels && <div>{customTickText}</div>}
           </Tick>
         );
       }
@@ -128,7 +128,7 @@ const ClampSlider = ({
             length={labelLength}
             rotateLabel={parseInt(rotateLabel, 10)}
           >
-            {showLabel && <div>{tickText}</div>}
+            {showLabels && <div>{tickText}</div>}
           </Tick>
         );
       }
@@ -331,7 +331,7 @@ ClampSlider.propTypes = {
   /**
     Show or hide labels.
   */
-  showLabel: PropTypes.bool,
+  showLabels: PropTypes.bool,
   /**
     Optional text displayed before value. 
   */

@@ -10,7 +10,7 @@ export const defaultProps = {
     { 50: "mehfium" },
     { 100: "hgfddgdfdfgdfgh"}
   ],
-  showLabel: true,
+  showLabels: true,
   prefix: "",
   suffix: "",
   primaryColor: "hsl(196, 100%, 48%)",

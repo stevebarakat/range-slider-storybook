@@ -18,7 +18,7 @@ export const RangeSlider = ({
   showTicks,
   snap,
   customLabels,
-  showLabel,
+  showLabels,
   prefix,
   suffix,
   rotateLabel,
@@ -71,11 +71,11 @@ export const RangeSlider = ({
           <Tick
             key={i}
             length={labelLength}
-            showLabel={showLabel}
+            showLabels={showLabels}
             rotateLabel={rotateLabel}
             showTicks={showTicks}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabels && <div>{customTickText}</div>}
           </Tick>
         );
       }
@@ -91,10 +91,10 @@ export const RangeSlider = ({
             key={i}
             length={labelLength}
             rotateLabel={rotateLabel}
-            showLabel={showLabel}
+            showLabels={showLabels}
             showTicks={showTicks}
           >
-            {showLabel && <div>{tickText}</div>}
+            {showLabels && <div>{tickText}</div>}
           </Tick>
         );
       }
@@ -130,8 +130,8 @@ export const RangeSlider = ({
   }
   return (
     <Wrapper
-      firstLabelLength={showLabel && ticksEl.current?.firstChild?.firstChild?.innerText !== null && ticksEl.current?.firstChild?.firstChild?.innerText.length}
-      lastLabelLength={showLabel && ticksEl.current?.lastChild?.firstChild?.innerText !== null && ticksEl.current?.lastChild?.firstChild?.innerText.length}
+      firstLabelLength={showLabels && ticksEl.current?.firstChild?.firstChild?.innerText !== null && ticksEl.current?.firstChild?.firstChild?.innerText.length}
+      lastLabelLength={showLabels && ticksEl.current?.lastChild?.firstChild?.innerText !== null && ticksEl.current?.lastChild?.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -212,7 +212,7 @@ RangeSlider.propTypes = {
   /**
     Show or hide labels.
   */
-  showLabel: PropTypes.bool,
+  showLabels: PropTypes.bool,
   /**
     Optional text displayed before value. 
   */
@@ -238,6 +238,33 @@ RangeSlider.propTypes = {
   */
   width: PropTypes.number,
 };
+
+
+// DEFAULT PROPS
+
+RangeSlider.defaultProps = {
+  initialValue: 50,
+  min: 0,
+  max: 100,
+  decimals: 0,
+  step: 5,
+  showTicks: true,
+  showTooltip: true,
+  snap: true,
+  customLabels: [
+  { 0: "lfgdfdw" },
+  { 50: "mehfium" },
+  { 100: "hgfddgdfdfgdfgh"}
+  ],
+  showLabels: true,
+  prefix: "",
+  suffix: "",
+  primaryColor: "hsl(196, 100%, 48%)",
+  primaryColorLight: "hsl(196, 100%, 70%)",
+  rotateLabel: false,
+  width: 1200
+}
+
 
 // Styles
 
@@ -358,7 +385,7 @@ const Tick = styled.div`
   width: 1px;
   height: ${p => p.showTicks ? "5px" : "0"};
   background: ${blackColor};
-  margin-bottom: ${p => p.showLabel && p.rotateLabel && `${p.length / 2}ch`};
+  margin-bottom: ${p => p.showLabels && p.rotateLabel && `${p.length / 2}ch`};
   div{
     width: 0;
     color: ${blackColor};

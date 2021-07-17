@@ -19,7 +19,7 @@ export const VerticalRangeSlider = ({
   showTicks,
   snap,
   customLabels,
-  showLabel,
+  showLabels,
   prefix,
   suffix,
   primaryColorLight,
@@ -45,12 +45,12 @@ export const VerticalRangeSlider = ({
     const tickList = showTicks && tickEl.current.children;
     let labelList = [];
     for (let i = 0; i < tickList?.length; i++) {
-      showTicks && showLabel && labelList.push(tickList[i].firstChild.clientHeight);
+      showTicks && showLabels && labelList.push(tickList[i].firstChild.clientHeight);
     }
     console.log(Math.max(...labelList));
     setMaxLabelLength(Math.max(...labelList));
     setOutputWidth(outputEl.current.clientHeight);
-  }, [min, max, value, showLabel, showTicks]);
+  }, [min, max, value, showLabels, showTicks]);
 
   let markers = [];
 
@@ -70,9 +70,9 @@ export const VerticalRangeSlider = ({
         markers.push(
           <Tick
             key={i}
-            showLabel={showLabel}
+            showLabels={showLabels}
           >
-            {showLabel && <div>{customTickText}</div>}
+            {showLabels && <div>{customTickText}</div>}
           </Tick>
         );
       }
@@ -85,7 +85,7 @@ export const VerticalRangeSlider = ({
           Tick && <Tick
             key={i}
           >
-            {showLabel && <div>{tickText}</div>}
+            {showLabels && <div>{tickText}</div>}
           </Tick>
         );
       }
@@ -209,7 +209,7 @@ VerticalRangeSlider.propTypes = {
   /**
     Show or hide labels.
   */
-  showLabel: PropTypes.bool,
+  showLabels: PropTypes.bool,
   /**
     Optional text displayed before value. 
   */
@@ -247,7 +247,7 @@ VerticalRangeSlider.defaultProps = {
     { 50: "mehfium" },
     { 100: "hgfddgdfdfgdfgh" }
   ],
-  showLabel: true,
+  showLabels: true,
   prefix: "",
   suffix: "",
   primaryColor: "hsl(196, 100%, 48%)",
