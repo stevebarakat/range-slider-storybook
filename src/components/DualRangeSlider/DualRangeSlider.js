@@ -77,7 +77,7 @@ export const DualRangeSlider = ({
   let markers = [];
 
   if (customLabels && customLabels.length !== 0) {
-    if (step > 0) {
+    if (step > -1) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
         let tickText = numberWithCommas(i.toFixed(decimals));
@@ -103,7 +103,7 @@ export const DualRangeSlider = ({
       }
     }
   } else {
-    if (step > 0) {
+    if (step > -1) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
@@ -212,7 +212,7 @@ export const DualRangeSlider = ({
           onFocus={() => setUpperFocused(true)}
           onBlur={() => setUpperFocused(false)}
           onInput={e => {
-            setLowerVal(parseFloat(e.target.value));
+            setLowerVal(e.target.valueAsNumber);
           }}
           focused={lowerFocused}
         />
@@ -222,7 +222,7 @@ export const DualRangeSlider = ({
           focused={upperFocused}
           style={{ left: `calc(${newUpperVal}% + ${newPosition1 * 2}px)` }}
         >
-          <span>up: {prefix + numberWithCommas(upperVal.toFixed(decimals)) + suffix}</span>
+          <span>{prefix + numberWithCommas(upperVal.toFixed(decimals)) + suffix}</span>
         </RangeOutput>
         <StyledRangeSlider
           id="upperVal"
@@ -351,7 +351,7 @@ const whiteColor = "white";
 const Wrapper = styled.div`
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 2.5 + "ch"};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 2.5 + "ch"};
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
 `;
 
 const RangeWrap = styled.div`
@@ -457,21 +457,20 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 15px 20px 0;
-  margin-bottom: ${p => p.rotateLabel && "-20px"}
+  margin: 20px 20px -20px;
 `;
 
 const Tick = styled.div`
   position: relative;
-  width: ${p => p.customTickText ? "1px" : "0px"};
+  width: ${p => p.customTickText ? p.showLabels ? "1px" : "2px" : "0px"};
   height: 5px;
   background: ${blackColor};
   & + div{
     margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
     width: 0;
     color: ${blackColor};
-    transform-origin: top center;
-    margin-top: 0.5rem;
+    transform-origin: top right;
+    margin-top: ${p => p.rotateLabel ? 0 : "5px"};
     margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
     transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
     white-space: nowrap;
