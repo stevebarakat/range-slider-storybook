@@ -143,7 +143,7 @@ export const DualRangeSlider = ({
 
   return (
     <Wrapper 
-      firstLabelLength={showLabel && ticksEl.current?.firstChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
+      firstLabelLength={showLabel && ticksEl.current?.firstChild.firstChild?.innerText !== null && ticksEl.current?.firstChild.firstChild?.innerText.length}
       lastLabelLength={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
@@ -340,6 +340,7 @@ const Progress = styled.div`
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
   position: absolute;
+  /* top: 0; */
   left: 0;
   cursor: pointer;
   pointer-events: none;

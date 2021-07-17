@@ -128,7 +128,8 @@ export const RangeSlider = ({
   }
   return (
     <Wrapper
-      length={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
+      firstLabelLength={showLabel && ticksEl.current?.firstChild.firstChild?.innerText !== null && ticksEl.current?.firstChild.firstChild?.innerText.length}
+      lastLabelLength={showLabel && ticksEl.current?.lastChild.firstChild?.innerText !== null && ticksEl.current?.lastChild.firstChild?.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -242,7 +243,10 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const Wrapper = styled.div`
-  padding-right: ${p => p.rotateLabel && p.length / 1.75 + "ch"};
+  padding-top: ${p => console.log(p.rotateLabel, p.firstLabelLength, p.lastLabelLength)};
+  padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
+  padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 3.5 + "ch"};
+  border: 1px dotted red;
 `;
 
 const RangeWrap = styled.div`
