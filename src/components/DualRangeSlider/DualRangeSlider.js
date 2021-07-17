@@ -13,7 +13,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const DualRangeSlider = ({
+export const DualRangeSlider = ({
   initialLowerValue,
   initialUpperValue,
   min,
@@ -208,8 +208,6 @@ const DualRangeSlider = ({
   );
 };
 
-export default DualRangeSlider;
-
 // PROPTYPES
 
 DualRangeSlider.propTypes = {
@@ -297,7 +295,6 @@ const RangeWrap = styled.div`
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
-  margin: 0 auto;
 `;
 
 const RangeOutput = styled.output`
@@ -349,7 +346,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   height: 15px;
   border-radius: 15px;
   border: 0;
-  position: absolute;
   z-index: 2;
   background: transparent;
   &:focus {

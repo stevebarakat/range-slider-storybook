@@ -1,4 +1,4 @@
-import VerticalRangeSlider from './VerticalRangeSlider';
+import { VerticalRangeSlider } from './VerticalRangeSlider';
 import { defaultProps } from '../../shared/defaultProps';
 
 export default {

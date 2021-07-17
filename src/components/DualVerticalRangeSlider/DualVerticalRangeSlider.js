@@ -13,7 +13,7 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-const DualVerticalRangeSlider = ({
+export const DualVerticalRangeSlider = ({
   initialLowerValue,
   initialUpperValue,
   min,
@@ -222,9 +222,6 @@ const DualVerticalRangeSlider = ({
   );
 };
 
-export default DualVerticalRangeSlider;
-
-
 // PROPTYPES
 
 DualVerticalRangeSlider.propTypes = {
@@ -361,7 +358,6 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   pointer-events: none;
   cursor: default;
   appearance: none;
-  position: absolute;
   width: 100%;
   height: 15px;
   border-radius: 15px;

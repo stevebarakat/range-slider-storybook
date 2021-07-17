@@ -1,7 +1,7 @@
 // import { render, screen } from '@testing-library/react';
 // import { composeStory } from '@storybook/testing-react';
 
-import RangeSlider from './RangeSlider';
+import { RangeSlider } from './RangeSlider';
 import { defaultProps } from '../../shared/defaultProps';
 
 export default {
