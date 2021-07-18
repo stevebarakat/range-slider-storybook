@@ -52,7 +52,7 @@ export const DualVerticalRangeSlider = ({
     let labelList = [];
     const tickList = tickEl?.current?.children;
     for (let i = 0; i < tickList?.length; i++) {
-      labelList.push(tickList[i].firstChild.innerText?.length);
+      labelList.push(tickList[i].firstChild?.innerText?.length);
     }
     setMaxLabelLength(Math.max(...labelList));
     setOutputWidth(outputEl.current.clientHeight);
@@ -89,6 +89,7 @@ export const DualVerticalRangeSlider = ({
           <Tick
             key={i}
             maxLabelLength={maxLabelLength}
+            customTickText={customTickText}
             showLabels={showLabels}
           >
             {showLabels && <div>{customTickText}</div>}
@@ -104,6 +105,8 @@ export const DualVerticalRangeSlider = ({
           Tick && <Tick
             key={i}
             maxLabelLength={maxLabelLength}
+            customTickText={tickText}
+            showLabels={showLabels}
           >
             {showLabels && <div ref={tickEl}>{tickText}</div>}
           </Tick>
@@ -456,11 +459,11 @@ const Ticks = styled.div`
 `;
 
 const Tick = styled.div`
+  width: ${p => p.customTickText ? p.showLabels ? "1px" : "2px" : "0px"};
   display: flex;
   flex-direction: column;
   position: relative;
   justify-content: flex-end;
-  width: 1px;
   background: ${blackColor};
   height: 5px;
   div {
