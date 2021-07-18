@@ -18,7 +18,7 @@ a range widget defaulting to the middle value. Used in conjunction min and max
 to define the range of acceptable values.
 
 ### Basic Configuration
-Default labels, not rotated, snapping, 10 steps.
+Default labels, not rotated, snapping, 10 step interval.
 
 <Canvas withToolbar>
 <Story 
@@ -31,11 +31,7 @@ Default labels, not rotated, snapping, 10 steps.
     step: 5,
     showTicks: true,
     snap: true,
-    customLabels: [
-    { 0: "lfgdfdw" },
-    { 50: "mehfium" },
-    { 100: "hgfddgdfdfgdfdsgdfgh"}
-    ],
+    customLabels: [],
     showLabels: true,
     prefix: "",
     suffix: "",
@@ -50,26 +46,22 @@ Default labels, not rotated, snapping, 10 steps.
 </Canvas>
 
 ### Configuration 2
-Default labels, not rotated, snapping, 10 steps.
+Default labels, rotated, decimals, prefix, 100,000 step interval, smooth.
 
 <Canvas withToolbar>
   <Story 
     name="two"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 5,
+      initialValue: 675315,
+      min: 100000,
+      max: 1000000,
+      decimals: 2,
+      step: 100000,
       showTicks: true,
-      snap: true,
-      customLabels: [
-      { 0: "lfgdfdw" },
-      { 50: "mehfium" },
-      { 100: "hgfddgdfdfgdfgh"}
-      ],
+      snap: false,
+      customLabels: [],
       showLabels: true,
-      prefix: "",
+      prefix: "$",
       suffix: "",
       primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
@@ -82,27 +74,31 @@ Default labels, not rotated, snapping, 10 steps.
 </Canvas>
 
 ### Configuration 3
-Default labels, rotated, smooth.
+Custom labels, suffix, 1 step interval, smooth.
 
 <Canvas withToolbar>
   <Story 
     name="three"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
+      initialValue: 400,
+      min: 200,
+      max: 600,
       decimals: 0,
-      step: 5,
+      step: 2,
       showTicks: true,
-      snap: true,
+      snap: false,
       customLabels: [
-      { 0: "lfgdfdw" },
-      { 50: "mehfium" },
-      { 100: "hgfddgdfdfgdfgh"}
+      { 230: "Very Cool" },
+      { 284: "Cool" },
+      { 320: "Moderate"},
+      { 374: "Moderately Hot" },
+      { 428: "Hot" },
+      { 464: "Very Hot"},
+      { 550: "Broil"},
       ],
       showLabels: true,
       prefix: "",
-      suffix: "",
+      suffix: "°F",
       primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
       rotateLabel: false,
@@ -128,7 +124,7 @@ Default labels, not rotated, snapping, 10 steps.
       showTicks: true,
       snap: true,
       customLabels: [],
-      showLabels: true,
+      showLabels: false,
       prefix: "",
       suffix: "",
       primaryColor: "hsl(196, 100%, 48%)",

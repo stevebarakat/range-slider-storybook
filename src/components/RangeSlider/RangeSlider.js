@@ -68,15 +68,17 @@ export const RangeSlider = ({
         });
         if (customTickText !== null) labelLength = customTickText[0].length;
         markers.push(
-          <Tick
-            key={i}
-            length={labelLength}
-            showLabels={showLabels}
-            rotateLabel={rotateLabel}
-            showTicks={showTicks}
-          >
+          <div key={i}>
+            <Tick
+              key={i}
+              length={labelLength}
+              showLabels={showLabels}
+              rotateLabel={rotateLabel}
+              customTickText={customTickText}
+              showTicks={showTicks}
+            />
             {showLabels && <div>{customTickText}</div>}
-          </Tick>
+          </div>
         );
       }
     }
@@ -87,15 +89,17 @@ export const RangeSlider = ({
         const labelLength = tickText.toString().length;
         console.log(labelLength);
         markers.push(
-          Tick && <Tick
-            key={i}
-            length={labelLength}
-            rotateLabel={rotateLabel}
-            showLabels={showLabels}
-            showTicks={showTicks}
-          >
+          <div key={i}>
+            <Tick
+              key={i}
+              length={labelLength}
+              showLabels={showLabels}
+              rotateLabel={rotateLabel}
+              customTickText={tickText}
+              showTicks={showTicks}
+            />
             {showLabels && <div>{tickText}</div>}
-          </Tick>
+          </div>
         );
       }
     }
@@ -130,8 +134,8 @@ export const RangeSlider = ({
   }
   return (
     <Wrapper
-      firstLabelLength={showLabels && ticksEl.current?.firstChild?.firstChild?.innerText !== null && ticksEl.current?.firstChild?.firstChild?.innerText.length}
-      lastLabelLength={showLabels && ticksEl.current?.lastChild?.firstChild?.innerText !== null && ticksEl.current?.lastChild?.firstChild?.innerText.length}
+      firstLabelLength={showLabels && ticksEl.current?.firstChild?.lastChild.innerText !== null && ticksEl.current?.firstChild?.lastChild.innerText.length}
+      lastLabelLength={showLabels && ticksEl.current?.lastChild?.lastChild.innerText !== null && ticksEl.current?.lastChild?.lastChild.innerText.length}
       rotateLabel={rotateLabel}
     >
       <RangeWrap style={{ width: width }}>
@@ -252,9 +256,9 @@ RangeSlider.defaultProps = {
   showTooltip: true,
   snap: true,
   customLabels: [
-  { 0: "lfgdfdw" },
-  { 50: "mehfium" },
-  { 100: "hgfddgdfdfgdfgh"}
+    { 0: "lfgdfdw" },
+    { 50: "mehfium" },
+    { 100: "hgfddgdfdfgdfgh" }
   ],
   showLabels: true,
   prefix: "",
@@ -263,7 +267,7 @@ RangeSlider.defaultProps = {
   primaryColorLight: "hsl(196, 100%, 70%)",
   rotateLabel: false,
   width: 1200
-}
+};
 
 
 // Styles
@@ -378,21 +382,22 @@ const StyledRangeSlider = styled.input.attrs({ type: "range" })`
 const Ticks = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 32px 20px 20px;
+  margin: 32px 20px 0px;
 `;
+
 const Tick = styled.div`
   position: relative;
-  width: 1px;
-  height: ${p => p.showTicks ? "5px" : "0"};
+  width: ${p => p.customTickText ? p.showLabels ? "1px" : "2px" : "0px"};
+  height: 5px;
   background: ${blackColor};
-  margin-bottom: ${p => p.showLabels && p.rotateLabel && `${p.length / 2}ch`};
-  div{
+  & + div{
+    margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
     width: 0;
     color: ${blackColor};
-    transform-origin: top center;
-    margin-top: 0.5rem;
-    margin-left: ${p => !p.rotateLabel ? p.length / 2 * -1 + "ch" : "0.5rem"};
+    transform-origin: top right;
+    margin-top: ${p => p.rotateLabel ? 0 : "5px"};
+    margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
     transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
     white-space: nowrap;
   }
-`;
+`
