@@ -71,7 +71,6 @@ export const RangeSlider = ({
           <div key={i}>
             {showTicks && <Tick
               showLabels={showLabels}
-              rotateLabel={rotateLabel}
               customTickText={customTickText}
             />}
             {showLabels && <Label length={labelLength} rotateLabel={rotateLabel}>{customTickText}</Label>}
@@ -84,12 +83,10 @@ export const RangeSlider = ({
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
-        console.log(labelLength);
         markers.push(
           <div key={i}>
             {showTicks && <Tick
               showLabels={showLabels}
-              rotateLabel={rotateLabel}
               customTickText={tickText}
             />}
             {showLabels && <Label length={labelLength} rotateLabel={rotateLabel}>{tickText}</Label>}

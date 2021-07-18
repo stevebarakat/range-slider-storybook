@@ -45,7 +45,7 @@ export const DualRangeSlider = ({
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
-  if (!showTicks) step = 0;
+  if (!showTicks && !showLabels) step = 0;
 
   useEffect(() => {
     setNewUpperVal(Number(((upperVal - min) * 100) / (max - min)));
@@ -77,7 +77,7 @@ export const DualRangeSlider = ({
   let markers = [];
 
   if (customLabels && customLabels.length !== 0) {
-    if (step > -1) {
+    if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
         let tickText = numberWithCommas(i.toFixed(decimals));
@@ -91,31 +91,27 @@ export const DualRangeSlider = ({
         if (customTickText !== null) labelLength = customTickText[0].length;
         markers.push(
           <div key={i}>
-            <Tick
-              length={labelLength}
+            {showTicks && <Tick
               showLabels={showLabels}
-              rotateLabel={rotateLabel}
               customTickText={customTickText}
-            />
-            {showLabels && <div>{customTickText}</div>}
+            />}
+            {showLabels && <Label length={labelLength} rotateLabel={rotateLabel}>{customTickText}</Label>}
           </div>
         );
       }
     }
   } else {
-    if (step > -1) {
+    if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         const labelLength = tickText.toString().length;
         markers.push(
           <div key={i}>
-            <Tick
-              length={labelLength}
+            {showTicks && <Tick
               showLabels={showLabels}
-              rotateLabel={rotateLabel}
               customTickText={tickText}
-            />
-            {showLabels && <div>{tickText}</div>}
+            />}
+            {showLabels && <Label length={labelLength} rotateLabel={rotateLabel}>{tickText}</Label>}
           </div>
         );
       }
@@ -406,7 +402,6 @@ const Progress = styled.div`
 const StyledRangeSlider = styled.input.attrs({ type: "range" })`
   appearance: none;
   position: absolute;
-  /* top: 0; */
   left: 0;
   cursor: pointer;
   pointer-events: none;
@@ -465,7 +460,7 @@ const Tick = styled.div`
   width: ${p => p.customTickText ? p.showLabels ? "1px" : "2px" : "0px"};
   height: 5px;
   background: ${blackColor};
-  & + div{
+  /* & + div{
     margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
     width: 0;
     color: ${blackColor};
@@ -474,5 +469,16 @@ const Tick = styled.div`
     margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
     transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
     white-space: nowrap;
-  }
+  } */
+`;
+
+const Label = styled.div`
+  margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
+  width: 0;
+  color: ${blackColor};
+  transform-origin: top right;
+  margin-top: ${p => p.rotateLabel ? 0 : "5px"};
+  margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
+  transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
+  white-space: nowrap;
 `;
