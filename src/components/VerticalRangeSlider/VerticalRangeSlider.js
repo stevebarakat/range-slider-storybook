@@ -54,14 +54,14 @@ export const VerticalRangeSlider = ({
 
   let markers = [];
 
-  if (customLabels?.length !== 0) {
+  if (customLabels?.length > 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
         let tickText = numberWithCommas(i.toFixed(decimals));
         labelLength = tickText.toString().length;
         customLabels.map(label => {
-          if (parseInt(tickText, 10) === parseInt(Object.keys(label), 10)) {
+          if (parseInt(tickText, 10) === parseInt(numberWithCommas(Object.keys(label)), 10)) {
             customTickText = Object.values(label);
           }
           return null;
@@ -71,6 +71,7 @@ export const VerticalRangeSlider = ({
           <Tick
             key={i}
             showLabels={showLabels}
+            customTickText={customTickText}
           >
             {showLabels && <div>{customTickText}</div>}
           </Tick>
@@ -82,10 +83,12 @@ export const VerticalRangeSlider = ({
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let tickText = prefix + numberWithCommas(i.toFixed(decimals)) + suffix;
         markers.push(
-          Tick && <Tick
+          showTicks && <Tick
             key={i}
+            showLabels={showLabels}
+            customTickText={tickText}
           >
-            {showLabels && <div>{tickText}</div>}
+            <div length={labelLength}>{tickText}</div>
           </Tick>
         );
       }
@@ -136,7 +139,7 @@ export const VerticalRangeSlider = ({
             ref={outputEl}
             focused={isFocused}
             className="disable-select"
-            style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
+            style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
             <span>{prefix + numberWithCommas(value?.toFixed(decimals)) + " " + suffix}</span>
           </RangeOutput>
           <StyledRangeSlider
@@ -268,7 +271,6 @@ const Wrapper = styled.div`
 const RangeWrapWrap = styled.div`
   width: ${p => p.outputWidth + 60 + "px"};
   height: 0;
-  /* background: pink; */
 `;
 
 const RangeWrap = styled.div`
@@ -380,11 +382,11 @@ const Ticks = styled.div`
 `;
 
 const Tick = styled.div`
+  position: relative;
+  width: ${p => p.customTickText ? p.showLabels ? "1px" : "2px" : "0px"};
   display: flex;
   flex-direction: column;
-  position: relative;
   justify-content: flex-end;
-  width: 1px;
   background: ${blackColor};
   height: 5px;
   div {

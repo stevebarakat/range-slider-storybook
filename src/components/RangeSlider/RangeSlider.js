@@ -54,7 +54,7 @@ export const RangeSlider = ({
   // For collecting tick marks
   let markers = [];
 
-  if (customLabels && customLabels.length !== 0) {
+  if (customLabels?.length > 0) {
     if (step > 0) {
       for (let i = min; i <= max; i += parseInt(step, 10)) {
         let customTickText = null;
@@ -269,13 +269,12 @@ const blackColor = "#999";
 const Wrapper = styled.div`
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 3.5 + "ch"};
-  border: 1px dotted red;
+  /* border: 1px dotted red; */
 `;
 
 const RangeWrap = styled.div`
   position: relative;
   padding-top: 3.75rem;
-  font-family: sans-serif;
   max-width: 100%;
   user-select: none;
 `;
