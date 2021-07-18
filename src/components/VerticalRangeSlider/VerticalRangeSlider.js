@@ -136,7 +136,7 @@ export const VerticalRangeSlider = ({
             ref={outputEl}
             focused={isFocused}
             className="disable-select"
-            style={{ left: `calc(${newValue}% + (${newPosition / 10}rem))` }}>
+            style={{ left: `calc(${newValue}% + ${newPosition * 2}px)` }}>
             <span>{prefix + numberWithCommas(value?.toFixed(decimals)) + " " + suffix}</span>
           </RangeOutput>
           <StyledRangeSlider
