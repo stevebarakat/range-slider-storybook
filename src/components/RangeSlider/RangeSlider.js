@@ -36,7 +36,7 @@ export const RangeSlider = ({
   focusColor = primaryColor;
   blurColor = primaryColorLight;
 
-  if (!showTicks) step = 0;
+  if (!showTicks && !showLabels) step = 0;
 
   useEffect(() => {
     setNewValue(Number(((value - min) * 100) / (max - min)));
@@ -69,15 +69,12 @@ export const RangeSlider = ({
         if (customTickText !== null) labelLength = customTickText[0].length;
         markers.push(
           <div key={i}>
-            <Tick
-              key={i}
-              length={labelLength}
+            {showTicks && <Tick
               showLabels={showLabels}
               rotateLabel={rotateLabel}
               customTickText={customTickText}
-              showTicks={showTicks}
-            />
-            {showLabels && <div>{customTickText}</div>}
+            />}
+            {showLabels && <Label length={labelLength} rotateLabel={rotateLabel}>{customTickText}</Label>}
           </div>
         );
       }
@@ -90,15 +87,12 @@ export const RangeSlider = ({
         console.log(labelLength);
         markers.push(
           <div key={i}>
-            <Tick
-              key={i}
-              length={labelLength}
+            {showTicks && <Tick
               showLabels={showLabels}
               rotateLabel={rotateLabel}
               customTickText={tickText}
-              showTicks={showTicks}
-            />
-            {showLabels && <div>{tickText}</div>}
+            />}
+            {showLabels && <Label length={labelLength} rotateLabel={rotateLabel}>{tickText}</Label>}
           </div>
         );
       }
@@ -276,7 +270,6 @@ const whiteColor = "white";
 const blackColor = "#999";
 
 const Wrapper = styled.div`
-  padding-top: ${p => console.log(p.rotateLabel, p.firstLabelLength, p.lastLabelLength)};
   padding-right: ${p => p.rotateLabel ? p.lastLabelLength / 1.75 + "ch" : p.lastLabelLength / 3.5 + "ch"};
   padding-left: ${p => p.rotateLabel ? p.firstLabelLength / 1.75 - "ch" : p.firstLabelLength / 3.5 + "ch"};
   border: 1px dotted red;
@@ -288,7 +281,6 @@ const RangeWrap = styled.div`
   font-family: sans-serif;
   max-width: 100%;
   user-select: none;
-  text-align: ${p => console.log(p.length)}
 `;
 
 const RangeOutput = styled.output`
@@ -390,7 +382,7 @@ const Tick = styled.div`
   width: ${p => p.customTickText ? p.showLabels ? "1px" : "2px" : "0px"};
   height: 5px;
   background: ${blackColor};
-  & + div{
+  /* & + div{
     margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
     width: 0;
     color: ${blackColor};
@@ -399,5 +391,16 @@ const Tick = styled.div`
     margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
     transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
     white-space: nowrap;
-  }
+  } */
+`
+
+const Label = styled.div`
+  margin-bottom: ${p => p.rotateLabel && `${p.length / 2}ch`};
+  width: 0;
+  color: ${blackColor};
+  transform-origin: top right;
+  margin-top: ${p => p.rotateLabel ? 0 : "5px"};
+  margin-left: ${p => !p.rotateLabel ? p.length / 2.5 * -1 + "ch" : "0.5rem"};
+  transform: ${p => p.rotateLabel ? "rotate(35deg)" : "rotate(0deg)"};
+  white-space: nowrap;
 `

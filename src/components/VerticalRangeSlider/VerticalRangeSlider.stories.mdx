@@ -19,33 +19,30 @@ to define the range of acceptable values.
 
 <div className="previews">
 
-<!-- Base Configuration Wrapper -->
+<!-- Basic Configuration Wrapper -->
 <div> 
 
-  ### Base Configuration
-  Default labels, not rotated, snapping, 10 steps.
+  ### Basic Configuration
+  Default labels, not rotated, snapping, 10 step interval.
   
   <Canvas withToolbar>
   <Story 
-    name="base"
+    name="basic"
     args={{
       initialValue: 50,
       min: 0,
       max: 100,
       decimals: 0,
-      step: 10,
+      step: 5,
       showTicks: true,
-        snap: true,
-      customLabels: [
-        { 0: "low" },
-        { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
-        { 100: "high" }
-      ],
+      snap: true,
+      customLabels: [],
       showLabels: true,
-      prefix:"",
-      suffix:"",
-      primaryColor: "hsl(196, 100%, 50%)",
+      prefix: "",
+      suffix: "",
+      primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
+      rotateLabel: false,
       height: 800,
     }}
   >
@@ -59,30 +56,27 @@ to define the range of acceptable values.
 <div> 
 
   ### Configuration 2
-  Default labels, not rotated, snapping, 10 steps.
+  Default labels, rotated, decimals, prefix, 100,000 step interval, smooth.
   
   <Canvas withToolbar>
   <Story 
     name="two"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
-      decimals: 0,
-      step: 10,
+      initialValue: 675315,
+      min: 100000,
+      max: 1000000,
+      decimals: 2,
+      step: 100000,
       showTicks: true,
-        snap: true,
-      customLabels: [
-        { 0: "low" },
-        { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
-        { 100: "high" }
-      ],
+      snap: false,
+      customLabels: [],
       showLabels: true,
-      prefix:"",
-      suffix:"",
-      primaryColor: "hsl(196, 100%, 50%)",
+      prefix: "$",
+      suffix: "",
+      primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
-      height: 800,
+      rotateLabel: true,
+      height: 800
     }}
   >
     {Template.bind({})}
@@ -95,27 +89,31 @@ to define the range of acceptable values.
 <div>
 
   ### Configuration 3
-  <p className="description">Default labels, not rotated, snapping, 10 steps.</p>
+  <p className="description">Custom labels, suffix, 1 step interval, smooth.</p>
 
   <Canvas withToolbar>
   <Story 
     name="three"
     args={{
-      initialValue: 50,
-      min: 0,
-      max: 100,
+      initialValue: 400,
+      min: 200,
+      max: 600,
       decimals: 0,
-      step: 5,
+      step: 2,
       showTicks: true,
-      snap: true,
+      snap: false,
       customLabels: [
-      { 0: "lfgdfdw" },
-      { 50: "mehfium" },
-      { 100: "hgfddgdfdfgdfgh"}
+      { 230: "Very Cool" },
+      { 284: "Cool" },
+      { 320: "Moderate"},
+      { 374: "Moderately Hot" },
+      { 428: "Hot" },
+      { 464: "Very Hot"},
+      { 550: "Broil"},
       ],
       showLabels: true,
       prefix: "",
-      suffix: "",
+      suffix: "°F",
       primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
       rotateLabel: false,
@@ -141,19 +139,16 @@ to define the range of acceptable values.
       min: 0,
       max: 100,
       decimals: 0,
-      step: 10,
+      step: 5,
       showTicks: true,
-        snap: true,
-      customLabels: [
-        { 0: "low" },
-        { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
-        { 100: "high" }
-      ],
-      showLabels: true,
-      prefix:"",
-      suffix:"",
-      primaryColor: "hsl(196, 100%, 50%)",
+      snap: true,
+      customLabels: [],
+      showLabels: false,
+      prefix: "",
+      suffix: "",
+      primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
+      rotateLabel: false,
       height: 800,
     }}
   >

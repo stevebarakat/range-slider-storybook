@@ -2,7 +2,7 @@ import { Meta, Story, ArgsTable, Canvas } from "@storybook/addon-docs";
 import { DualVerticalRangeSlider } from "./DualVerticalRangeSlider";
 import { defaultProps } from "../../shared/defaultProps";
 
-<Meta 
+<Meta
   title="components/DualVerticalRangeSlider" 
   component={DualVerticalRangeSlider} 
 />
@@ -17,43 +17,52 @@ A control for entering a number whose exact value is not important. Displays as
 a range widget defaulting to the middle value. Used in conjunction min and max
 to define the range of acceptable values.
 
-### Basic Configuration
-Default labels, not rotated, snapping, 10 steps.
+<div className="previews">
 
-<Canvas withToolbar>
-<Story 
-  name="basic"
-  args={{
-    initialLowerValue: 20,
-    initialUpperValue: 80,
-    min: 0,
-    max: 100,
-    decimals: 0,
-    step: 5,
-    showTicks: true,
-    snap: true,
-    customLabels: [
-    { 0: "lfgdfdw" },
-    { 50: "mehfium" },
-    { 100: "hgfddgdfdfgdfdsgdfgh"}
-    ],
-    showLabels: true,
-    prefix: "",
-    suffix: "",
-    primaryColor: "hsl(196, 100%, 48%)",
-    primaryColorLight: "hsl(196, 100%, 70%)",
-    rotateLabel: false,
-    height: 500
-  }}
->
-  {Template.bind({})}
-</Story>  
+<!-- Basic Configuration Wrapper -->
+<div> 
+
+  ### Basic Configuration
+  Default labels, not rotated, snapping, 10 steps.
+  
+  <Canvas withToolbar>
+  <Story 
+    name="basic"
+    args={{
+      initialLowerValue: 20,
+      initialUpperValue: 80,
+      min: 0,
+      max: 100,
+      decimals: 0,
+      step: 10,
+      showTicks: true,
+        snap: true,
+      customLabels: [
+        { 0: "low" },
+        { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
+        { 100: "high" }
+      ],
+      showLabels: true,
+      prefix:"",
+      suffix:"",
+      primaryColor: "hsl(196, 100%, 50%)",
+      primaryColorLight: "hsl(196, 100%, 70%)",
+      height: 800,
+    }}
+  >
+    {Template.bind({})}
+  </Story>
 </Canvas>
 
-### Configuration 2
-Default labels, not rotated, snapping, 10 steps.
+</div>
 
-<Canvas withToolbar>
+<!-- Configuration 2 Wrapper -->
+<div> 
+
+  ### Configuration 2
+  Default labels, not rotated, snapping, 10 steps.
+  
+  <Canvas withToolbar>
   <Story 
     name="two"
     args={{
@@ -62,31 +71,35 @@ Default labels, not rotated, snapping, 10 steps.
       min: 0,
       max: 100,
       decimals: 0,
-      step: 5,
+      step: 10,
       showTicks: true,
-      snap: true,
+        snap: true,
       customLabels: [
-      { 0: "lfgdfdw" },
-      { 50: "mehfium" },
-      { 100: "hgfddgdfdfgdfgh"}
+        { 0: "low" },
+        { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
+        { 100: "high" }
       ],
       showLabels: true,
-      prefix: "",
-      suffix: "",
-      primaryColor: "hsl(196, 100%, 48%)",
+      prefix:"",
+      suffix:"",
+      primaryColor: "hsl(196, 100%, 50%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
-      rotateLabel: false,
-      width: 1200
+      height: 800,
     }}
   >
     {Template.bind({})}
   </Story>
 </Canvas>
 
-### Configuration 3
-Default labels, rotated, smooth.
+</div>
 
-<Canvas withToolbar>
+<!-- Configuration 3 Wrapper -->
+<div>
+
+  ### Configuration 3
+  <p className="description">Default labels, not rotated, snapping, 10 steps.</p>
+
+  <Canvas withToolbar>
   <Story 
     name="three"
     args={{
@@ -109,17 +122,21 @@ Default labels, rotated, smooth.
       primaryColor: "hsl(196, 100%, 48%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
       rotateLabel: false,
-      width: 1200
+      height: 800
     }}
   >
     {Template.bind({})}
   </Story>
 </Canvas>
 
-### Configuration 4
-Default labels, not rotated, snapping, 10 steps.
+</div>
 
-<Canvas withToolbar>
+<!-- Configuration 4 Wrapper -->
+<div>
+
+  ### Configuration 4
+  Default labels, not rotated, snapping, 10 steps.
+  <Canvas withToolbar>
   <Story 
     name="four"
     args={{
@@ -128,21 +145,29 @@ Default labels, not rotated, snapping, 10 steps.
       min: 0,
       max: 100,
       decimals: 0,
-      step: 5,
+      step: 10,
       showTicks: true,
-      snap: true,
-      customLabels: [],
+        snap: true,
+      customLabels: [
+        { 0: "low" },
+        { 50: "mdgdfgdgdfgdfgdfgdfgdfgedium" },
+        { 100: "high" }
+      ],
       showLabels: true,
-      prefix: "",
-      suffix: "",
-      primaryColor: "hsl(196, 100%, 48%)",
+      prefix:"",
+      suffix:"",
+      primaryColor: "hsl(196, 100%, 50%)",
       primaryColorLight: "hsl(196, 100%, 70%)",
-      rotateLabel: false,
-      width: 1200
+      height: 800,
     }}
   >
     {Template.bind({})}
   </Story>
 </Canvas>
 
+
+</div>
+
+</div>
 <ArgsTable of={DualVerticalRangeSlider} />
+
